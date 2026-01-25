@@ -11,5 +11,8 @@
     "configs",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,3 +1,10 @@
+## [0.7.2](https://github.com/derKlinke/miedinger/compare/v0.7.1...v0.7.2) (2026-01-25)
+
+
+### Bug Fixes
+
+* stabilize prettier outputs ([ed962b3](https://github.com/derKlinke/miedinger/commit/ed962b3a3310d2003e048c5083f17c219115183f))
+
 ## [0.7.1](https://github.com/derKlinke/miedinger/compare/v0.7.0...v0.7.1) (2026-01-25)
 
 

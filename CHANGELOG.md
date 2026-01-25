@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/derKlinke/format-configs/compare/v0.1.4...v0.1.5) (2026-01-25)
+
+
+### Bug Fixes
+
+* rewrite justfile format blocks ([39de06e](https://github.com/derKlinke/format-configs/commit/39de06e41ff00c17bcf3307905ec394b2f354de7))
+
 ## [0.1.4](https://github.com/derKlinke/format-configs/compare/v0.1.3...v0.1.4) (2026-01-25)
 
 ### Features

@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/derKlinke/miedinger/compare/v0.6.0...v0.7.0) (2026-01-25)
+
+
+### Features
+
+* add nightly sync workflow ([dd3d7bd](https://github.com/derKlinke/miedinger/commit/dd3d7bd23f1232b60be4089692a8928cd72146bb))
+
 # [0.6.0](https://github.com/derKlinke/miedinger/compare/v0.5.2...v0.6.0) (2026-01-25)
 
 

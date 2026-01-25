@@ -4,8 +4,9 @@
 [![license](https://img.shields.io/npm/l/@derklinke/miedinger)](LICENSE)
 [![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/miedinger/publish.yml?label=publish)](https://github.com/derKlinke/miedinger/actions/workflows/publish.yml)
 
-Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo.
-Name: Max Miedinger, founder of Helvetica. The most beautiful, timeless, clean font; same target for code cleanliness.
+Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo with installer script that installs justfiles, pre-commit hooks and a nightly CI task to keep configs in sync.
+
+The project is named after Max Miedinger, creator of Helvetica. A timeless and beautiful font, something I'd like to achieve in my code.
 
 ## What’s inside
 
@@ -21,8 +22,6 @@ Name: Max Miedinger, founder of Helvetica. The most beautiful, timeless, clean f
 
 ```sh
 npx @derklinke/miedinger --detect --force
-# or
-bunx @derklinke/miedinger --detect --force
 ```
 
 ## Selection

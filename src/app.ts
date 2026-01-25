@@ -12,6 +12,7 @@ import { resolveConfigDir, isGitRepo, listGitFiles, listFilesRecursive } from ".
 import { maybeUpdateJustfile } from "./justfile";
 import { maybeUpdatePrekConfig } from "./prek";
 import { listStatusPaths, maybeAutoCommit } from "./git";
+import { maybeUpdateSyncWorkflow } from "./github/sync";
 
 export async function runApp(options: CliOptions): Promise<void> {
     const targetPath = path.resolve(options.targetDir);
@@ -96,6 +97,9 @@ export async function runApp(options: CliOptions): Promise<void> {
         prekMode: options.prekMode,
         force: options.force,
     });
+    const workflowPath = maybeUpdateSyncWorkflow(targetPath, {
+        force: options.force,
+    });
 
     const managedPaths = new Set<string>();
     for (const file of fileSet) {
@@ -107,6 +111,7 @@ export async function runApp(options: CliOptions): Promise<void> {
     sqlfluffFiles.forEach((file) => managedPaths.add(file));
     if (justfilePath) managedPaths.add(justfilePath);
     if (prekPath) managedPaths.add(prekPath);
+    if (workflowPath) managedPaths.add(workflowPath);
 
     maybeAutoCommit(targetPath, managedPaths, preExistingChanges);
 }

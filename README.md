@@ -57,6 +57,7 @@ Installer cleanup:
 - If `package.json` exists, installs the Tailwind Prettier plugin, and installs the Astro plugin only when Astro files/configs are detected.
 - Auto-commits managed config changes when the repo has no staged changes and those files were clean before install.
 - SQLFluff config excludes `**/migrations/**` by default (preserves migrations).
+- Adds a nightly GitHub Actions sync workflow (`.github/workflows/sync-format-configs.yml`) unless an unmanaged one already exists.
 
 ### Justfile integration
 

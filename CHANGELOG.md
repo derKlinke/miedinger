@@ -1,3 +1,10 @@
+## [0.2.2](https://github.com/derKlinke/format-configs/compare/v0.2.1...v0.2.2) (2026-01-25)
+
+
+### Bug Fixes
+
+* correct prek yaml output ([2b78de4](https://github.com/derKlinke/format-configs/commit/2b78de4e2e1371fc4f3d06e783c1f667b6ee9335))
+
 # Changelog
 
 ## [0.2.0](https://github.com/derKlinke/format-configs/compare/v0.1.8...v0.2.0) (2026-01-25)

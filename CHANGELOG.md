@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/derKlinke/miedinger/compare/v0.5.2...v0.6.0) (2026-01-25)
+
+
+### Features
+
+* add astro-aware prettier plugins ([5727276](https://github.com/derKlinke/miedinger/commit/5727276790798603063e4ac69964c8d09301ad30))
+
 ## [0.5.2](https://github.com/derKlinke/miedinger/compare/v0.5.1...v0.5.2) (2026-01-25)
 
 

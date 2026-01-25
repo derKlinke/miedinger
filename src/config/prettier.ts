@@ -24,6 +24,8 @@ export function updatePrettierConfigPlugins(
         return [];
     }
 
+    const hasPackageJson = fs.existsSync(path.join(targetPath, "package.json"));
+
     const raw = fs.readFileSync(configPath, "utf8");
     let config: Record<string, unknown>;
     try {
@@ -36,23 +38,32 @@ export function updatePrettierConfigPlugins(
     const existing = Array.isArray(config.plugins)
         ? (config.plugins as unknown[]).filter((item) => typeof item === "string").map(String)
         : [];
-    const withoutAstro = existing.filter((plugin) => plugin !== astroPlugin);
-    const desired = [
-        tailwindPlugin,
-        ...withoutAstro.filter((plugin) => plugin !== tailwindPlugin),
-    ];
-    if (options.astro) {
-        desired.push(astroPlugin);
+    let next: string[] = [];
+    if (hasPackageJson) {
+        const withoutAstro = existing.filter((plugin) => plugin !== astroPlugin);
+        const desired = [
+            tailwindPlugin,
+            ...withoutAstro.filter((plugin) => plugin !== tailwindPlugin),
+        ];
+        if (options.astro) {
+            desired.push(astroPlugin);
+        }
+        next = uniquePlugins(desired);
+    } else {
+        next = existing.filter((plugin) => plugin !== tailwindPlugin && plugin !== astroPlugin);
     }
 
-    const next = uniquePlugins(desired);
     const same =
         existing.length === next.length && existing.every((value, index) => value === next[index]);
     if (same) {
         return [];
     }
 
-    config.plugins = next;
+    if (next.length === 0) {
+        delete config.plugins;
+    } else {
+        config.plugins = next;
+    }
     fs.writeFileSync(configPath, JSON.stringify(config, null, 4) + "\n", "utf8");
     return [configPath];
 }

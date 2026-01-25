@@ -27,9 +27,7 @@ function formatRecipeLines(presets: Set<string>): string[] {
         );
     }
     if (presets.has("web")) {
-        lines.push(
-            "    npx --yes -p prettier -p prettier-plugin-tailwindcss prettier --write ."
-        );
+        lines.push("    npx --yes prettier --write .");
     }
     if (presets.has("markdown")) {
         lines.push(

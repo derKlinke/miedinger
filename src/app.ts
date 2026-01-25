@@ -34,7 +34,7 @@ export async function runApp(options: CliOptions): Promise<void> {
         ? listGitFiles(targetPath)
         : listFilesRecursive(targetPath);
     const preExistingChanges = isGitRepo(targetPath) ? listStatusPaths(targetPath) : new Set<string>();
-    const hasAstro = detectAstro(repoFiles);
+    const hasAstro = detectAstro(targetPath, repoFiles);
     let tokens: string[] = [];
 
     if (options.mode === "detect") {
@@ -71,8 +71,6 @@ export async function runApp(options: CliOptions): Promise<void> {
 
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
     const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets, { astro: hasAstro });
-    const prettierFiles = updatePrettierConfigPlugins(targetPath, { astro: hasAstro });
-    const sqlfluffFiles = ensureSqlfluffExclude(targetPath, selectedPresets);
 
     for (const file of fileSet) {
         const src = path.join(configDir, file);
@@ -91,6 +89,9 @@ export async function runApp(options: CliOptions): Promise<void> {
         fs.copyFileSync(src, dst);
         console.log(`install: ${dst}`);
     }
+
+    const prettierFiles = updatePrettierConfigPlugins(targetPath, { astro: hasAstro });
+    const sqlfluffFiles = ensureSqlfluffExclude(targetPath, selectedPresets);
 
     const justfilePath = maybeUpdateJustfile(targetPath, selectedPresets, options.justMode);
     const prekPath = maybeUpdatePrekConfig(targetPath, selectedPresets, {

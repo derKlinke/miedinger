@@ -91,6 +91,17 @@ export function listGitFiles(dir: string): string[] {
         .map((file) => path.join(dir, file));
 }
 
+export function listGitUntrackedFiles(dir: string): string[] {
+    const output = execFileSync("git", ["-C", dir, "ls-files", "--others", "--exclude-standard"], {
+        stdio: ["ignore", "pipe", "ignore"],
+    });
+    return String(output)
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((file) => path.join(dir, file));
+}
+
 export function listFilesRecursive(dir: string): string[] {
     const results: string[] = [];
     const skipNames = new Set([".git", "node_modules", ".build", "DerivedData", "external"]);

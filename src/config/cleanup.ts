@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { isGitRepo, listGitFiles, listFilesRecursive } from "../fs/repo";
+import { isGitRepo, listGitFiles, listGitUntrackedFiles, listFilesRecursive } from "../fs/repo";
 
 const cleanupFilesByPreset: Record<string, string[]> = {
     swift: [".swiftformat", ".swiftlint.yml", ".swiftlint.yaml"],
@@ -65,7 +65,9 @@ export function removeLegacyConfigs(
     }
 
     const removed: string[] = [];
-    const files = isGitRepo(targetPath) ? listGitFiles(targetPath) : listFilesRecursive(targetPath);
+    const files = isGitRepo(targetPath)
+        ? [...listGitFiles(targetPath), ...listGitUntrackedFiles(targetPath)]
+        : listFilesRecursive(targetPath);
     for (const file of files) {
         const rel = path.relative(targetPath, file);
         if (rel.startsWith("..") || path.isAbsolute(rel)) {

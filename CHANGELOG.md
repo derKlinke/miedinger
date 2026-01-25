@@ -1,3 +1,15 @@
+# [0.5.0](https://github.com/derKlinke/miedinger/compare/v0.4.1...v0.5.0) (2026-01-25)
+
+
+### Bug Fixes
+
+* remove untracked legacy configs ([7c2f323](https://github.com/derKlinke/miedinger/commit/7c2f3238cd81ed7f8d2a4393558fb7167c651735))
+
+
+### Features
+
+* auto-commit managed config changes ([5f1dd7b](https://github.com/derKlinke/miedinger/commit/5f1dd7be68e1cfb75695ad5cab8c0620f627ea2b))
+
 ## [0.4.1](https://github.com/derKlinke/miedinger/compare/v0.4.0...v0.4.1) (2026-01-25)
 
 

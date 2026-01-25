@@ -1,5 +1,5 @@
 export function usage(): void {
-    console.log(`Usage: format-configs [options] [target-dir]
+    console.log(`Usage: miedinger [options] [target-dir]
 
 Copies shared formatter configs into target directory (no symlinks).
 Defaults to current working directory.

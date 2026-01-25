@@ -4,7 +4,7 @@
     "description": "Shared formatter configs",
     "repository": {
         "type": "git",
-        "url": "https://github.com/derKlinke/format-configs.git"
+        "url": "https://github.com/derKlinke/miedinger.git"
     },
     "license": "MIT",
     "bin": {

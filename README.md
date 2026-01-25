@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@derklinke/miedinger)](https://www.npmjs.com/package/@derklinke/miedinger)
 [![license](https://img.shields.io/npm/l/@derklinke/miedinger)](LICENSE)
-[![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/publish.yml?label=publish)](https://github.com/derKlinke/format-configs/actions/workflows/publish.yml)
+[![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/miedinger/publish.yml?label=publish)](https://github.com/derKlinke/miedinger/actions/workflows/publish.yml)
 
 Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo.
 Name: Max Miedinger, founder of Helvetica. The most beautiful, timeless, clean font; same target for code cleanliness.
@@ -70,7 +70,7 @@ The managed block includes:
 - `format:` recipe that runs `just --fmt --unstable` first
 
 The recipe only runs tools that are available (it checks `command -v` where appropriate).
-Managed blocks are wrapped in `# format-configs` / `# /format-configs` so updates are safe.
+Managed blocks are wrapped in `# format-configs` / `# /format-configs` (legacy marker for compatibility).
 
 ## GitHub Action (sync configs)
 
@@ -78,7 +78,7 @@ Use the composite action to keep configs in sync in CI (and optionally commit up
 
 ```yaml
 - name: Sync format configs
-  uses: derKlinke/format-configs/.github/actions/sync-format-configs@main
+  uses: derKlinke/miedinger/.github/actions/sync-format-configs@main
   with:
     mode: detect
     force: "true"

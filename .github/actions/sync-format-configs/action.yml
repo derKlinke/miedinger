@@ -63,7 +63,7 @@ runs:
               if [ "${{ inputs.force }}" = "true" ]; then
                 args+=(--force)
               fi
-              npx --yes @derklinke/format-configs "${args[@]}" "${{ inputs.target-dir }}"
+              npx --yes @derklinke/miedinger "${args[@]}" "${{ inputs.target-dir }}"
 
         - name: Commit format config changes
           if: inputs.commit == 'true'

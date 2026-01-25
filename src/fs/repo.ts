@@ -3,6 +3,13 @@ import * as path from "path";
 import * as os from "os";
 import { execFileSync } from "child_process";
 
+function repoSlugFromUrl(repoUrl: string): string {
+    const trimmed = repoUrl.replace(/\.git$/, "");
+    const parts = trimmed.split("/").filter(Boolean);
+    const slug = parts[parts.length - 1];
+    return slug && slug.length > 0 ? slug : "miedinger";
+}
+
 export function resolveConfigDir(options: { repoUrl: string; repoRef: string }): { dir: string } {
     const localConfigs = path.resolve(__dirname, "..", "..", "configs");
     if (fs.existsSync(localConfigs)) {
@@ -14,8 +21,9 @@ export function resolveConfigDir(options: { repoUrl: string; repoRef: string }):
         return { dir: envDir };
     }
 
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "format-configs-"));
-    const archivePath = path.join(tmpDir, "format-configs.tgz");
+    const repoSlug = repoSlugFromUrl(options.repoUrl);
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `${repoSlug}-`));
+    const archivePath = path.join(tmpDir, `${repoSlug}.tgz`);
     const url = `${options.repoUrl}/archive/${options.repoRef}.tar.gz`;
 
     execFileSync("curl", ["-fsSL", url, "-o", archivePath], { stdio: "inherit" });
@@ -23,9 +31,9 @@ export function resolveConfigDir(options: { repoUrl: string; repoRef: string }):
 
     const entries = fs
         .readdirSync(tmpDir)
-        .filter((entry: string) => entry.startsWith("format-configs-"));
+        .filter((entry: string) => entry.startsWith(`${repoSlug}-`));
     if (entries.length === 0) {
-        console.error("error: failed to extract format-configs");
+        console.error(`error: failed to extract ${repoSlug}`);
         process.exit(1);
     }
 

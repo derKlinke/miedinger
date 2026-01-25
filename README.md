@@ -114,7 +114,7 @@ This repo supports `prek` (pre-commit compatible). To enable:
 prek install
 ```
 
-It runs Prettier on staged files using `configs/.prettierrc.json` and `configs/.prettierignore`.
+It runs `npm run format` on commit (Prettier + markdownlint).
 
 ## Structure
 

@@ -1,8 +1,8 @@
 repos:
     - repo: local
       hooks:
-          - id: prettier
-            name: prettier
-            entry: npx --yes prettier --config configs/.prettierrc.json --ignore-path configs/.prettierignore --write
+          - id: format
+            name: format
+            entry: npm run format
             language: system
-            files: '\\.(js|jsx|ts|tsx|json|yaml|yml|css|scss|html|vue|svelte|astro)$'
+            pass_filenames: false

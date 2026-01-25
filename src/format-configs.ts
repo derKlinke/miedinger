@@ -383,14 +383,16 @@ function formatRecipeLines(presets: Set<string>): string[] {
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
         lines.push(
-            "    if command -v swiftlint >/dev/null; then if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then if git ls-files '*.swift' | grep -q .; then swiftlint --quiet; fi; else if find . -name '*.swift' -print -quit | grep -q .; then swiftlint --quiet; fi; fi; fi"
+            "    if command -v swiftlint >/dev/null; then swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging; fi"
         );
     }
     if (presets.has("web")) {
         lines.push("    npx --yes prettier --write .");
     }
     if (presets.has("markdown")) {
-        lines.push('    npx --yes markdownlint-cli "**/*.md"');
+        lines.push(
+            '    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
+        );
     }
     if (presets.has("clang")) {
         const clangLine =
@@ -413,7 +415,7 @@ function buildFormatBlock(presets: Set<string>): string[] {
         "# format-configs",
         "alias fmt := format",
         "alias f := format",
-        "[group: 'format']",
+        "[group('formatting')]",
         ...recipe,
         "# /format-configs",
     ];

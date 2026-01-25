@@ -63,7 +63,7 @@ Flags:
 The managed block includes:
 
 - `alias fmt := format`
-- `[group: 'format']`
+- `[group('formatting')]`
 - `format:` recipe that runs `just --fmt --unstable` first
 
 The recipe only runs tools that are available (it checks `command -v` where appropriate).

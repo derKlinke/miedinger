@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/derKlinke/format-configs/compare/v0.2.0...v0.2.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* robust command detection ([76fdf6d](https://github.com/derKlinke/format-configs/commit/76fdf6d05b6ed6e2efabcec1daae41f2297a8dfb))
+
 # [0.2.0](https://github.com/derKlinke/format-configs/compare/v0.1.8...v0.2.0) (2026-01-25)
 
 

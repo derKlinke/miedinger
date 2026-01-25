@@ -12,7 +12,15 @@ Shared formatter configs for all my projects. One place to keep them tidy, easy 
 
 ## Quick start
 
-### Option A: curl install (recommended)
+### Option A: npx / bunx (recommended)
+
+```sh
+npx @derklinke/format-configs --detect --force
+# or
+bunx @derklinke/format-configs --detect --force
+```
+
+### Option B: curl install
 
 From any project root:
 
@@ -27,7 +35,7 @@ curl -fsSL https://raw.githubusercontent.com/derKlinke/format-configs/main/insta
   bash -s -- --interactive --force
 ```
 
-### Option B: clone and run
+### Option C: clone and run
 
 ```sh
 git clone https://github.com/derKlinke/format-configs.git

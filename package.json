@@ -1,0 +1,15 @@
+{
+  "name": "@derklinke/format-configs",
+  "version": "0.1.0",
+  "description": "Shared formatter configs",
+  "license": "MIT",
+  "bin": {
+    "format-configs": "bin/format-configs.js"
+  },
+  "files": [
+    "bin",
+    "configs",
+    "README.md",
+    "LICENSE"
+  ]
+}

@@ -1,85 +1,92 @@
 import * as fs from "fs";
 import * as path from "path";
 import { execFileSync } from "child_process";
+import { stringify } from "yaml";
 import { hasCommand } from "./fs/repo";
 import { PrekMode } from "./types";
+
+type PrekHook = {
+    id: string;
+    name: string;
+    entry: string;
+    language: "system";
+    files?: string;
+};
 
 function buildPrekConfig(presets: Set<string>): string | null {
     if (presets.size === 0) {
         return null;
     }
 
-    const hooks: string[] = [];
-    const addHook = (lines: string[]): void => {
-        lines.forEach((line, index) => {
-            const prefix = index === 0 ? "      " : "        ";
-            hooks.push(`${prefix}${line}`);
-        });
+    const hooks: PrekHook[] = [];
+    const addHook = (hook: PrekHook): void => {
+        hooks.push(hook);
     };
 
     if (presets.has("web")) {
-        addHook([
-            "- id: prettier",
-            "name: prettier",
-            "entry: npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
-            "language: system",
-            "files: '\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$'",
-        ]);
+        addHook({
+            id: "prettier",
+            name: "prettier",
+            entry: "npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
+            language: "system",
+            files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
+        });
     }
 
     if (presets.has("markdown")) {
-        addHook([
-            "- id: markdownlint",
-            "name: markdownlint",
-            "entry: npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore",
-            "language: system",
-            "files: '\\.(md|mdx)$'",
-        ]);
+        addHook({
+            id: "markdownlint",
+            name: "markdownlint",
+            entry: "npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore",
+            language: "system",
+            files: "\\.(md|mdx)$",
+        });
     }
 
     if (presets.has("swift")) {
-        addHook([
-            "- id: swiftformat",
-            "name: swiftformat",
-            "entry: swiftformat",
-            "language: system",
-            "files: '\\.(swift)$'",
-        ]);
-        addHook([
-            "- id: swiftlint",
-            "name: swiftlint",
-            'entry: "bash -c \'for f in \\"$@\\"; do swiftlint lint --config .swiftlint.yml --force-exclude --reporter github-actions-logging \\"$f\\"; done\' --"',
-            "language: system",
-            "files: '\\.(swift)$'",
-        ]);
+        addHook({
+            id: "swiftformat",
+            name: "swiftformat",
+            entry: "swiftformat",
+            language: "system",
+            files: "\\.(swift)$",
+        });
+        addHook({
+            id: "swiftlint",
+            name: "swiftlint",
+            entry: "swiftlint lint --config .swiftlint.yml --force-exclude --reporter github-actions-logging",
+            language: "system",
+            files: "\\.(swift)$",
+        });
     }
 
     if (presets.has("clang")) {
-        addHook([
-            "- id: clang-format",
-            "name: clang-format",
-            "entry: clang-format -i",
-            "language: system",
-            "files: '\\.(c|cc|cpp|cxx|h|hh|hpp|hxx|m|mm)$'",
-        ]);
+        addHook({
+            id: "clang-format",
+            name: "clang-format",
+            entry: "clang-format -i",
+            language: "system",
+            files: "\\.(c|cc|cpp|cxx|h|hh|hpp|hxx|m|mm)$",
+        });
     }
 
     if (presets.has("sql")) {
-        addHook([
-            "- id: sqlfluff",
-            "name: sqlfluff",
-            "entry: sqlfluff format",
-            "language: system",
-            "files: '\\.(sql)$'",
-        ]);
+        addHook({
+            id: "sqlfluff",
+            name: "sqlfluff",
+            entry: "sqlfluff format",
+            language: "system",
+            files: "\\.(sql)$",
+        });
     }
 
     if (hooks.length === 0) {
         return null;
     }
 
-    const lines = ["# format-configs", "repos:", "  - repo: local", "    hooks:", ...hooks];
-    return lines.join("\n") + "\n";
+    const config = { repos: [{ repo: "local", hooks }] };
+    const yaml = stringify(config, { indent: 2, lineWidth: 0 });
+    return `# format-configs\n${yaml}`;
 }
 
 export function maybeUpdatePrekConfig(

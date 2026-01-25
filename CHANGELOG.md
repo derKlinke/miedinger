@@ -1,3 +1,15 @@
+# [0.3.0](https://github.com/derKlinke/miedinger/compare/v0.2.4...v0.3.0) (2026-01-25)
+
+
+### Bug Fixes
+
+* skip pre-commit config in prettier ([a3c1143](https://github.com/derKlinke/miedinger/commit/a3c1143744db3ea5fc40246ec745843ee9ad5a4d))
+
+
+### Features
+
+* add prettier tailwind and astro plugins ([499b054](https://github.com/derKlinke/miedinger/commit/499b05419f2722b002b0c5395bfe2645956364e8))
+
 ## [0.2.4](https://github.com/derKlinke/miedinger/compare/v0.2.3...v0.2.4) (2026-01-25)
 
 

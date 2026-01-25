@@ -80,11 +80,14 @@ runs:
                 .clang-format
                 .markdownlint.json
                 .markdownlintignore
+                .pre-commit-config.yaml
+                .pre-commit-config.yml
                 .prettierrc.json
                 .prettierignore
                 .sqlfluff
                 .swiftformat
                 .swiftlint.yml
+                .github/workflows/sync-format-configs.yml
               )
               git add -A -- "${files[@]}" 2>/dev/null || true
               if git diff --cached --quiet; then

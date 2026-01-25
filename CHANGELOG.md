@@ -1,3 +1,10 @@
+## [0.7.3](https://github.com/derKlinke/miedinger/compare/v0.7.2...v0.7.3) (2026-01-25)
+
+
+### Bug Fixes
+
+* include sync artifacts in action commit ([d98af36](https://github.com/derKlinke/miedinger/commit/d98af36b459da2a7e814af881e3bad5e38786699))
+
 ## [0.7.2](https://github.com/derKlinke/miedinger/compare/v0.7.1...v0.7.2) (2026-01-25)
 
 

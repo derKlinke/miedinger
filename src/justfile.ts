@@ -165,19 +165,19 @@ export function maybeUpdateJustfile(
     targetPath: string,
     presets: Set<string>,
     justMode: JustMode
-): void {
+): string | null {
     if (justMode === "skip") {
-        return;
+        return null;
     }
 
     const recipe = formatRecipeLines(presets);
     if (recipe.length === 0) {
-        return;
+        return null;
     }
 
     const existing = findJustfile(targetPath);
     if (!existing && justMode !== "force") {
-        return;
+        return null;
     }
 
     const justfilePath = existing?.path ?? path.join(targetPath, "Justfile");
@@ -185,7 +185,8 @@ export function maybeUpdateJustfile(
     const block = buildFormatBlock(presets);
     const updated = updateJustfileContent(content, block);
     if (updated === null) {
-        return;
+        return null;
     }
     fs.writeFileSync(justfilePath, updated, "utf8");
+    return justfilePath;
 }

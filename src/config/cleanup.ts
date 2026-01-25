@@ -58,12 +58,13 @@ export function removeLegacyConfigs(
     targetPath: string,
     presets: Set<string>,
     keepFiles: Set<string>
-): void {
+): string[] {
     const cleanupNames = buildCleanupSet(presets);
     if (cleanupNames.size === 0) {
-        return;
+        return [];
     }
 
+    const removed: string[] = [];
     const files = isGitRepo(targetPath) ? listGitFiles(targetPath) : listFilesRecursive(targetPath);
     for (const file of files) {
         const rel = path.relative(targetPath, file);
@@ -80,6 +81,7 @@ export function removeLegacyConfigs(
         }
         try {
             fs.unlinkSync(file);
+            removed.push(file);
             console.log(`remove: ${file}`);
         } catch (err) {
             console.error(`warning: failed to remove ${file}`);
@@ -88,4 +90,6 @@ export function removeLegacyConfigs(
             }
         }
     }
+
+    return removed;
 }

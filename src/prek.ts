@@ -95,14 +95,14 @@ export function maybeUpdatePrekConfig(
     targetPath: string,
     presets: Set<string>,
     options: { prekMode: PrekMode; force: boolean }
-): void {
+): string | null {
     if (options.prekMode === "skip") {
-        return;
+        return null;
     }
 
     const config = buildPrekConfig(presets);
     if (!config) {
-        return;
+        return null;
     }
 
     const configPath = path.join(targetPath, ".pre-commit-config.yaml");
@@ -110,7 +110,7 @@ export function maybeUpdatePrekConfig(
     const isManaged = existing.split(/\r?\n/)[0]?.trim() === "# format-configs";
     if (existing && !options.force && !isManaged) {
         console.error(`skip: exists ${configPath} (use --force)`);
-        return;
+        return null;
     }
     fs.writeFileSync(configPath, config, "utf8");
 
@@ -126,4 +126,5 @@ export function maybeUpdatePrekConfig(
     } else {
         console.error("skip: prek not installed (install via brew or cargo)");
     }
+    return configPath;
 }

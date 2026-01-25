@@ -51,15 +51,15 @@ function installDevDependencies(targetPath: string, manager: PackageManager, dep
     execFileSync(manager, argsByManager[manager], { cwd: targetPath, stdio: "inherit" });
 }
 
-export function ensurePrettierPlugins(targetPath: string, presets: Set<string>): void {
+export function ensurePrettierPlugins(targetPath: string, presets: Set<string>): string[] {
     if (!presets.has("web")) {
-        return;
+        return [];
     }
 
     const pkgPath = path.join(targetPath, "package.json");
     if (!fs.existsSync(pkgPath)) {
         console.error("warning: package.json missing; skipping prettier plugin install");
-        return;
+        return [];
     }
 
     const raw = fs.readFileSync(pkgPath, "utf8");
@@ -71,10 +71,26 @@ export function ensurePrettierPlugins(targetPath: string, presets: Set<string>):
         (plugin) => !devDeps[plugin] && !deps[plugin]
     );
     if (missing.length === 0) {
-        return;
+        return [];
     }
 
     const manager = detectPackageManager(targetPath, pkg);
     console.log(`install: ${missing.join(", ")} (${manager})`);
     installDevDependencies(targetPath, manager, missing);
+
+    const touched = ["package.json"];
+    const lockCandidates = [
+        "package-lock.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+        "bun.lockb",
+        "bun.lock",
+    ];
+    for (const lockfile of lockCandidates) {
+        const full = path.join(targetPath, lockfile);
+        if (fs.existsSync(full)) {
+            touched.push(lockfile);
+        }
+    }
+    return touched.map((file) => path.join(targetPath, file));
 }

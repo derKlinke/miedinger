@@ -8,6 +8,7 @@ import { detectPresets, derivePresets, expandToken } from "./config/presets";
 import { resolveConfigDir, isGitRepo, listGitFiles, listFilesRecursive } from "./fs/repo";
 import { maybeUpdateJustfile } from "./justfile";
 import { maybeUpdatePrekConfig } from "./prek";
+import { listStatusPaths, maybeAutoCommit } from "./git";
 
 export async function runApp(options: CliOptions): Promise<void> {
     const targetPath = path.resolve(options.targetDir);
@@ -25,6 +26,7 @@ export async function runApp(options: CliOptions): Promise<void> {
         process.exit(1);
     }
 
+    const preExistingChanges = isGitRepo(targetPath) ? listStatusPaths(targetPath) : new Set<string>();
     let tokens: string[] = [];
 
     if (options.mode === "detect") {
@@ -62,8 +64,8 @@ export async function runApp(options: CliOptions): Promise<void> {
     tokens.forEach((token) => expandToken(token).forEach((file) => fileSet.add(file)));
     const selectedPresets = derivePresets(fileSet);
 
-    removeLegacyConfigs(targetPath, selectedPresets, fileSet);
-    ensurePrettierPlugins(targetPath, selectedPresets);
+    const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
+    const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets);
 
     for (const file of fileSet) {
         const src = path.join(configDir, file);
@@ -83,9 +85,20 @@ export async function runApp(options: CliOptions): Promise<void> {
         console.log(`install: ${dst}`);
     }
 
-    maybeUpdateJustfile(targetPath, selectedPresets, options.justMode);
-    maybeUpdatePrekConfig(targetPath, selectedPresets, {
+    const justfilePath = maybeUpdateJustfile(targetPath, selectedPresets, options.justMode);
+    const prekPath = maybeUpdatePrekConfig(targetPath, selectedPresets, {
         prekMode: options.prekMode,
         force: options.force,
     });
+
+    const managedPaths = new Set<string>();
+    for (const file of fileSet) {
+        managedPaths.add(path.join(targetPath, file));
+    }
+    removed.forEach((file) => managedPaths.add(file));
+    pluginFiles.forEach((file) => managedPaths.add(file));
+    if (justfilePath) managedPaths.add(justfilePath);
+    if (prekPath) managedPaths.add(prekPath);
+
+    maybeAutoCommit(targetPath, managedPaths, preExistingChanges);
 }

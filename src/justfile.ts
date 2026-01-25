@@ -129,6 +129,14 @@ function removeFormatTargets(lines: string[]): string[] {
     }
 }
 
+function trimTrailingBlankLines(lines: string[]): string[] {
+    const trimmed = [...lines];
+    while (trimmed.length > 0 && trimmed[trimmed.length - 1].trim() === "") {
+        trimmed.pop();
+    }
+    return trimmed;
+}
+
 function updateJustfileContent(content: string, block: string[]): string | null {
     if (block.length === 0) {
         return null;
@@ -142,12 +150,15 @@ function updateJustfileContent(content: string, block: string[]): string | null 
               ...withoutAlias.slice(existingBlock.end + 1),
           ]
         : withoutAlias;
-    const withoutFormats = removeFormatTargets(baseLines);
+    const withoutFormats = trimTrailingBlankLines(removeFormatTargets(baseLines));
 
     if (withoutFormats.length === 0) {
         return block.join("\n") + "\n";
     }
-    return [...withoutFormats, "", ...block].join("\n").trimEnd() + "\n";
+    const needsSpacer =
+        withoutFormats.length > 0 && withoutFormats[withoutFormats.length - 1].trim() !== "";
+    const merged = needsSpacer ? [...withoutFormats, "", ...block] : [...withoutFormats, ...block];
+    return merged.join("\n").trimEnd() + "\n";
 }
 
 export function maybeUpdateJustfile(

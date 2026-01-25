@@ -48,7 +48,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
         addHook([
             "- id: swiftlint",
             "name: swiftlint",
-            'entry: "bash -c \'for f in \\"$@\\"; do swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging --path \\"$f\\"; done\' --"',
+            'entry: "bash -c \'for f in \\"$@\\"; do swiftlint lint --config .swiftlint.yml --force-exclude --reporter github-actions-logging \\"$f\\"; done\' --"',
             "language: system",
             "files: '\\.(swift)$'",
         ]);

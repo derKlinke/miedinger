@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7](https://github.com/derKlinke/format-configs/compare/v0.1.6...v0.1.7) (2026-01-25)
+
+
+### Bug Fixes
+
+* align justfile swiftlint with b90hq ([cb78ea8](https://github.com/derKlinke/format-configs/commit/cb78ea8c15a581dbd883d977b51c2d64858f44da))
+* satisfy changelog lint ([2144230](https://github.com/derKlinke/format-configs/commit/2144230afd761fb2d145165ba8373bbb178a4d2d))
+
 ## [0.1.6](https://github.com/derKlinke/format-configs/compare/v0.1.5...v0.1.6) (2026-01-25)
 
 ### Bug Fixes

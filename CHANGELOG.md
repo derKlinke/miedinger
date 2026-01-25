@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/derKlinke/format-configs/compare/v0.1.8...v0.2.0) (2026-01-25)
+
+
+### Features
+
+* add dynamic prek hooks ([6248bcb](https://github.com/derKlinke/format-configs/commit/6248bcbba02667f8c1cc818fbb2a6185890c278e))
+
 # Changelog
 
 ## [0.1.8](https://github.com/derKlinke/format-configs/compare/v0.1.7...v0.1.8) (2026-01-25)

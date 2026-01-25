@@ -1,4 +1,4 @@
-name: Release
+name: Publish
 
 on:
     push:
@@ -13,7 +13,7 @@ permissions:
     id-token: write
 
 jobs:
-    release:
+    publish:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout

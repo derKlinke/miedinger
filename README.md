@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@derklinke/format-configs)](https://www.npmjs.com/package/@derklinke/format-configs)
 [![license](https://img.shields.io/npm/l/@derklinke/format-configs)](LICENSE)
-[![release](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/release.yml?label=release)](https://github.com/derKlinke/format-configs/actions/workflows/release.yml)
+[![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/publish.yml?label=publish)](https://github.com/derKlinke/format-configs/actions/workflows/publish.yml)
 
 Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo.
 

@@ -307,7 +307,7 @@ fi
 unique_files=()
 for file in "${selected_files[@]}"; do
   exists="false"
-  for existing in "${unique_files[@]}"; do
+  for existing in "${unique_files[@]:-}"; do
     if [[ "${existing}" == "${file}" ]]; then
       exists="true"
       break

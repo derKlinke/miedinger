@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/derKlinke/miedinger/compare/v0.2.3...v0.2.4) (2026-01-25)
+
+
+### Bug Fixes
+
+* generate prek yaml via serializer ([90d5a47](https://github.com/derKlinke/miedinger/commit/90d5a47eefaad2c7452eaf30c2cc26054eb4a8fe))
+
 ## [0.2.3](https://github.com/derKlinke/miedinger/compare/v0.2.2...v0.2.3) (2026-01-25)
 
 

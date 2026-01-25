@@ -1,7 +1,6 @@
 # miedinger
 
 [![npm](https://img.shields.io/npm/v/@derklinke/miedinger)](https://www.npmjs.com/package/@derklinke/miedinger)
-[![license](https://img.shields.io/npm/l/@derklinke/miedinger)](LICENSE)
 [![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/miedinger/publish.yml?label=publish)](https://github.com/derKlinke/miedinger/actions/workflows/publish.yml)
 
 Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo with installer script that installs justfiles, pre-commit hooks and a nightly CI task to keep configs in sync.
@@ -121,7 +120,7 @@ Release runs on every push to `main` (and no longer opens release PRs).
 
 This repo supports `prek` (pre-commit compatible). To enable:
 
-```
+```bash
 prek install
 ```
 

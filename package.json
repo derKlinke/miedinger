@@ -1,29 +1,31 @@
 {
-  "name": "@derklinke/format-configs",
-  "version": "0.1.3",
-  "description": "Shared formatter configs",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/derKlinke/format-configs.git"
-  },
-  "license": "MIT",
-  "bin": {
-    "format-configs": "dist/format-configs.js"
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/format-configs.js';const data=fs.readFileSync(p,'utf8');if(!data.startsWith('#!')) fs.writeFileSync(p,'#!/usr/bin/env node\\\\n'+data);fs.chmodSync(p,0o755);\""
-  },
-  "devDependencies": {
-    "@types/node": "22.13.10",
-    "typescript": "5.8.2"
-  },
-  "files": [
-    "dist",
-    "configs",
-    "README.md",
-    "LICENSE"
-  ],
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@derklinke/format-configs",
+    "version": "0.1.3",
+    "description": "Shared formatter configs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/derKlinke/format-configs.git"
+    },
+    "license": "MIT",
+    "bin": {
+        "format-configs": "dist/format-configs.js"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/format-configs.js';const data=fs.readFileSync(p,'utf8');if(!data.startsWith('#!')) fs.writeFileSync(p,'#!/usr/bin/env node\\\\n'+data);fs.chmodSync(p,0o755);\"",
+        "format": "npx --yes prettier --config configs/.prettierrc.json --ignore-path configs/.prettierignore --write . && npx --yes markdownlint --config configs/.markdownlint.json --ignore-path configs/.markdownlintignore \"**/*.md\"",
+        "format:check": "npm run format && git diff --exit-code"
+    },
+    "devDependencies": {
+        "@types/node": "22.13.10",
+        "typescript": "5.8.2"
+    },
+    "files": [
+        "dist",
+        "configs",
+        "README.md",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

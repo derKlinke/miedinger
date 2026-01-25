@@ -41,6 +41,7 @@ filesystem and skips common heavy folders (`.git`, `node_modules`, `.build`,
 `DerivedData`, `external`).
 
 Rules:
+
 - **Swift**: `.swift`, `Package.swift`, `.xcodeproj`, `.xcworkspace`
 - **Web**: `package.json`, lockfiles, `.js/.ts/.jsx/.tsx`, `.css/.scss`,
   `.html`, `.vue`, `.svelte`, `.astro`
@@ -54,6 +55,7 @@ If a `Justfile` (or `justfile`) exists, format-configs will add a standard `form
 when missing. This keeps `just format` consistent across repos.
 
 Flags:
+
 - `--just` creates a new `Justfile` if none exists.
 - `--no-just` skips Justfile integration entirely.
 
@@ -74,6 +76,7 @@ Use the composite action to keep configs in sync in CI (and optionally commit up
 ```
 
 Inputs:
+
 - `mode`: `detect` | `interactive` | `only`
 - `only`: comma/space-separated presets or filenames (used with `mode: only`)
 - `force`: overwrite existing files
@@ -86,6 +89,7 @@ Inputs:
 ## Release flow
 
 This repo uses Release Please to:
+
 - infer versions from Conventional Commits
 - open a release PR
 - tag releases
@@ -96,7 +100,8 @@ Publishing to npm happens on release publish (`release` event). If you prefer ma
 ## Structure
 
 - `configs/` — shared dotfiles
-- `bin/` — CLI entrypoint
+- `dist/` — CLI entrypoint (built)
+- `src/` — CLI source
 
 ## License
 

@@ -1,97 +1,97 @@
 name: Sync format configs
 description: Copy formatter configs into repo and optionally commit changes
 inputs:
-  mode:
-    description: detect|interactive|only
-    required: false
-    default: detect
-  only:
-    description: Comma/space-separated presets or filenames
-    required: false
-    default: ""
-  force:
-    description: Overwrite existing files
-    required: false
-    default: "true"
-  target-dir:
-    description: Target directory to install into
-    required: false
-    default: "."
-  commit:
-    description: Commit changes if any
-    required: false
-    default: "true"
-  push:
-    description: Push commit to origin
-    required: false
-    default: "true"
-  commit-message:
-    description: Commit message
-    required: false
-    default: "chore: sync format configs [skip ci]"
-  git-user-name:
-    description: Git author name
-    required: false
-    default: "github-actions[bot]"
-  git-user-email:
-    description: Git author email
-    required: false
-    default: "github-actions[bot]@users.noreply.github.com"
+    mode:
+        description: detect|interactive|only
+        required: false
+        default: detect
+    only:
+        description: Comma/space-separated presets or filenames
+        required: false
+        default: ""
+    force:
+        description: Overwrite existing files
+        required: false
+        default: "true"
+    target-dir:
+        description: Target directory to install into
+        required: false
+        default: "."
+    commit:
+        description: Commit changes if any
+        required: false
+        default: "true"
+    push:
+        description: Push commit to origin
+        required: false
+        default: "true"
+    commit-message:
+        description: Commit message
+        required: false
+        default: "chore: sync format configs [skip ci]"
+    git-user-name:
+        description: Git author name
+        required: false
+        default: "github-actions[bot]"
+    git-user-email:
+        description: Git author email
+        required: false
+        default: "github-actions[bot]@users.noreply.github.com"
 
 runs:
-  using: "composite"
-  steps:
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: "20"
+    using: "composite"
+    steps:
+        - name: Setup Node
+          uses: actions/setup-node@v4
+          with:
+              node-version: "20"
 
-    - name: Sync format configs
-      shell: bash
-      run: |
-        set -euo pipefail
-        args=()
-        case "${{ inputs.mode }}" in
-          detect) args+=(--detect) ;;
-          interactive) args+=(--interactive) ;;
-          only) args+=(--only "${{ inputs.only }}") ;;
-          *) echo "invalid mode: ${{ inputs.mode }}"; exit 1 ;;
-        esac
-        if [ -n "${{ inputs.only }}" ] && [ "${{ inputs.mode }}" != "only" ]; then
-          args+=(--only "${{ inputs.only }}")
-        fi
-        if [ "${{ inputs.force }}" = "true" ]; then
-          args+=(--force)
-        fi
-        npx --yes @derklinke/format-configs "${args[@]}" "${{ inputs.target-dir }}"
+        - name: Sync format configs
+          shell: bash
+          run: |
+              set -euo pipefail
+              args=()
+              case "${{ inputs.mode }}" in
+                detect) args+=(--detect) ;;
+                interactive) args+=(--interactive) ;;
+                only) args+=(--only "${{ inputs.only }}") ;;
+                *) echo "invalid mode: ${{ inputs.mode }}"; exit 1 ;;
+              esac
+              if [ -n "${{ inputs.only }}" ] && [ "${{ inputs.mode }}" != "only" ]; then
+                args+=(--only "${{ inputs.only }}")
+              fi
+              if [ "${{ inputs.force }}" = "true" ]; then
+                args+=(--force)
+              fi
+              npx --yes @derklinke/format-configs "${args[@]}" "${{ inputs.target-dir }}"
 
-    - name: Commit format config changes
-      if: inputs.commit == 'true'
-      shell: bash
-      run: |
-        set -euo pipefail
-        if ! git symbolic-ref -q HEAD >/dev/null; then
-          echo "Detached HEAD; skipping commit."
-          exit 0
-        fi
-        git config user.name "${{ inputs.git-user-name }}"
-        git config user.email "${{ inputs.git-user-email }}"
-        files=(
-          .clang-format
-          .markdownlint.json
-          .markdownlintignore
-          .prettierrc.json
-          .prettierignore
-          .sqlfluff
-          .swiftformat
-          .swiftlint.yml
-        )
-        git add -A -- "${files[@]}" 2>/dev/null || true
-        if git diff --cached --quiet; then
-          echo "No format config changes to commit."
-          exit 0
-        fi
-        git commit -m "${{ inputs.commit-message }}"
-        if [ "${{ inputs.push }}" = "true" ]; then
-          git push
-        fi
+        - name: Commit format config changes
+          if: inputs.commit == 'true'
+          shell: bash
+          run: |
+              set -euo pipefail
+              if ! git symbolic-ref -q HEAD >/dev/null; then
+                echo "Detached HEAD; skipping commit."
+                exit 0
+              fi
+              git config user.name "${{ inputs.git-user-name }}"
+              git config user.email "${{ inputs.git-user-email }}"
+              files=(
+                .clang-format
+                .markdownlint.json
+                .markdownlintignore
+                .prettierrc.json
+                .prettierignore
+                .sqlfluff
+                .swiftformat
+                .swiftlint.yml
+              )
+              git add -A -- "${files[@]}" 2>/dev/null || true
+              if git diff --cached --quiet; then
+                echo "No format config changes to commit."
+                exit 0
+              fi
+              git commit -m "${{ inputs.commit-message }}"
+              if [ "${{ inputs.push }}" = "true" ]; then
+                git push
+              fi

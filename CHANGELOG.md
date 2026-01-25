@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/derKlinke/format-configs/compare/v0.1.7...v0.1.8) (2026-01-25)
+
+
+### Bug Fixes
+
+* relax markdownlint blank lines ([e452059](https://github.com/derKlinke/format-configs/commit/e4520593f3b0be65acfccd7c21efff9e0492822b))
+
 ## [0.1.7](https://github.com/derKlinke/format-configs/compare/v0.1.6...v0.1.7) (2026-01-25)
 
 

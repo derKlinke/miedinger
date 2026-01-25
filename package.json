@@ -1,6 +1,6 @@
 {
     "name": "@derklinke/format-configs",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Shared formatter configs",
     "repository": {
         "type": "git",

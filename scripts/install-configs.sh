@@ -303,13 +303,18 @@ if [[ ${#selected_files[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# Deduplicate
+# Deduplicate (bash 3.2 compatible)
 unique_files=()
-declare -A seen
 for file in "${selected_files[@]}"; do
-  if [[ -z "${seen[${file}]:-}" ]]; then
+  exists="false"
+  for existing in "${unique_files[@]}"; do
+    if [[ "${existing}" == "${file}" ]]; then
+      exists="true"
+      break
+    fi
+  done
+  if [[ "${exists}" == "false" ]]; then
     unique_files+=("${file}")
-    seen[${file}]=1
   fi
 done
 

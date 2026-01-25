@@ -4,8 +4,10 @@ import { CliOptions } from "./types";
 import { promptInteractive } from "./cli/prompt";
 import { ensurePrettierPlugins } from "./config/deps";
 import { removeLegacyConfigs } from "./config/cleanup";
+import { updatePrettierConfigPlugins } from "./config/prettier";
 import { ensureSqlfluffExclude } from "./config/sqlfluff";
 import { detectPresets, derivePresets, expandToken } from "./config/presets";
+import { detectAstro } from "./config/features";
 import { resolveConfigDir, isGitRepo, listGitFiles, listFilesRecursive } from "./fs/repo";
 import { maybeUpdateJustfile } from "./justfile";
 import { maybeUpdatePrekConfig } from "./prek";
@@ -27,14 +29,15 @@ export async function runApp(options: CliOptions): Promise<void> {
         process.exit(1);
     }
 
+    const repoFiles = isGitRepo(targetPath)
+        ? listGitFiles(targetPath)
+        : listFilesRecursive(targetPath);
     const preExistingChanges = isGitRepo(targetPath) ? listStatusPaths(targetPath) : new Set<string>();
+    const hasAstro = detectAstro(repoFiles);
     let tokens: string[] = [];
 
     if (options.mode === "detect") {
-        const files = isGitRepo(targetPath)
-            ? listGitFiles(targetPath)
-            : listFilesRecursive(targetPath);
-        tokens = detectPresets(files);
+        tokens = detectPresets(repoFiles);
     } else if (options.mode === "interactive") {
         const selection = await promptInteractive([
             "swift",
@@ -66,7 +69,8 @@ export async function runApp(options: CliOptions): Promise<void> {
     const selectedPresets = derivePresets(fileSet);
 
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
-    const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets);
+    const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets, { astro: hasAstro });
+    const prettierFiles = updatePrettierConfigPlugins(targetPath, { astro: hasAstro });
     const sqlfluffFiles = ensureSqlfluffExclude(targetPath, selectedPresets);
 
     for (const file of fileSet) {
@@ -99,6 +103,7 @@ export async function runApp(options: CliOptions): Promise<void> {
     }
     removed.forEach((file) => managedPaths.add(file));
     pluginFiles.forEach((file) => managedPaths.add(file));
+    prettierFiles.forEach((file) => managedPaths.add(file));
     sqlfluffFiles.forEach((file) => managedPaths.add(file));
     if (justfilePath) managedPaths.add(justfilePath);
     if (prekPath) managedPaths.add(prekPath);

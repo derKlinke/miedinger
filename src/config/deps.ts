@@ -5,7 +5,7 @@ import { hasCommand } from "../fs/repo";
 
 type PackageManager = "bun" | "pnpm" | "yarn" | "npm";
 
-const prettierPlugins = ["prettier-plugin-tailwindcss"];
+const prettierPluginsBase = ["prettier-plugin-tailwindcss"];
 
 function parsePackageManagerField(value: string | undefined): PackageManager | null {
     if (!value) return null;
@@ -51,10 +51,18 @@ function installDevDependencies(targetPath: string, manager: PackageManager, dep
     execFileSync(manager, argsByManager[manager], { cwd: targetPath, stdio: "inherit" });
 }
 
-export function ensurePrettierPlugins(targetPath: string, presets: Set<string>): string[] {
+export function ensurePrettierPlugins(
+    targetPath: string,
+    presets: Set<string>,
+    options: { astro: boolean }
+): string[] {
     if (!presets.has("web")) {
         return [];
     }
+
+    const prettierPlugins = options.astro
+        ? [...prettierPluginsBase, "prettier-plugin-astro"]
+        : prettierPluginsBase;
 
     const pkgPath = path.join(targetPath, "package.json");
     if (!fs.existsSync(pkgPath)) {

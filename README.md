@@ -24,32 +24,6 @@ npx @derklinke/format-configs --detect --force
 bunx @derklinke/format-configs --detect --force
 ```
 
-### curl install
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/derKlinke/format-configs/main/install.sh | bash
-```
-
-Pass options via `bash -s --`:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/derKlinke/format-configs/main/install.sh | \
-  bash -s -- --interactive --force
-```
-
-### clone and run
-
-```sh
-git clone https://github.com/derKlinke/format-configs.git
-./format-configs/install.sh
-```
-
-Or pass a target directory:
-
-```sh
-./format-configs/install.sh /path/to/project
-```
-
 ## Selection
 
 - Auto-detect (default): `--detect`
@@ -93,15 +67,10 @@ This repo uses Release Please to:
 
 Publishing to npm happens on release publish (`release` event). If you prefer manual tagging, run the publish workflow directly.
 
-## Updating
-
-Re-run the installer to refresh copied configs.
-
 ## Structure
 
 - `configs/` — shared dotfiles
 - `bin/` — CLI entrypoint
-- `scripts/` — helper scripts
 
 ## License
 

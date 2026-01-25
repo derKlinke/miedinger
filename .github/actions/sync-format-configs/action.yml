@@ -41,6 +41,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
     - name: Sync format configs
       shell: bash
       run: |
@@ -58,7 +63,7 @@ runs:
         if [ "${{ inputs.force }}" = "true" ]; then
           args+=(--force)
         fi
-        "${GITHUB_ACTION_PATH}/../../install.sh" "${args[@]}" "${{ inputs.target-dir }}"
+        npx --yes @derklinke/format-configs "${args[@]}" "${{ inputs.target-dir }}"
 
     - name: Commit format config changes
       if: inputs.commit == 'true'

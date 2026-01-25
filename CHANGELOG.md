@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/derKlinke/miedinger/compare/v0.2.2...v0.2.3) (2026-01-25)
+
+
+### Bug Fixes
+
+* align repo references with miedinger ([9baf3d4](https://github.com/derKlinke/miedinger/commit/9baf3d463e9f57e068b937292fc07bb4abb824d1))
+* correct release commit message newlines ([d3b8f63](https://github.com/derKlinke/miedinger/commit/d3b8f6316dfd53bf4a1e4a2b4d674089a47e49e0))
+* swiftlint hook without --path ([707bec0](https://github.com/derKlinke/miedinger/commit/707bec0c84b2603c71956fc3b411afecc1ca219c))
+
 ## [0.2.2](https://github.com/derKlinke/format-configs/compare/v0.2.1...v0.2.2) (2026-01-25)
 
 

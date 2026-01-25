@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/derKlinke/format-configs/compare/v0.1.5...v0.1.6) (2026-01-25)
+
+
+### Bug Fixes
+
+* harden swiftlint and fmt alias ([80731dc](https://github.com/derKlinke/format-configs/commit/80731dcea8c5759664a76f393f9bd2a87939729d))
+
 ## [0.1.5](https://github.com/derKlinke/format-configs/compare/v0.1.4...v0.1.5) (2026-01-25)
 
 ### Bug Fixes

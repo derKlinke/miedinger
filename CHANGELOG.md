@@ -2,7 +2,6 @@
 
 ## [0.1.4](https://github.com/derKlinke/format-configs/compare/v0.1.3...v0.1.4) (2026-01-25)
 
-
 ### Features
 
 * update justfile format recipe ([a223774](https://github.com/derKlinke/format-configs/commit/a22377466cdcad40e7c965847bc78154d30536ca))

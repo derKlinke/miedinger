@@ -373,14 +373,13 @@ function findJustfile(targetPath: string): { path: string; exists: boolean } | n
     return null;
 }
 
-function justfileHasFormat(content: string): boolean {
-    const lines = content.split(/\r?\n/);
-    return lines.some((line) => /^format\b.*:/.test(line.trim()));
-}
-
 function formatRecipeLines(presets: Set<string>): string[] {
+    if (presets.size === 0) {
+        return [];
+    }
     const lines: string[] = [];
     lines.push("format:");
+    lines.push("    just --fmt --unstable");
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
         lines.push("    if command -v swiftlint >/dev/null; then swiftlint --quiet; fi");
@@ -400,14 +399,21 @@ function formatRecipeLines(presets: Set<string>): string[] {
     if (presets.has("sql")) {
         lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format .; fi");
     }
-    if (lines.length === 1) {
-        return [];
-    }
     return lines;
 }
 
 function buildFormatBlock(presets: Set<string>): string[] {
-    return ["# format-configs", ...formatRecipeLines(presets), "# /format-configs"];
+    const recipe = formatRecipeLines(presets);
+    if (recipe.length === 0) {
+        return [];
+    }
+    return [
+        "# format-configs",
+        "alias fmt := format",
+        "[group: 'format']",
+        ...recipe,
+        "# /format-configs",
+    ];
 }
 
 function findFormatBlockRange(lines: string[]): { start: number; end: number } | null {
@@ -430,27 +436,34 @@ function findFormatBlockRange(lines: string[]): { start: number; end: number } |
 }
 
 function findFormatTargetRange(lines: string[]): { start: number; end: number } | null {
+    const isAttribute = (line: string): boolean => /^\s*\[.*\]\s*$/.test(line);
     const isRecipe = (line: string): boolean =>
-        /^[^ 	].*:$/.test(line.trimEnd()) && !line.startsWith("#");
+        /^\s*[^#\s].*:$/.test(line.trimEnd()) && !isAttribute(line);
     let start = -1;
     for (let idx = 0; idx < lines.length; idx += 1) {
         const line = lines[idx];
-        if (line.startsWith("format") && /^format.*:$/.test(line.trimEnd())) {
+        if (/^\s*format\b.*:$/.test(line.trimEnd())) {
             start = idx;
             break;
         }
     }
-    if (start == -1) {
+    if (start === -1) {
         return null;
     }
+    let adjustedStart = start;
+    for (let idx = start - 1; idx >= 0; idx -= 1) {
+        if (isAttribute(lines[idx])) {
+            adjustedStart = idx;
+            continue;
+        }
+        break;
+    }
+    start = adjustedStart;
+
     let end = lines.length;
     for (let idx = start + 1; idx < lines.length; idx += 1) {
         const line = lines[idx];
-        if (line.trim() == "") {
-            end = idx;
-            break;
-        }
-        if (isRecipe(line) && !line.startsWith("format")) {
+        if (isAttribute(line) || isRecipe(line)) {
             end = idx;
             break;
         }
@@ -459,25 +472,29 @@ function findFormatTargetRange(lines: string[]): { start: number; end: number } 
 }
 
 function updateJustfileContent(content: string, block: string[]): string | null {
+    if (block.length === 0) {
+        return null;
+    }
     const lines = content.length ? content.split(/\r?\n/) : [];
-    const existingBlock = findFormatBlockRange(lines);
+    const withoutAlias = lines.filter((line) => !/^\s*alias\s+fmt\s*:=/.test(line));
+    const existingBlock = findFormatBlockRange(withoutAlias);
     if (existingBlock) {
-        const before = lines.slice(0, existingBlock.start);
-        const after = lines.slice(existingBlock.end + 1);
+        const before = withoutAlias.slice(0, existingBlock.start);
+        const after = withoutAlias.slice(existingBlock.end + 1);
         return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
     }
 
-    const existingTarget = findFormatTargetRange(lines);
+    const existingTarget = findFormatTargetRange(withoutAlias);
     if (existingTarget) {
-        const before = lines.slice(0, existingTarget.start);
-        const after = lines.slice(existingTarget.end);
+        const before = withoutAlias.slice(0, existingTarget.start);
+        const after = withoutAlias.slice(existingTarget.end);
         return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
     }
 
-    if (lines.length === 0) {
+    if (withoutAlias.length === 0) {
         return block.join("\n") + "\n";
     }
-    return [...lines, "", ...block].join("\n").trimEnd() + "\n";
+    return [...withoutAlias, "", ...block].join("\n").trimEnd() + "\n";
 }
 
 function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {

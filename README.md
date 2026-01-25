@@ -60,6 +60,12 @@ Flags:
 - `--just` creates a new `Justfile` if none exists.
 - `--no-just` skips Justfile integration entirely.
 
+The managed block includes:
+
+- `alias fmt := format`
+- `[group: 'format']`
+- `format:` recipe that runs `just --fmt --unstable` first
+
 The recipe only runs tools that are available (it checks `command -v` where appropriate).
 Managed blocks are wrapped in `# format-configs` / `# /format-configs` so updates are safe.
 

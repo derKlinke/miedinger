@@ -1,10 +1,11 @@
-# format-configs
+# miedinger
 
-[![npm](https://img.shields.io/npm/v/@derklinke/format-configs)](https://www.npmjs.com/package/@derklinke/format-configs)
-[![license](https://img.shields.io/npm/l/@derklinke/format-configs)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@derklinke/miedinger)](https://www.npmjs.com/package/@derklinke/miedinger)
+[![license](https://img.shields.io/npm/l/@derklinke/miedinger)](LICENSE)
 [![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/publish.yml?label=publish)](https://github.com/derKlinke/format-configs/actions/workflows/publish.yml)
 
 Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo.
+Name: Max Miedinger, founder of Helvetica. The most beautiful, timeless, clean font; same target for code cleanliness.
 
 ## What’s inside
 
@@ -19,9 +20,9 @@ Shared formatter configs for my projects. Small, predictable, and easy to drop i
 ### npx / bunx (recommended)
 
 ```sh
-npx @derklinke/format-configs --detect --force
+npx @derklinke/miedinger --detect --force
 # or
-bunx @derklinke/format-configs --detect --force
+bunx @derklinke/miedinger --detect --force
 ```
 
 ## Selection
@@ -51,7 +52,7 @@ Rules:
 
 ### Justfile integration
 
-If a `Justfile` (or `justfile`) exists, format-configs will add a standard `format` recipe
+If a `Justfile` (or `justfile`) exists, miedinger will add a standard `format` recipe
 when missing, and will update existing `format` recipes to the latest managed block.
 This keeps `just format` consistent across repos.
 

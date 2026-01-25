@@ -1,5 +1,5 @@
 {
-    "name": "@derklinke/format-configs",
+    "name": "@derklinke/miedinger",
     "version": "0.2.2",
     "description": "Shared formatter configs",
     "repository": {
@@ -8,10 +8,10 @@
     },
     "license": "MIT",
     "bin": {
-        "format-configs": "dist/format-configs.js"
+        "miedinger": "dist/format-configs.js"
     },
     "scripts": {
-        "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/format-configs.js';const data=fs.readFileSync(p,'utf8');if(!data.startsWith('#!')) fs.writeFileSync(p,'#!/usr/bin/env node\\\\n'+data);fs.chmodSync(p,0o755);\"",
+        "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/format-configs.js';const data=fs.readFileSync(p,'utf8');if(!data.startsWith('#!')) fs.writeFileSync(p,'#!/usr/bin/env node\\n'+data);fs.chmodSync(p,0o755);\"",
         "format": "npx --yes prettier --config configs/.prettierrc.json --ignore-path configs/.prettierignore --write . && npx --yes -p markdownlint-cli markdownlint --config configs/.markdownlint.json --ignore-path configs/.markdownlintignore \"**/*.md\"",
         "format:check": "npm run format && git diff --exit-code"
     },

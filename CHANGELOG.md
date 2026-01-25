@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/derKlinke/miedinger/compare/v0.5.0...v0.5.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* keep sqlfluff off migrations ([25b5c1b](https://github.com/derKlinke/miedinger/commit/25b5c1b7b706db40ebc128317272b34b9c26dc92))
+
 # [0.5.0](https://github.com/derKlinke/miedinger/compare/v0.4.1...v0.5.0) (2026-01-25)
 
 

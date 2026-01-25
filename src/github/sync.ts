@@ -22,10 +22,10 @@ function buildWorkflow(): string {
         "            - uses: actions/checkout@v4",
         "            - uses: derKlinke/miedinger/.github/actions/sync-format-configs@main",
         "              with:",
-        "                mode: detect",
-        "                force: true",
-        "                commit: true",
-        "                push: true",
+        "                  mode: detect",
+        "                  force: true",
+        "                  commit: true",
+        "                  push: true",
         "",
     ].join("\n");
 }

@@ -3,6 +3,7 @@ import * as path from "path";
 
 const tailwindPlugin = "prettier-plugin-tailwindcss";
 const astroPlugin = "prettier-plugin-astro";
+const printWidth = 100;
 
 function uniquePlugins(plugins: string[]): string[] {
     const seen = new Set<string>();
@@ -13,6 +14,54 @@ function uniquePlugins(plugins: string[]): string[] {
         result.push(plugin);
     }
     return result;
+}
+
+function formatJson(value: unknown, indent = 0): string {
+    const padding = " ".repeat(indent);
+    const nextIndent = indent + 4;
+
+    if (Array.isArray(value)) {
+        if (value.length === 0) {
+            return "[]";
+        }
+        const inline = value
+            .map((item) => JSON.stringify(item))
+            .join(", ");
+        const inlineValue = `[${inline}]`;
+        if (
+            value.every((item) => typeof item === "string") &&
+            padding.length + inlineValue.length <= printWidth
+        ) {
+            return inlineValue;
+        }
+        const items = value
+            .map((item) => `${" ".repeat(nextIndent)}${formatJson(item, nextIndent)}`)
+            .join(",\n");
+        return `[\n${items}\n${padding}]`;
+    }
+
+    if (value && typeof value === "object") {
+        const entries = Object.entries(value as Record<string, unknown>);
+        if (entries.length === 0) {
+            return "{}";
+        }
+        const items = entries
+            .map(
+                ([key, item]) =>
+                    `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(
+                        item,
+                        nextIndent
+                    )}`
+            )
+            .join(",\n");
+        return `{\n${items}\n${padding}}`;
+    }
+
+    return JSON.stringify(value);
+}
+
+function writeJsonFile(filePath: string, value: Record<string, unknown>): void {
+    fs.writeFileSync(filePath, `${formatJson(value)}\n`, "utf8");
 }
 
 export function updatePrettierConfigPlugins(
@@ -64,6 +113,6 @@ export function updatePrettierConfigPlugins(
     } else {
         config.plugins = next;
     }
-    fs.writeFileSync(configPath, JSON.stringify(config, null, 4) + "\n", "utf8");
+    writeJsonFile(configPath, config);
     return [configPath];
 }

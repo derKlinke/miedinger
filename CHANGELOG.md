@@ -1,3 +1,10 @@
+## [0.5.2](https://github.com/derKlinke/miedinger/compare/v0.5.1...v0.5.2) (2026-01-25)
+
+
+### Bug Fixes
+
+* drop astro prettier plugin ([4506059](https://github.com/derKlinke/miedinger/commit/45060597c46ad47c41b1f2d51a210901fc3e8d9e))
+
 ## [0.5.1](https://github.com/derKlinke/miedinger/compare/v0.5.0...v0.5.1) (2026-01-25)
 
 

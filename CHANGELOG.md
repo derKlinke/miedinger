@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/derKlinke/miedinger/compare/v0.3.0...v0.4.0) (2026-01-25)
+
+
+### Features
+
+* clean legacy configs and install prettier plugins ([898726f](https://github.com/derKlinke/miedinger/commit/898726fc43d93a99fce0707b076c4195f9fe66bc))
+
 # [0.3.0](https://github.com/derKlinke/miedinger/compare/v0.2.4...v0.3.0) (2026-01-25)
 
 

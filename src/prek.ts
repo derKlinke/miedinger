@@ -11,7 +11,10 @@ function buildPrekConfig(presets: Set<string>): string | null {
 
     const hooks: string[] = [];
     const addHook = (lines: string[]): void => {
-        hooks.push(...lines.map((line) => `          ${line}`));
+        lines.forEach((line, index) => {
+            const prefix = index === 0 ? "      " : "        ";
+            hooks.push(`${prefix}${line}`);
+        });
     };
 
     if (presets.has("web")) {
@@ -75,7 +78,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
         return null;
     }
 
-    const lines = ["# format-configs", "repos:", "    - repo: local", "      hooks:", ...hooks];
+    const lines = ["# format-configs", "repos:", "  - repo: local", "    hooks:", ...hooks];
     return lines.join("\n") + "\n";
 }
 

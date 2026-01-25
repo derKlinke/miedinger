@@ -5,7 +5,7 @@ import { hasCommand } from "../fs/repo";
 
 type PackageManager = "bun" | "pnpm" | "yarn" | "npm";
 
-const prettierPlugins = ["prettier-plugin-tailwindcss", "prettier-plugin-astro"];
+const prettierPlugins = ["prettier-plugin-tailwindcss"];
 
 function parsePackageManagerField(value: string | undefined): PackageManager | null {
     if (!value) return null;

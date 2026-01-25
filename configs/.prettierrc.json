@@ -8,7 +8,7 @@
     "arrowParens": "always",
     "printWidth": 100,
     "endOfLine": "lf",
-    "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-astro"],
+    "plugins": ["prettier-plugin-tailwindcss"],
     "overrides": [
         {
             "files": ["*.md"],

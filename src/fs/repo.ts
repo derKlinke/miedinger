@@ -52,7 +52,9 @@ export function resolveConfigDir(options: { repoUrl: string; repoRef: string }):
 
 export function hasCommand(command: string): boolean {
     try {
-        execFileSync(command, ["--version"], { stdio: "ignore" });
+        execFileSync("sh", ["-c", `command -v ${command} >/dev/null 2>&1`], {
+            stdio: "ignore",
+        });
         return true;
     } catch {
         return false;

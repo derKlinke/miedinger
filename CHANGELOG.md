@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/derKlinke/miedinger/compare/v0.4.0...v0.4.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* stabilize justfile spacing ([d0049ee](https://github.com/derKlinke/miedinger/commit/d0049ee0df12aecbe160284a797c9aa6c4f543fd))
+
 # [0.4.0](https://github.com/derKlinke/miedinger/compare/v0.3.0...v0.4.0) (2026-01-25)
 
 

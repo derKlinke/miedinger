@@ -1,3 +1,12 @@
+## [0.7.1](https://github.com/derKlinke/miedinger/compare/v0.7.0...v0.7.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* align sync workflow with prettier ([1dbf624](https://github.com/derKlinke/miedinger/commit/1dbf624cc09fe82dcba4176b990d666687db3fbf))
+* ignore github workflows in prettier ([2906196](https://github.com/derKlinke/miedinger/commit/290619677b15d71e573c3e7456ca8db53f100df5))
+* manage prettier plugins per repo ([7dc106b](https://github.com/derKlinke/miedinger/commit/7dc106b9fc3cf2e74e4602bf2e626a3ec8c80f14))
+
 # [0.7.0](https://github.com/derKlinke/miedinger/compare/v0.6.0...v0.7.0) (2026-01-25)
 
 

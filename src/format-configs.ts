@@ -18,6 +18,7 @@ let onlyTokens: string[] = [];
 let repoUrl = repoUrlDefault;
 let repoRef = repoRefDefault;
 let justMode: "auto" | "force" | "skip" = "auto";
+let prekMode: "auto" | "force" | "skip" = "auto";
 
 function usage(): void {
     console.log(`Usage: format-configs [options] [target-dir]
@@ -33,6 +34,8 @@ Options:
   --force            Overwrite existing files
   --just             Create a Justfile if missing and add format recipe
   --no-just          Skip Justfile integration
+  --prek             Write .pre-commit-config.yaml (even without a Justfile)
+  --no-prek          Skip pre-commit (prek) integration
   --repo URL         Override repo URL for download mode
   --ref REF          Override git ref for download mode
   -h, --help         Show help
@@ -99,6 +102,14 @@ while (i < args.length) {
             break;
         case "--no-just":
             justMode = "skip";
+            i += 1;
+            break;
+        case "--prek":
+            prekMode = "force";
+            i += 1;
+            break;
+        case "--no-prek":
+            prekMode = "skip";
             i += 1;
             break;
         case "--repo":
@@ -186,6 +197,15 @@ function resolveConfigDir(): { dir: string } {
     process.on("SIGINT", () => process.exit(130));
 
     return { dir };
+}
+
+function hasCommand(command: string): boolean {
+    try {
+        execFileSync(command, ["--version"], { stdio: "ignore" });
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 function isGitRepo(dir: string): boolean {
@@ -476,6 +496,17 @@ function findFormatTargetRange(lines: string[]): { start: number; end: number } 
     return { start, end };
 }
 
+function removeFormatTargets(lines: string[]): string[] {
+    let current = [...lines];
+    while (true) {
+        const range = findFormatTargetRange(current);
+        if (!range) {
+            return current;
+        }
+        current = [...current.slice(0, range.start), ...current.slice(range.end)];
+    }
+}
+
 function updateJustfileContent(content: string, block: string[]): string | null {
     if (block.length === 0) {
         return null;
@@ -483,23 +514,18 @@ function updateJustfileContent(content: string, block: string[]): string | null 
     const lines = content.length ? content.split(/\r?\n/) : [];
     const withoutAlias = lines.filter((line) => !/^\s*alias\s+(fmt|f)\s*:=/.test(line));
     const existingBlock = findFormatBlockRange(withoutAlias);
-    if (existingBlock) {
-        const before = withoutAlias.slice(0, existingBlock.start);
-        const after = withoutAlias.slice(existingBlock.end + 1);
-        return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
-    }
+    const baseLines = existingBlock
+        ? [
+              ...withoutAlias.slice(0, existingBlock.start),
+              ...withoutAlias.slice(existingBlock.end + 1),
+          ]
+        : withoutAlias;
+    const withoutFormats = removeFormatTargets(baseLines);
 
-    const existingTarget = findFormatTargetRange(withoutAlias);
-    if (existingTarget) {
-        const before = withoutAlias.slice(0, existingTarget.start);
-        const after = withoutAlias.slice(existingTarget.end);
-        return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
-    }
-
-    if (withoutAlias.length === 0) {
+    if (withoutFormats.length === 0) {
         return block.join("\n") + "\n";
     }
-    return [...withoutAlias, "", ...block].join("\n").trimEnd() + "\n";
+    return [...withoutFormats, "", ...block].join("\n").trimEnd() + "\n";
 }
 
 function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {
@@ -525,6 +551,114 @@ function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {
         return;
     }
     fs.writeFileSync(justfilePath, updated, "utf8");
+}
+
+function buildPrekConfig(presets: Set<string>): string | null {
+    if (presets.size === 0) {
+        return null;
+    }
+
+    const hooks: string[] = [];
+    const addHook = (lines: string[]): void => {
+        hooks.push(...lines.map((line) => `          ${line}`));
+    };
+
+    if (presets.has("web")) {
+        addHook([
+            "- id: prettier",
+            "name: prettier",
+            "entry: npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
+            "language: system",
+            "files: '\\\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$'",
+        ]);
+    }
+
+    if (presets.has("markdown")) {
+        addHook([
+            "- id: markdownlint",
+            "name: markdownlint",
+            "entry: npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore",
+            "language: system",
+            "files: '\\\\.(md|mdx)$'",
+        ]);
+    }
+
+    if (presets.has("swift")) {
+        addHook([
+            "- id: swiftformat",
+            "name: swiftformat",
+            "entry: swiftformat",
+            "language: system",
+            "files: '\\\\.(swift)$'",
+        ]);
+        addHook([
+            "- id: swiftlint",
+            "name: swiftlint",
+            'entry: "bash -c \'for f in \\\\\\"$@\\\\\\"; do swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging --path \\\\\\"$f\\\\\\"; done\' --"',
+            "language: system",
+            "files: '\\\\.(swift)$'",
+        ]);
+    }
+
+    if (presets.has("clang")) {
+        addHook([
+            "- id: clang-format",
+            "name: clang-format",
+            "entry: clang-format -i",
+            "language: system",
+            "files: '\\\\.(c|cc|cpp|cxx|h|hh|hpp|hxx|m|mm)$'",
+        ]);
+    }
+
+    if (presets.has("sql")) {
+        addHook([
+            "- id: sqlfluff",
+            "name: sqlfluff",
+            "entry: sqlfluff format",
+            "language: system",
+            "files: '\\\\.(sql)$'",
+        ]);
+    }
+
+    if (hooks.length === 0) {
+        return null;
+    }
+
+    const lines = ["# format-configs", "repos:", "    - repo: local", "      hooks:", ...hooks];
+    return lines.join("\n") + "\n";
+}
+
+function maybeUpdatePrekConfig(targetPath: string, presets: Set<string>): void {
+    if (prekMode === "skip") {
+        return;
+    }
+
+    const config = buildPrekConfig(presets);
+    if (!config) {
+        return;
+    }
+
+    const configPath = path.join(targetPath, ".pre-commit-config.yaml");
+    const existing = fs.existsSync(configPath) ? fs.readFileSync(configPath, "utf8") : "";
+    const isManaged = existing.split(/\r?\n/)[0]?.trim() === "# format-configs";
+    if (existing && !force && !isManaged) {
+        console.error(`skip: exists ${configPath} (use --force)`);
+        return;
+    }
+    fs.writeFileSync(configPath, config, "utf8");
+
+    if (hasCommand("prek")) {
+        try {
+            execFileSync("prek", ["install"], { cwd: targetPath, stdio: "inherit" });
+        } catch (err) {
+            console.error("warning: failed to run prek install");
+            if (err instanceof Error) {
+                console.error(err.message);
+            }
+        }
+    } else {
+        console.error("skip: prek not installed (install via brew or cargo)");
+    }
 }
 
 async function main(): Promise<void> {
@@ -596,6 +730,7 @@ async function main(): Promise<void> {
     }
 
     maybeUpdateJustfile(targetPath, selectedPresets);
+    maybeUpdatePrekConfig(targetPath, selectedPresets);
 }
 
 main().catch((err: unknown) => {

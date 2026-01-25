@@ -1,8 +1,14 @@
+# format-configs
 repos:
     - repo: local
       hooks:
-          - id: format
-            name: format
-            entry: npm run format
+          - id: prettier
+            name: prettier
+            entry: npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write
             language: system
-            pass_filenames: false
+            files: '\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$'
+          - id: markdownlint
+            name: markdownlint
+            entry: npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore
+            language: system
+            files: '\\.(md|mdx)$'

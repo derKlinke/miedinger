@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@derklinke/format-configs)](https://www.npmjs.com/package/@derklinke/format-configs)
 [![license](https://img.shields.io/npm/l/@derklinke/format-configs)](LICENSE)
-[![release](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/publish.yml?label=publish)](https://github.com/derKlinke/format-configs/actions/workflows/publish.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/derKlinke/format-configs/release.yml?label=release)](https://github.com/derKlinke/format-configs/actions/workflows/release.yml)
 
 Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo.
 
@@ -59,6 +59,8 @@ Flags:
 
 - `--just` creates a new `Justfile` if none exists.
 - `--no-just` skips Justfile integration entirely.
+- `--prek` writes `.pre-commit-config.yaml` (always allowed, independent of Justfile).
+- `--no-prek` skips pre-commit integration.
 
 The managed block includes:
 
@@ -114,7 +116,9 @@ This repo supports `prek` (pre-commit compatible). To enable:
 prek install
 ```
 
-It runs `npm run format` on commit (Prettier + markdownlint).
+Installer writes a `.pre-commit-config.yaml` based on selected presets.
+Hooks run only on staged files and only for relevant formatters.
+If `prek` is installed, the installer runs `prek install` automatically.
 
 ## Structure
 

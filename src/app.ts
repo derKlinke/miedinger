@@ -2,6 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { CliOptions } from "./types";
 import { promptInteractive } from "./cli/prompt";
+import { ensurePrettierPlugins } from "./config/deps";
+import { removeLegacyConfigs } from "./config/cleanup";
 import { detectPresets, derivePresets, expandToken } from "./config/presets";
 import { resolveConfigDir, isGitRepo, listGitFiles, listFilesRecursive } from "./fs/repo";
 import { maybeUpdateJustfile } from "./justfile";
@@ -59,6 +61,9 @@ export async function runApp(options: CliOptions): Promise<void> {
     const fileSet = new Set<string>();
     tokens.forEach((token) => expandToken(token).forEach((file) => fileSet.add(file)));
     const selectedPresets = derivePresets(fileSet);
+
+    removeLegacyConfigs(targetPath, selectedPresets, fileSet);
+    ensurePrettierPlugins(targetPath, selectedPresets);
 
     for (const file of fileSet) {
         const src = path.join(configDir, file);

@@ -50,6 +50,12 @@ Rules:
 - **C-family**: `.c/.h/.cpp/.hpp/.m/.mm/.cc/.cxx/.hxx`
 - **SQL**: `.sql`
 
+Installer cleanup:
+
+- Removes legacy/alternate config filenames and duplicates in subfolders.
+- Keeps a single canonical config per tool at repo root.
+- If `package.json` exists, installs Prettier plugins (Tailwind, Astro) via the repo’s package manager.
+
 ### Justfile integration
 
 If a `Justfile` (or `justfile`) exists, miedinger will add a standard `format` recipe

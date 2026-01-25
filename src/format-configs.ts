@@ -382,7 +382,9 @@ function formatRecipeLines(presets: Set<string>): string[] {
     lines.push("    just --fmt --unstable");
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
-        lines.push("    if command -v swiftlint >/dev/null; then swiftlint --quiet; fi");
+        lines.push(
+            "    if command -v swiftlint >/dev/null; then if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then if git ls-files '*.swift' | grep -q .; then swiftlint --quiet; fi; else if find . -name '*.swift' -print -quit | grep -q .; then swiftlint --quiet; fi; fi; fi"
+        );
     }
     if (presets.has("web")) {
         lines.push("    npx --yes prettier --write .");
@@ -410,6 +412,7 @@ function buildFormatBlock(presets: Set<string>): string[] {
     return [
         "# format-configs",
         "alias fmt := format",
+        "alias f := format",
         "[group: 'format']",
         ...recipe,
         "# /format-configs",
@@ -476,7 +479,7 @@ function updateJustfileContent(content: string, block: string[]): string | null 
         return null;
     }
     const lines = content.length ? content.split(/\r?\n/) : [];
-    const withoutAlias = lines.filter((line) => !/^\s*alias\s+fmt\s*:=/.test(line));
+    const withoutAlias = lines.filter((line) => !/^\s*alias\s+(fmt|f)\s*:=/.test(line));
     const existingBlock = findFormatBlockRange(withoutAlias);
     if (existingBlock) {
         const before = withoutAlias.slice(0, existingBlock.start);

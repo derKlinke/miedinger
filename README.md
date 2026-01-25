@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@derklinke/miedinger)](https://www.npmjs.com/package/@derklinke/miedinger)
 [![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/miedinger/publish.yml?label=publish)](https://github.com/derKlinke/miedinger/actions/workflows/publish.yml)
 
-Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo with installer script that installs justfiles, pre-commit hooks and a nightly CI task to keep configs in sync.
+Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo with installer script that installs Justfiles, pre-commit hooks, and an on-demand sync workflow.
 
 The project is named after Max Miedinger, creator of Helvetica. A timeless and beautiful font, something I'd like to achieve in my code.
 
@@ -55,7 +55,7 @@ Installer cleanup:
 - If `package.json` exists, installs the Tailwind Prettier plugin, and installs the Astro plugin only when Astro files/configs are detected.
 - Auto-commits managed config changes when the repo has no staged changes and those files were clean before install.
 - SQLFluff config excludes `**/migrations/**` by default (preserves migrations).
-- Adds a nightly GitHub Actions sync workflow (`.github/workflows/sync-format-configs.yml`) unless an unmanaged one already exists.
+- Adds a GitHub Actions sync workflow (`.github/workflows/sync-format-configs.yml`) that listens for `repository_dispatch` from the GitHub App.
 
 ### Justfile integration
 
@@ -78,6 +78,13 @@ The managed block includes:
 
 The recipe only runs tools that are available (it checks `command -v` where appropriate).
 Managed blocks are wrapped in `# format-configs` / `# /format-configs` (legacy marker for compatibility).
+
+## GitHub App sync (recommended)
+
+For multi-repo setups, install the GitHub App so sync runs on the target repo's CI:
+https://github.com/apps/miedinger-sync
+
+The app dispatches `repository_dispatch` events to installed repos on each release.
 
 ## GitHub Action (sync configs)
 

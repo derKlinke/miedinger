@@ -106,6 +106,16 @@ This repo uses semantic-release to:
 
 Release runs on every push to `main` (and no longer opens release PRs).
 
+## Pre-commit
+
+This repo supports `prek` (pre-commit compatible). To enable:
+
+```
+prek install
+```
+
+It runs Prettier on staged files using `configs/.prettierrc.json` and `configs/.prettierignore`.
+
 ## Structure
 
 - `configs/` — shared dotfiles

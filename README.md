@@ -96,14 +96,15 @@ Inputs:
 
 ## Release flow
 
-This repo uses Release Please to:
+This repo uses semantic-release to:
 
 - infer versions from Conventional Commits
-- open a release PR
+- update `CHANGELOG.md` and `package.json`
 - tag releases
 - create GitHub Releases
+- publish to npm
 
-Publishing to npm happens on release publish (`release` event). If you prefer manual tagging, run the publish workflow directly.
+Release runs on every push to `main` (and no longer opens release PRs).
 
 ## Structure
 

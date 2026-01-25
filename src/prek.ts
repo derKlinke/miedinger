@@ -11,6 +11,7 @@ type PrekHook = {
     entry: string;
     language: "system";
     files?: string;
+    exclude?: string;
 };
 
 function buildPrekConfig(presets: Set<string>): string | null {
@@ -30,6 +31,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
             entry: "npx --yes -p prettier -p prettier-plugin-tailwindcss -p prettier-plugin-astro prettier --config .prettierrc.json --ignore-path .prettierignore --write",
             language: "system",
             files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
+            exclude: "^\\.pre-commit-config\\.ya?ml$",
         });
     }
 

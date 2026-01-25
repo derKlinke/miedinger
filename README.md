@@ -33,6 +33,21 @@ bunx @derklinke/format-configs --detect --force
 
 Use `--force` to overwrite existing files.
 
+### Detect mode (how it decides)
+
+Detect looks at your repo and picks presets based on file types it finds.
+If the directory is a git repo, it uses `git ls-files`. Otherwise it scans the
+filesystem and skips common heavy folders (`.git`, `node_modules`, `.build`,
+`DerivedData`, `external`).
+
+Rules:
+- **Swift**: `.swift`, `Package.swift`, `.xcodeproj`, `.xcworkspace`
+- **Web**: `package.json`, lockfiles, `.js/.ts/.jsx/.tsx`, `.css/.scss`,
+  `.html`, `.vue`, `.svelte`, `.astro`
+- **Markdown**: `.md`, `.mdx`
+- **C-family**: `.c/.h/.cpp/.hpp/.m/.mm/.cc/.cxx/.hxx`
+- **SQL**: `.sql`
+
 ## GitHub Action (sync configs)
 
 Use the composite action to keep configs in sync in CI (and optionally commit updates).

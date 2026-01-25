@@ -16,6 +16,7 @@ let mode: "detect" | "interactive" | "only" = "detect";
 let onlyTokens: string[] = [];
 let repoUrl = repoUrlDefault;
 let repoRef = repoRefDefault;
+let justMode: "auto" | "force" | "skip" = "auto";
 
 function usage(): void {
   console.log(`Usage: format-configs [options] [target-dir]
@@ -29,6 +30,8 @@ Options:
   --only LIST        Comma/space-separated presets or filenames
   --list             Show available presets and files
   --force            Overwrite existing files
+  --just             Create a Justfile if missing and add format recipe
+  --no-just          Skip Justfile integration
   --repo URL         Override repo URL for download mode
   --ref REF          Override git ref for download mode
   -h, --help         Show help
@@ -87,6 +90,14 @@ while (i < args.length) {
       break;
     case "--force":
       force = true;
+      i += 1;
+      break;
+    case "--just":
+      justMode = "force";
+      i += 1;
+      break;
+    case "--no-just":
+      justMode = "skip";
       i += 1;
       break;
     case "--repo":
@@ -320,6 +331,97 @@ function expandToken(token: string): string[] {
   return [token];
 }
 
+function derivePresets(files: Set<string>): Set<string> {
+  const presets = new Set<string>();
+  if (files.has(".swiftformat") || files.has(".swiftlint.yml")) {
+    presets.add("swift");
+  }
+  if (files.has(".prettierrc.json") || files.has(".prettierignore")) {
+    presets.add("web");
+  }
+  if (files.has(".markdownlint.json") || files.has(".markdownlintignore")) {
+    presets.add("markdown");
+  }
+  if (files.has(".clang-format")) {
+    presets.add("clang");
+  }
+  if (files.has(".sqlfluff")) {
+    presets.add("sql");
+  }
+  return presets;
+}
+
+function findJustfile(targetPath: string): { path: string; exists: boolean } | null {
+  const candidates = ["Justfile", "justfile"];
+  for (const name of candidates) {
+    const candidate = path.join(targetPath, name);
+    if (fs.existsSync(candidate)) {
+      return { path: candidate, exists: true };
+    }
+  }
+  return null;
+}
+
+function justfileHasFormat(content: string): boolean {
+  const lines = content.split(/\r?\n/);
+  return lines.some((line) => /^format\b.*:/.test(line.trim()));
+}
+
+
+function formatRecipeLines(presets: Set<string>): string[] {
+  const lines: string[] = [];
+  lines.push("format:");
+  if (presets.has("swift")) {
+    lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
+    lines.push("    if command -v swiftlint >/dev/null; then swiftlint --quiet; fi");
+  }
+  if (presets.has("web")) {
+    lines.push("    npx --yes prettier --write .");
+  }
+  if (presets.has("markdown")) {
+    lines.push("    npx --yes markdownlint \"**/*.md\"");
+  }
+  if (presets.has("clang")) {
+    const clangLine =
+      "    if command -v clang-format >/dev/null; then if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git ls-files -z '*.c' '*.cc' '*.cpp' '*.cxx' '*.h' '*.hh' '*.hpp' '*.hxx' '*.m' '*.mm' | xargs -0 clang-format -i; else find . -type f \\("
+        + " -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.h' -o -name '*.hh' -o -name '*.hpp' -o -name '*.hxx' -o -name '*.m' -o -name '*.mm' \\) -print0 | xargs -0 clang-format -i; fi; fi";
+    lines.push(clangLine);
+  }
+  if (presets.has("sql")) {
+    lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format .; fi");
+  }
+  if (lines.length === 1) {
+    return [];
+  }
+  return lines;
+}
+
+function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {
+  if (justMode === "skip") {
+    return;
+  }
+
+  const recipe = formatRecipeLines(presets);
+  if (recipe.length === 0) {
+    return;
+  }
+
+  const existing = findJustfile(targetPath);
+  if (!existing && justMode !== "force") {
+    return;
+  }
+
+  const justfilePath = existing?.path ?? path.join(targetPath, "Justfile");
+  const content = fs.existsSync(justfilePath) ? fs.readFileSync(justfilePath, "utf8") : "";
+  if (content && justfileHasFormat(content)) {
+    return;
+  }
+
+  const prefix = content.endsWith("\n") || content.length === 0 ? "" : "\n";
+  const block = ["", "# format-configs", ...recipe, ""].join("\n");
+  fs.writeFileSync(justfilePath, `${content}${prefix}${block}`, "utf8");
+}
+
 async function main(): Promise<void> {
   const targetPath = path.resolve(targetDir);
   if (!fs.existsSync(targetPath)) {
@@ -358,6 +460,7 @@ async function main(): Promise<void> {
 
   const fileSet = new Set<string>();
   tokens.forEach((token) => expandToken(token).forEach((file) => fileSet.add(file)));
+  const selectedPresets = derivePresets(fileSet);
 
   for (const file of fileSet) {
     const src = path.join(configDir, file);
@@ -376,6 +479,8 @@ async function main(): Promise<void> {
     fs.copyFileSync(src, dst);
     console.log(`install: ${dst}`);
   }
+
+  maybeUpdateJustfile(targetPath, selectedPresets);
 }
 
 main().catch((err: unknown) => {

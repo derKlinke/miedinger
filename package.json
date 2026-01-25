@@ -11,7 +11,7 @@
     "format-configs": "dist/format-configs.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/format-configs.js';const data=fs.readFileSync(p,'utf8');if(!data.startsWith('#!')) fs.writeFileSync(p,'#!/usr/bin/env node\\\\n'+data);fs.chmodSync(p,0o755);\""
   },
   "devDependencies": {
     "@types/node": "22.13.10",

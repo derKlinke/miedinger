@@ -48,6 +48,17 @@ Rules:
 - **C-family**: `.c/.h/.cpp/.hpp/.m/.mm/.cc/.cxx/.hxx`
 - **SQL**: `.sql`
 
+### Justfile integration
+
+If a `Justfile` (or `justfile`) exists, format-configs will add a standard `format` recipe
+when missing. This keeps `just format` consistent across repos.
+
+Flags:
+- `--just` creates a new `Justfile` if none exists.
+- `--no-just` skips Justfile integration entirely.
+
+The recipe only runs tools that are available (it checks `command -v` where appropriate).
+
 ## GitHub Action (sync configs)
 
 Use the composite action to keep configs in sync in CI (and optionally commit updates).

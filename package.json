@@ -1,7 +1,11 @@
 {
   "name": "@derklinke/format-configs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared formatter configs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/derKlinke/format-configs.git"
+  },
   "license": "MIT",
   "bin": {
     "format-configs": "bin/format-configs.js"

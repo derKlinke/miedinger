@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/derKlinke/miedinger/compare/v0.7.3...v0.8.0) (2026-01-25)
+
+
+### Features
+
+* dispatch sync via github app ([d66f0b5](https://github.com/derKlinke/miedinger/commit/d66f0b562a4317f2cfa15b04eb6db67a1d1f6d66))
+
 ## [0.7.3](https://github.com/derKlinke/miedinger/compare/v0.7.2...v0.7.3) (2026-01-25)
 
 

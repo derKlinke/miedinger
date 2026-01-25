@@ -389,7 +389,7 @@ function formatRecipeLines(presets: Set<string>): string[] {
         lines.push("    npx --yes prettier --write .");
     }
     if (presets.has("markdown")) {
-        lines.push('    npx --yes markdownlint "**/*.md"');
+        lines.push('    npx --yes markdownlint-cli "**/*.md"');
     }
     if (presets.has("clang")) {
         const clangLine =
@@ -404,6 +404,80 @@ function formatRecipeLines(presets: Set<string>): string[] {
         return [];
     }
     return lines;
+}
+
+function buildFormatBlock(presets: Set<string>): string[] {
+    return ["# format-configs", ...formatRecipeLines(presets), "# /format-configs"];
+}
+
+function findFormatBlockRange(lines: string[]): { start: number; end: number } | null {
+    let start = -1;
+    let end = -1;
+    for (let idx = 0; idx < lines.length; idx += 1) {
+        const line = lines[idx];
+        if (line.trim() === "# format-configs") {
+            start = idx;
+        }
+        if (line.trim() === "# /format-configs") {
+            end = idx;
+            break;
+        }
+    }
+    if (start >= 0 && end >= start) {
+        return { start, end };
+    }
+    return null;
+}
+
+function findFormatTargetRange(lines: string[]): { start: number; end: number } | null {
+    const isRecipe = (line: string): boolean =>
+        /^[^ 	].*:$/.test(line.trimEnd()) && !line.startsWith("#");
+    let start = -1;
+    for (let idx = 0; idx < lines.length; idx += 1) {
+        const line = lines[idx];
+        if (line.startsWith("format") && /^format.*:$/.test(line.trimEnd())) {
+            start = idx;
+            break;
+        }
+    }
+    if (start == -1) {
+        return null;
+    }
+    let end = lines.length;
+    for (let idx = start + 1; idx < lines.length; idx += 1) {
+        const line = lines[idx];
+        if (line.trim() == "") {
+            end = idx;
+            break;
+        }
+        if (isRecipe(line) && !line.startsWith("format")) {
+            end = idx;
+            break;
+        }
+    }
+    return { start, end };
+}
+
+function updateJustfileContent(content: string, block: string[]): string | null {
+    const lines = content.length ? content.split(/\r?\n/) : [];
+    const existingBlock = findFormatBlockRange(lines);
+    if (existingBlock) {
+        const before = lines.slice(0, existingBlock.start);
+        const after = lines.slice(existingBlock.end + 1);
+        return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
+    }
+
+    const existingTarget = findFormatTargetRange(lines);
+    if (existingTarget) {
+        const before = lines.slice(0, existingTarget.start);
+        const after = lines.slice(existingTarget.end);
+        return [...before, ...block, ...after].join("\n").trimEnd() + "\n";
+    }
+
+    if (lines.length === 0) {
+        return block.join("\n") + "\n";
+    }
+    return [...lines, "", ...block].join("\n").trimEnd() + "\n";
 }
 
 function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {
@@ -423,13 +497,12 @@ function maybeUpdateJustfile(targetPath: string, presets: Set<string>): void {
 
     const justfilePath = existing?.path ?? path.join(targetPath, "Justfile");
     const content = fs.existsSync(justfilePath) ? fs.readFileSync(justfilePath, "utf8") : "";
-    if (content && justfileHasFormat(content)) {
+    const block = buildFormatBlock(presets);
+    const updated = updateJustfileContent(content, block);
+    if (updated === null) {
         return;
     }
-
-    const prefix = content.endsWith("\n") || content.length === 0 ? "" : "\n";
-    const block = ["", "# format-configs", ...recipe, ""].join("\n");
-    fs.writeFileSync(justfilePath, `${content}${prefix}${block}`, "utf8");
+    fs.writeFileSync(justfilePath, updated, "utf8");
 }
 
 async function main(): Promise<void> {

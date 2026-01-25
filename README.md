@@ -52,7 +52,8 @@ Rules:
 ### Justfile integration
 
 If a `Justfile` (or `justfile`) exists, format-configs will add a standard `format` recipe
-when missing. This keeps `just format` consistent across repos.
+when missing, and will update existing `format` recipes to the latest managed block.
+This keeps `just format` consistent across repos.
 
 Flags:
 
@@ -60,6 +61,7 @@ Flags:
 - `--no-just` skips Justfile integration entirely.
 
 The recipe only runs tools that are available (it checks `command -v` where appropriate).
+Managed blocks are wrapped in `# format-configs` / `# /format-configs` so updates are safe.
 
 ## GitHub Action (sync configs)
 

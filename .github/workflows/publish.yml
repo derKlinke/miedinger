@@ -23,5 +23,8 @@ jobs:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Ensure npm trusted publishing version
+        run: npm install -g npm@11.5.1
+
       - name: Publish
         run: npm publish

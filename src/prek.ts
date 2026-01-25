@@ -79,6 +79,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
             entry: "sqlfluff format",
             language: "system",
             files: "\\.(sql)$",
+            exclude: "(^|/)migrations/",
         });
     }
 

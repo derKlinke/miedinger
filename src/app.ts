@@ -4,6 +4,7 @@ import { CliOptions } from "./types";
 import { promptInteractive } from "./cli/prompt";
 import { ensurePrettierPlugins } from "./config/deps";
 import { removeLegacyConfigs } from "./config/cleanup";
+import { ensureSqlfluffExclude } from "./config/sqlfluff";
 import { detectPresets, derivePresets, expandToken } from "./config/presets";
 import { resolveConfigDir, isGitRepo, listGitFiles, listFilesRecursive } from "./fs/repo";
 import { maybeUpdateJustfile } from "./justfile";
@@ -66,6 +67,7 @@ export async function runApp(options: CliOptions): Promise<void> {
 
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
     const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets);
+    const sqlfluffFiles = ensureSqlfluffExclude(targetPath, selectedPresets);
 
     for (const file of fileSet) {
         const src = path.join(configDir, file);
@@ -97,6 +99,7 @@ export async function runApp(options: CliOptions): Promise<void> {
     }
     removed.forEach((file) => managedPaths.add(file));
     pluginFiles.forEach((file) => managedPaths.add(file));
+    sqlfluffFiles.forEach((file) => managedPaths.add(file));
     if (justfilePath) managedPaths.add(justfilePath);
     if (prekPath) managedPaths.add(prekPath);
 

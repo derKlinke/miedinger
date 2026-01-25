@@ -12,23 +12,25 @@ Shared formatter configs for all my projects. One place to keep them tidy, easy 
 
 ## Quick start
 
-### Option A: use as a submodule
+### Option A: curl install (recommended)
+
+From any project root:
 
 ```sh
-git submodule add /Users/fabianklinke/Developer/format-configs tools/format-configs
+curl -fsSL https://raw.githubusercontent.com/derKlinke/format-configs/main/install.sh | bash
 ```
 
-### Option B: clone anywhere
+Pass options via `bash -s --`:
 
 ```sh
-git clone /Users/fabianklinke/Developer/format-configs
+curl -fsSL https://raw.githubusercontent.com/derKlinke/format-configs/main/install.sh | \
+  bash -s -- --interactive --force
 ```
 
-### Link configs into a project
-
-From your project root:
+### Option B: clone and run
 
 ```sh
+git clone https://github.com/derKlinke/format-configs.git
 /Users/fabianklinke/Developer/format-configs/install.sh
 ```
 
@@ -38,25 +40,25 @@ Or pass a target directory:
 /Users/fabianklinke/Developer/format-configs/install.sh /path/to/project
 ```
 
-Use `--force` to replace existing files:
+### Selection
 
-```sh
-/Users/fabianklinke/Developer/format-configs/install.sh --force /path/to/project
-```
+- Auto-detect (default): `--detect`
+- Interactive picker: `--interactive`
+- Explicit selection: `--only swift,web`
+- List presets/files: `--list`
 
-If you prefer the underlying script, it’s at `scripts/link-configs.sh`.
+Use `--force` to overwrite existing files.
+
+If you need the underlying script, it’s at `scripts/install-configs.sh`.
 
 ## Updating
 
-- If cloned: `git pull`
-- If submodule: `git submodule update --remote`
-
-Re-run the install script if you want to refresh symlinks after changes.
+Re-run the install script to refresh the copied configs.
 
 ## Structure
 
 - `configs/` — shared dotfiles
-- `scripts/` — helper scripts (symlink setup)
+- `scripts/` — helper scripts
 
 ## License
 

@@ -12,6 +12,9 @@ jobs:
     dispatch:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
             - name: Dispatch sync to installed repos
               env:
                   MIEDINGER_APP_ID: ${{ secrets.MIEDINGER_APP_ID }}

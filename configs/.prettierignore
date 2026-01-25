@@ -2,4 +2,3 @@
 node_modules/
 .pre-commit-config.yaml
 .pre-commit-config.yml
-.github/workflows/**

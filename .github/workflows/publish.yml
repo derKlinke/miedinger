@@ -36,4 +36,6 @@ jobs:
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  MIEDINGER_APP_ID: ${{ secrets.MIEDINGER_APP_ID }}
+                  MIEDINGER_APP_PRIVATE_KEY: ${{ secrets.MIEDINGER_APP_PRIVATE_KEY }}
               run: npx semantic-release

@@ -25,6 +25,7 @@ function buildWorkflow(): string {
         "                  mode: detect",
         "                  force: true",
         "                  commit: true",
+        '                  commit-message: "chore: sync format configs [skip ci]"',
         "                  push: true",
         "",
     ].join("\n");

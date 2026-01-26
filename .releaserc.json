@@ -15,7 +15,8 @@
             "@semantic-release/exec",
             {
                 "prepareCmd": "npm version ${nextRelease.version} --no-git-tag-version",
-                "publishCmd": "npm run build && npm publish --provenance"
+                "publishCmd": "npm run build && npm publish --provenance",
+                "successCmd": "if [ -n \"$MIEDINGER_APP_ID\" ] && [ -n \"$MIEDINGER_APP_PRIVATE_KEY\" ]; then node scripts/dispatch-sync.js; else echo \"skip dispatch (missing app credentials)\"; fi"
             }
         ],
         [

@@ -94,7 +94,11 @@ runs:
                 echo "No format config changes to commit."
                 exit 0
               fi
-              git commit -m "${{ inputs.commit-message }}"
+              msg="${{ inputs.commit-message }}"
+              if ! printf "%s" "$msg" | grep -qiE "\\[(skip ci|ci skip)\\]"; then
+                msg="$msg [skip ci]"
+              fi
+              git commit -m "$msg"
               if [ "${{ inputs.push }}" = "true" ]; then
                 git push
               fi

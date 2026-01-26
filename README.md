@@ -3,96 +3,92 @@
 [![npm](https://img.shields.io/npm/v/@derklinke/miedinger)](https://www.npmjs.com/package/@derklinke/miedinger)
 [![publish](https://img.shields.io/github/actions/workflow/status/derKlinke/miedinger/publish.yml?label=publish)](https://github.com/derKlinke/miedinger/actions/workflows/publish.yml)
 
-Shared formatter configs for my projects. Small, predictable, and easy to drop into any repo with installer script that installs Justfiles, pre-commit hooks, and an on-demand sync workflow.
+This is my go-to collection of formatter configs that I use across all my projects. It's small, does what it says, and drops right into any repo with a single command. You get the config files, a Justfile recipe, pre-commit hooks, and even a sync workflow to keep things up to date.
 
-The project is named after Max Miedinger, creator of Helvetica. A timeless and beautiful font, something I'd like to achieve in my code.
+Named after Max Miedinger, the designer behind Helvetica. Just like that typeface is timeless and beautiful, I'm aiming for the same kind of clean consistency in my code.
 
 > [!ATTENTION]
-> Destructive by design. Installer removes alternate configs (including in subfolders), overwrites any `format` recipe in your Justfile, and always overwrites `.pre-commit-config.yaml`. Use only if that is acceptable.
+> Heads up: this tool is pretty opinionated about cleaning up your repo. It'll remove alternate configs (even in subfolders), overwrite your `format` recipe in Justfile, and replace `.pre-commit-config.yaml` entirely. Only use this if you're cool with that.
 
 ## What’s inside
 
-- Swift: `.swiftlint.yml`, `.swiftformat`
-- C/C++/Obj-C: `.clang-format`, `.clang-format-ignore`
-- Markdown: `.markdownlint.json`, `.markdownlintignore`
-- Web: `.prettierrc.json`, `.prettierignore`
-- SQL: `.sqlfluff`
+- **Swift**: `.swiftlint.yml`, `.swiftformat`
+- **C/C++/Obj-C**: `.clang-format`, `.clang-format-ignore`
+- **Markdown**: `.markdownlint.json`, `.markdownlintignore`
+- **Web**: `.prettierrc.json`, `.prettierignore`
+- **SQL**: `.sqlfluff`
 
-## Quick start
+## Getting started
 
-### npx / bunx (recommended)
+Just run this and you're done:
 
 ```sh
 npx @derklinke/miedinger --detect --force
 ```
 
-Add `--commit` to auto-commit managed changes when the repo is clean.
+Want it to commit the changes automatically? Add `--commit` (only works if your repo is clean).
 
-## Selection
+## Picking what you need
 
-- Auto-detect (default): `--detect`
-- Interactive picker: `--interactive`
-- Explicit selection: `--only swift,web`
-- List presets/files: `--list`
+There are a few ways to choose which configs to install:
 
-Use `--force` to overwrite existing files.
+- **Auto-detect** (default): `--detect` — looks at your repo and figures out what you need
+- **Interactive menu**: `--interactive` — shows you a picker to choose manually
+- **Specific presets**: `--only swift,web` — just install what you specify
+- **See what's available**: `--list` — shows all presets and files
 
-### Detect mode (how it decides)
+The `--force` flag will overwrite any existing config files without asking.
 
-Detect looks at your repo and picks presets based on file types it finds.
-If the directory is a git repo, it uses `git ls-files`. Otherwise it scans the
-filesystem and skips common heavy folders (`.git`, `node_modules`, `.build`,
-`DerivedData`, `external`).
+### How auto-detect works
 
-Rules:
+When you use `--detect`, it looks at what's actually in your repo and picks the right configs for you. If you're in a git repo, it'll use `git ls-files` to scan. Otherwise, it walks the filesystem while skipping the usual suspects (`.git`, `node_modules`, `.build`, `DerivedData`, `external`).
 
-- **Swift**: `.swift`, `Package.swift`, `.xcodeproj`, `.xcworkspace`
-- **Web**: `package.json`, lockfiles, `.js/.ts/.jsx/.tsx`, `.css/.scss`,
-  `.html`, `.vue`, `.svelte`, `.astro`
-- **Markdown**: `.md`, `.mdx`
-- **C-family**: `.c/.h/.cpp/.hpp/.m/.mm/.cc/.cxx/.hxx`
-- **SQL**: `.sql`
+Here's what triggers each preset:
 
-Installer cleanup:
+- **Swift**: Any `.swift` files, `Package.swift`, `.xcodeproj`, or `.xcworkspace`
+- **Web**: `package.json`, lockfiles, or any `.js/.ts/.jsx/.tsx/.css/.scss/.html/.vue/.svelte/.astro` files
+- **Markdown**: `.md` or `.mdx` files
+- **C-family**: `.c/.h/.cpp/.hpp/.m/.mm/.cc/.cxx/.hxx` files
+- **SQL**: `.sql` files
 
-- Removes legacy/alternate config filenames and duplicates in subfolders.
-- Keeps a single canonical config per tool at repo root.
-- If `package.json` exists, installs the Tailwind Prettier plugin, and installs the Astro plugin only when Astro files/configs are detected.
-- Auto-commits managed config changes only when `--commit` is passed.
-- SQLFluff config excludes `**/migrations/**` by default (preserves migrations).
-- Adds a GitHub Actions sync workflow (`.github/workflows/sync-format-configs.yml`) that listens for `repository_dispatch` from the GitHub App.
+### What the installer does
+
+Behind the scenes, the installer tidies things up:
+
+- Removes old or alternate config filenames, including duplicates hiding in subfolders
+- Keeps one canonical config per tool at your repo root
+- If you've got a `package.json`, it'll install the Tailwind Prettier plugin (and the Astro plugin if it detects Astro files)
+- Auto-commits config changes only if you pass `--commit`
+- Sets up SQLFluff to ignore `**/migrations/**` by default (your migrations stay untouched)
+- Drops in a GitHub Actions workflow (`.github/workflows/sync-format-configs.yml`) that listens for updates from the miedinger-sync GitHub App
 
 ### Justfile integration
 
-If a `Justfile` (or `justfile`) exists, miedinger will replace any existing `format`
-recipe and `fmt`/`f` aliases with the managed block. This keeps `just format` consistent
-across repos.
+If you already have a `Justfile` (or `justfile`), miedinger will take over the `format` recipe and replace any `fmt`/`f` aliases with its own managed block. This way `just format` works the same way in all your repos.
 
-Flags:
+Some handy flags:
 
-- `--just` creates a new `Justfile` if none exists.
-- `--no-just` skips Justfile integration entirely.
-- `--commit` auto-commits managed changes when safe.
+- `--just` — creates a new `Justfile` if you don't have one yet
+- `--no-just` — skip Justfile stuff entirely
+- `--commit` — auto-commits the changes if it's safe to do so
 
-The managed block includes:
+The managed block adds:
 
-- `alias fmt := format`
-- `[group('formatting')]`
-- `format:` recipe that runs `just --fmt --unstable` first
+- An alias so you can type `just fmt` instead of `just format`
+- A `[group('formatting')]` tag to keep things organized
+- A `format:` recipe that runs `just --fmt --unstable` before formatting your code
 
-The recipe only runs tools that are available (it checks `command -v` where appropriate).
-Managed blocks are wrapped in `# format-configs` / `# /format-configs` (legacy marker for compatibility).
+The recipe is smart about what's installed — it only runs the tools you actually have available. Everything's wrapped in `# format-configs` / `# /format-configs` markers so it knows what it's managing.
 
-## GitHub App sync (recommended)
+## Keeping configs in sync (recommended for multi-repo setups)
 
-For multi-repo setups, install the GitHub App so sync runs on the target repo's CI:
-[miedinger-sync GitHub App](https://github.com/apps/miedinger-sync)
+If you've got multiple repos and want them all to stay in sync, install the [miedinger-sync GitHub App](https://github.com/apps/miedinger-sync). It'll automatically trigger a sync on each repo whenever there's a new release.
 
-The app dispatches `repository_dispatch` events to installed repos on each release.
+The app sends a `repository_dispatch` event to your repos, and the workflow takes care of the rest.
 
-## GitHub Action (sync configs)
+### GitHub Action for syncing
 
-Use the composite action to keep configs in sync in CI (and optionally commit updates).
+Want to run this in CI? There's a composite action you can use:
 
 ```yaml
 - name: Sync format configs
@@ -104,47 +100,45 @@ Use the composite action to keep configs in sync in CI (and optionally commit up
     push: "true"
 ```
 
-Inputs:
+Here's what you can configure:
 
-- `mode`: `detect` | `interactive` | `only`
-- `only`: comma/space-separated presets or filenames (used with `mode: only`)
-- `force`: overwrite existing files
-- `target-dir`: default `.`
-- `commit`: commit changes if any
-- `push`: push commit to origin
-- `commit-message`: custom commit message
-- `git-user-name`, `git-user-email`: author identity
+- `mode` — `detect` | `interactive` | `only`
+- `only` — comma or space-separated presets (when using `mode: only`)
+- `force` — set to `"true"` to overwrite existing files
+- `target-dir` — where to install (defaults to `.`)
+- `commit` — automatically commit changes
+- `push` — push the commit to origin
+- `commit-message` — customize the commit message
+- `git-user-name`, `git-user-email` — who shows up as the commit author
 
-## Release flow
+## How releases work
 
-This repo uses semantic-release to:
+This repo uses semantic-release to handle everything automatically:
 
-- infer versions from Conventional Commits
-- update `CHANGELOG.md` and `package.json`
-- tag releases
-- create GitHub Releases
-- publish to npm
+- Figures out version numbers from your commit messages (using Conventional Commits)
+- Updates `CHANGELOG.md` and `package.json`
+- Tags the release
+- Creates GitHub Releases
+- Publishes to npm
 
-Release runs on every push to `main` (and no longer opens release PRs).
+Every push to `main` kicks off a release (no more PRs for releases).
 
-## Pre-commit
+## Pre-commit hooks
 
-This repo supports `prek` (pre-commit compatible). To enable:
+This works with `prek` (which is compatible with pre-commit). To set it up:
 
 ```bash
 prek install
 ```
 
-Installer always writes a `.pre-commit-config.yaml` based on selected presets.
-Hooks run only on staged files and only for relevant formatters.
-If `prek` is installed, the installer runs `prek install` automatically.
+The installer will create a `.pre-commit-config.yaml` based on whichever presets you picked. The hooks are smart — they only run on files you've staged and only use the formatters that make sense for those files. If you've already got `prek` installed, the installer will run `prek install` for you automatically.
 
-## Structure
+## Project structure
 
-- `configs/` — shared dotfiles
-- `dist/` — CLI entrypoint (built)
-- `src/` — CLI source
+- `configs/` — the actual config files that get copied to your repos
+- `dist/` — the built CLI (what actually runs)
+- `src/` — the TypeScript source code for the CLI
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. Check out `LICENSE` for details.

@@ -1,3 +1,17 @@
+# [0.9.0](https://github.com/derKlinke/miedinger/compare/v0.8.0...v0.9.0) (2026-01-26)
+
+
+### Bug Fixes
+
+* allow same-version release prepare ([0cf88b1](https://github.com/derKlinke/miedinger/commit/0cf88b152826599f6f05f5c25b8ddba2035f0ac5))
+* checkout before dispatch ([580472f](https://github.com/derKlinke/miedinger/commit/580472f4ac3bc7c8ab84e3e4281db66d9343b1aa))
+* require version bump during release ([64578d8](https://github.com/derKlinke/miedinger/commit/64578d89e585a36c9cda8b5ddfc54654d1cf2e40))
+
+
+### Features
+
+* enforce opinionated installer defaults ([e88d665](https://github.com/derKlinke/miedinger/commit/e88d6655c43e41c350459fb5c53c9805431e188b))
+
 # [0.8.0](https://github.com/derKlinke/miedinger/compare/v0.7.3...v0.8.0) (2026-01-26)
 
 

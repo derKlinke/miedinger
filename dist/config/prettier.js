@@ -1,13 +1,14 @@
-import * as fs from "fs";
-import * as path from "path";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updatePrettierConfigPlugins = updatePrettierConfigPlugins;
+const fs = require("fs");
+const path = require("path");
 const tailwindPlugin = "prettier-plugin-tailwindcss";
 const astroPlugin = "prettier-plugin-astro";
 const printWidth = 100;
-
-function uniquePlugins(plugins: string[]): string[] {
-    const seen = new Set<string>();
-    const result: string[] = [];
+function uniquePlugins(plugins) {
+    const seen = new Set();
+    const result = [];
     for (const plugin of plugins) {
         if (seen.has(plugin)) continue;
         seen.add(plugin);
@@ -15,11 +16,9 @@ function uniquePlugins(plugins: string[]): string[] {
     }
     return result;
 }
-
-function formatJson(value: unknown, indent = 0): string {
+function formatJson(value, indent = 0) {
     const padding = " ".repeat(indent);
     const nextIndent = indent + 4;
-
     if (Array.isArray(value)) {
         if (value.length === 0) {
             return "[]";
@@ -37,58 +36,45 @@ function formatJson(value: unknown, indent = 0): string {
             .join(",\n");
         return `[\n${items}\n${padding}]`;
     }
-
     if (value && typeof value === "object") {
-        const entries = Object.entries(value as Record<string, unknown>);
+        const entries = Object.entries(value);
         if (entries.length === 0) {
             return "{}";
         }
         const items = entries
             .map(
                 ([key, item]) =>
-                    `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(
-                        item,
-                        nextIndent
-                    )}`
+                    `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(item, nextIndent)}`
             )
             .join(",\n");
         return `{\n${items}\n${padding}}`;
     }
-
     return JSON.stringify(value);
 }
-
-function writeJsonFile(filePath: string, value: Record<string, unknown>): void {
+function writeJsonFile(filePath, value) {
     fs.writeFileSync(filePath, `${formatJson(value)}\n`, "utf8");
 }
-
-export function updatePrettierConfigPlugins(
-    targetPath: string,
-    options: { astro: boolean; pluginsAvailable: boolean }
-): string[] {
+function updatePrettierConfigPlugins(targetPath, options) {
     const configPath = path.join(targetPath, ".prettierrc.json");
     if (!fs.existsSync(configPath)) {
         return [];
     }
-
     const hasPackageJson = fs.existsSync(path.join(targetPath, "package.json"));
     if (hasPackageJson && !options.pluginsAvailable) {
         return [];
     }
-
     const raw = fs.readFileSync(configPath, "utf8");
-    let config: Record<string, unknown>;
+    let config;
     try {
-        config = JSON.parse(raw) as Record<string, unknown>;
+        config = JSON.parse(raw);
     } catch {
         console.error(`warning: failed to parse ${configPath}; skipping plugin update`);
         return [];
     }
-
     const existing = Array.isArray(config.plugins)
-        ? (config.plugins as unknown[]).filter((item) => typeof item === "string").map(String)
+        ? config.plugins.filter((item) => typeof item === "string").map(String)
         : [];
-    let next: string[] = [];
+    let next = [];
     if (hasPackageJson) {
         const withoutAstro = existing.filter((plugin) => plugin !== astroPlugin);
         const desired = [
@@ -102,13 +88,11 @@ export function updatePrettierConfigPlugins(
     } else {
         next = existing.filter((plugin) => plugin !== tailwindPlugin && plugin !== astroPlugin);
     }
-
     const same =
         existing.length === next.length && existing.every((value, index) => value === next[index]);
     if (same) {
         return [];
     }
-
     if (next.length === 0) {
         delete config.plugins;
     } else {

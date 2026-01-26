@@ -1,28 +1,19 @@
-import * as fs from "fs";
-import * as path from "path";
-import { execFileSync } from "child_process";
-import { stringify } from "yaml";
-import { hasCommand } from "./fs/repo";
-
-type PrekHook = {
-    id: string;
-    name: string;
-    entry: string;
-    language: "system";
-    files?: string;
-    exclude?: string;
-};
-
-function buildPrekConfig(presets: Set<string>): string | null {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.maybeUpdatePrekConfig = maybeUpdatePrekConfig;
+const fs = require("fs");
+const path = require("path");
+const child_process_1 = require("child_process");
+const yaml_1 = require("yaml");
+const repo_1 = require("./fs/repo");
+function buildPrekConfig(presets) {
     if (presets.size === 0) {
         return null;
     }
-
-    const hooks: PrekHook[] = [];
-    const addHook = (hook: PrekHook): void => {
+    const hooks = [];
+    const addHook = (hook) => {
         hooks.push(hook);
     };
-
     if (presets.has("web")) {
         addHook({
             id: "prettier",
@@ -33,7 +24,6 @@ function buildPrekConfig(presets: Set<string>): string | null {
             exclude: "^\\.pre-commit-config\\.ya?ml$",
         });
     }
-
     if (presets.has("markdown")) {
         addHook({
             id: "markdownlint",
@@ -43,7 +33,6 @@ function buildPrekConfig(presets: Set<string>): string | null {
             files: "\\.(md|mdx)$",
         });
     }
-
     if (presets.has("swift")) {
         addHook({
             id: "swiftformat",
@@ -60,7 +49,6 @@ function buildPrekConfig(presets: Set<string>): string | null {
             files: "\\.(swift)$",
         });
     }
-
     if (presets.has("clang")) {
         addHook({
             id: "clang-format",
@@ -70,7 +58,6 @@ function buildPrekConfig(presets: Set<string>): string | null {
             files: "\\.(c|cc|cpp|cxx|h|hh|hpp|hxx|m|mm)$",
         });
     }
-
     if (presets.has("sql")) {
         addHook({
             id: "sqlfluff",
@@ -81,28 +68,26 @@ function buildPrekConfig(presets: Set<string>): string | null {
             exclude: "(^|/)migrations/",
         });
     }
-
     if (hooks.length === 0) {
         return null;
     }
-
     const config = { repos: [{ repo: "local", hooks }] };
-    const yaml = stringify(config, { indent: 2, lineWidth: 0 });
+    const yaml = (0, yaml_1.stringify)(config, { indent: 2, lineWidth: 0 });
     return `# format-configs\n${yaml}`;
 }
-
-export function maybeUpdatePrekConfig(targetPath: string, presets: Set<string>): string | null {
+function maybeUpdatePrekConfig(targetPath, presets) {
     const config = buildPrekConfig(presets);
     if (!config) {
         return null;
     }
-
     const configPath = path.join(targetPath, ".pre-commit-config.yaml");
     fs.writeFileSync(configPath, config, "utf8");
-
-    if (hasCommand("prek")) {
+    if ((0, repo_1.hasCommand)("prek")) {
         try {
-            execFileSync("prek", ["install"], { cwd: targetPath, stdio: "inherit" });
+            (0, child_process_1.execFileSync)("prek", ["install"], {
+                cwd: targetPath,
+                stdio: "inherit",
+            });
         } catch (err) {
             console.error("warning: failed to run prek install");
             if (err instanceof Error) {

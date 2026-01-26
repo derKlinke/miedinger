@@ -1,23 +1,19 @@
-import { CliOptions, JustMode, Mode } from "../types";
-import { listPresets, usage } from "./usage";
-
-function parseOnly(value: string): string[] {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseArgs = parseArgs;
+const usage_1 = require("./usage");
+function parseOnly(value) {
     return value.split(/[ ,]+/).filter(Boolean);
 }
-
-export function parseArgs(
-    args: string[],
-    defaults: { repoUrl: string; repoRef: string; cwd: string }
-): CliOptions {
+function parseArgs(args, defaults) {
     let targetDir = "";
     let force = false;
-    let mode: Mode = "detect";
-    let onlyTokens: string[] = [];
+    let mode = "detect";
+    let onlyTokens = [];
     let repoUrl = defaults.repoUrl;
     let repoRef = defaults.repoRef;
-    let justMode: JustMode = "auto";
+    let justMode = "auto";
     let autoCommit = false;
-
     let idx = 0;
     while (idx < args.length) {
         const arg = args[idx];
@@ -41,7 +37,7 @@ export function parseArgs(
                 idx += 1;
                 break;
             case "--list":
-                listPresets();
+                (0, usage_1.listPresets)();
                 process.exit(0);
                 break;
             case "--force":
@@ -80,7 +76,7 @@ export function parseArgs(
                 break;
             case "-h":
             case "--help":
-                usage();
+                (0, usage_1.usage)();
                 process.exit(0);
                 break;
             default:
@@ -89,17 +85,15 @@ export function parseArgs(
                     idx += 1;
                 } else {
                     console.error(`error: unexpected argument: ${arg}`);
-                    usage();
+                    (0, usage_1.usage)();
                     process.exit(1);
                 }
                 break;
         }
     }
-
     if (!targetDir) {
         targetDir = defaults.cwd;
     }
-
     return {
         targetDir,
         force,

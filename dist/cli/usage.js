@@ -1,4 +1,8 @@
-export function usage(): void {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.usage = usage;
+exports.listPresets = listPresets;
+function usage() {
     console.log(`Usage: miedinger [options] [target-dir]
 
 Copies shared formatter configs into target directory (no symlinks).
@@ -19,8 +23,7 @@ Options:
 
 Presets: swift, web, markdown, clang, sql`);
 }
-
-export function listPresets(): void {
+function listPresets() {
     console.log(`Presets:
   swift     -> .swiftformat, .swiftlint.yml
   web       -> .prettierrc.json, .prettierignore

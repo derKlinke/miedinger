@@ -33,7 +33,10 @@ export async function runApp(options: CliOptions): Promise<void> {
     const repoFiles = isGitRepo(targetPath)
         ? listGitFiles(targetPath)
         : listFilesRecursive(targetPath);
-    const preExistingChanges = isGitRepo(targetPath) ? listStatusPaths(targetPath) : new Set<string>();
+    const preExistingChanges =
+        options.autoCommit && isGitRepo(targetPath)
+            ? listStatusPaths(targetPath)
+            : new Set<string>();
     const hasAstro = detectAstro(targetPath, repoFiles);
     let tokens: string[] = [];
 
@@ -70,7 +73,7 @@ export async function runApp(options: CliOptions): Promise<void> {
     const selectedPresets = derivePresets(fileSet);
 
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
-    const pluginFiles = ensurePrettierPlugins(targetPath, selectedPresets, { astro: hasAstro });
+    const pluginResult = ensurePrettierPlugins(targetPath, selectedPresets, { astro: hasAstro });
 
     for (const file of fileSet) {
         const src = path.join(configDir, file);
@@ -90,14 +93,14 @@ export async function runApp(options: CliOptions): Promise<void> {
         console.log(`install: ${dst}`);
     }
 
-    const prettierFiles = updatePrettierConfigPlugins(targetPath, { astro: hasAstro });
+    const prettierFiles = updatePrettierConfigPlugins(targetPath, {
+        astro: hasAstro,
+        pluginsAvailable: pluginResult.pluginsAvailable,
+    });
     const sqlfluffFiles = ensureSqlfluffExclude(targetPath, selectedPresets);
 
     const justfilePath = maybeUpdateJustfile(targetPath, selectedPresets, options.justMode);
-    const prekPath = maybeUpdatePrekConfig(targetPath, selectedPresets, {
-        prekMode: options.prekMode,
-        force: options.force,
-    });
+    const prekPath = maybeUpdatePrekConfig(targetPath, selectedPresets);
     const workflowPath = maybeUpdateSyncWorkflow(targetPath, {
         force: options.force,
     });
@@ -107,12 +110,14 @@ export async function runApp(options: CliOptions): Promise<void> {
         managedPaths.add(path.join(targetPath, file));
     }
     removed.forEach((file) => managedPaths.add(file));
-    pluginFiles.forEach((file) => managedPaths.add(file));
+    pluginResult.touchedFiles.forEach((file) => managedPaths.add(file));
     prettierFiles.forEach((file) => managedPaths.add(file));
     sqlfluffFiles.forEach((file) => managedPaths.add(file));
     if (justfilePath) managedPaths.add(justfilePath);
     if (prekPath) managedPaths.add(prekPath);
     if (workflowPath) managedPaths.add(workflowPath);
 
-    maybeAutoCommit(targetPath, managedPaths, preExistingChanges);
+    if (options.autoCommit) {
+        maybeAutoCommit(targetPath, managedPaths, preExistingChanges);
+    }
 }

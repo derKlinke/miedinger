@@ -1,18 +1,12 @@
-import * as fs from "fs";
-import * as path from "path";
-import { execFileSync } from "child_process";
-import { hasCommand } from "../fs/repo";
-
-type PackageManager = "bun" | "pnpm" | "yarn" | "npm";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ensurePrettierPlugins = ensurePrettierPlugins;
+const fs = require("fs");
+const path = require("path");
+const child_process_1 = require("child_process");
+const repo_1 = require("../fs/repo");
 const prettierPluginsBase = ["prettier-plugin-tailwindcss"];
-
-export type PrettierPluginResult = {
-    touchedFiles: string[];
-    pluginsAvailable: boolean;
-};
-
-function parsePackageManagerField(value: string | undefined): PackageManager | null {
+function parsePackageManagerField(value) {
     if (!value) return null;
     const name = value.split("@")[0];
     if (name === "bun" || name === "pnpm" || name === "yarn" || name === "npm") {
@@ -20,11 +14,7 @@ function parsePackageManagerField(value: string | undefined): PackageManager | n
     }
     return null;
 }
-
-function detectPackageManager(
-    targetPath: string,
-    packageJson: Record<string, unknown>
-): PackageManager {
+function detectPackageManager(targetPath, packageJson) {
     const fromField = parsePackageManagerField(
         typeof packageJson.packageManager === "string" ? packageJson.packageManager : undefined
     );
@@ -42,60 +32,49 @@ function detectPackageManager(
     if (fs.existsSync(path.join(targetPath, "package-lock.json"))) return "npm";
     return "bun";
 }
-
-function installDevDependencies(targetPath: string, manager: PackageManager, deps: string[]): void {
-    if (!hasCommand(manager)) {
+function installDevDependencies(targetPath, manager, deps) {
+    if (!(0, repo_1.hasCommand)(manager)) {
         console.error(`warning: ${manager} not found; install ${deps.join(", ")} manually`);
         return;
     }
-
-    const argsByManager: Record<PackageManager, string[]> = {
+    const argsByManager = {
         bun: ["add", "-d", ...deps],
         pnpm: ["add", "-D", ...deps],
         yarn: ["add", "-D", ...deps],
         npm: ["install", "-D", ...deps],
     };
-
-    execFileSync(manager, argsByManager[manager], { cwd: targetPath, stdio: "inherit" });
+    (0, child_process_1.execFileSync)(manager, argsByManager[manager], {
+        cwd: targetPath,
+        stdio: "inherit",
+    });
 }
-
-export function ensurePrettierPlugins(
-    targetPath: string,
-    presets: Set<string>,
-    options: { astro: boolean }
-): PrettierPluginResult {
+function ensurePrettierPlugins(targetPath, presets, options) {
     if (!presets.has("web")) {
         return { touchedFiles: [], pluginsAvailable: false };
     }
-
     const prettierPlugins = options.astro
         ? [...prettierPluginsBase, "prettier-plugin-astro"]
         : prettierPluginsBase;
-
     const pkgPath = path.join(targetPath, "package.json");
     if (!fs.existsSync(pkgPath)) {
         console.error("warning: package.json missing; skipping prettier plugin install");
         return { touchedFiles: [], pluginsAvailable: false };
     }
-
     const raw = fs.readFileSync(pkgPath, "utf8");
-    const pkg = JSON.parse(raw) as Record<string, unknown>;
-    const devDeps = (pkg.devDependencies as Record<string, string> | undefined) ?? {};
-    const deps = (pkg.dependencies as Record<string, string> | undefined) ?? {};
-
+    const pkg = JSON.parse(raw);
+    const devDeps = pkg.devDependencies ?? {};
+    const deps = pkg.dependencies ?? {};
     const missing = prettierPlugins.filter((plugin) => !devDeps[plugin] && !deps[plugin]);
     if (missing.length === 0) {
         return { touchedFiles: [], pluginsAvailable: true };
     }
-
     const manager = detectPackageManager(targetPath, pkg);
     console.log(`install: ${missing.join(", ")} (${manager})`);
-    if (!hasCommand(manager)) {
+    if (!(0, repo_1.hasCommand)(manager)) {
         console.error(`warning: ${manager} not found; skipping prettier plugin update`);
         return { touchedFiles: [], pluginsAvailable: false };
     }
     installDevDependencies(targetPath, manager, missing);
-
     const touched = ["package.json"];
     const lockCandidates = [
         "package-lock.json",

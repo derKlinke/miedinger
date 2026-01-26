@@ -1,6 +1,5 @@
 export type Mode = "detect" | "interactive" | "only";
 export type JustMode = "auto" | "force" | "skip";
-export type PrekMode = "auto" | "force" | "skip";
 
 export interface CliOptions {
     targetDir: string;
@@ -10,5 +9,5 @@ export interface CliOptions {
     repoUrl: string;
     repoRef: string;
     justMode: JustMode;
-    prekMode: PrekMode;
+    autoCommit: boolean;
 }

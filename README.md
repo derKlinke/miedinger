@@ -7,6 +7,9 @@ Shared formatter configs for my projects. Small, predictable, and easy to drop i
 
 The project is named after Max Miedinger, creator of Helvetica. A timeless and beautiful font, something I'd like to achieve in my code.
 
+> [!ATTENTION]
+> Destructive by design. Installer removes alternate configs (including in subfolders), overwrites any `format` recipe in your Justfile, and always overwrites `.pre-commit-config.yaml`. Use only if that is acceptable.
+
 ## What’s inside
 
 - Swift: `.swiftlint.yml`, `.swiftformat`
@@ -22,6 +25,8 @@ The project is named after Max Miedinger, creator of Helvetica. A timeless and b
 ```sh
 npx @derklinke/miedinger --detect --force
 ```
+
+Add `--commit` to auto-commit managed changes when the repo is clean.
 
 ## Selection
 
@@ -53,22 +58,21 @@ Installer cleanup:
 - Removes legacy/alternate config filenames and duplicates in subfolders.
 - Keeps a single canonical config per tool at repo root.
 - If `package.json` exists, installs the Tailwind Prettier plugin, and installs the Astro plugin only when Astro files/configs are detected.
-- Auto-commits managed config changes when the repo has no staged changes and those files were clean before install.
+- Auto-commits managed config changes only when `--commit` is passed.
 - SQLFluff config excludes `**/migrations/**` by default (preserves migrations).
 - Adds a GitHub Actions sync workflow (`.github/workflows/sync-format-configs.yml`) that listens for `repository_dispatch` from the GitHub App.
 
 ### Justfile integration
 
-If a `Justfile` (or `justfile`) exists, miedinger will add a standard `format` recipe
-when missing, and will update existing `format` recipes to the latest managed block.
-This keeps `just format` consistent across repos.
+If a `Justfile` (or `justfile`) exists, miedinger will replace any existing `format`
+recipe and `fmt`/`f` aliases with the managed block. This keeps `just format` consistent
+across repos.
 
 Flags:
 
 - `--just` creates a new `Justfile` if none exists.
 - `--no-just` skips Justfile integration entirely.
-- `--prek` writes `.pre-commit-config.yaml` (always allowed, independent of Justfile).
-- `--no-prek` skips pre-commit integration.
+- `--commit` auto-commits managed changes when safe.
 
 The managed block includes:
 
@@ -82,7 +86,7 @@ Managed blocks are wrapped in `# format-configs` / `# /format-configs` (legacy m
 ## GitHub App sync (recommended)
 
 For multi-repo setups, install the GitHub App so sync runs on the target repo's CI:
-https://github.com/apps/miedinger-sync
+[miedinger-sync GitHub App](https://github.com/apps/miedinger-sync)
 
 The app dispatches `repository_dispatch` events to installed repos on each release.
 
@@ -131,7 +135,7 @@ This repo supports `prek` (pre-commit compatible). To enable:
 prek install
 ```
 
-Installer writes a `.pre-commit-config.yaml` based on selected presets.
+Installer always writes a `.pre-commit-config.yaml` based on selected presets.
 Hooks run only on staged files and only for relevant formatters.
 If `prek` is installed, the installer runs `prek install` automatically.
 

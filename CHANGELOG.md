@@ -1,3 +1,10 @@
+## [0.9.1](https://github.com/derKlinke/miedinger/compare/v0.9.0...v0.9.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* dispatch sync after release ([0728cfc](https://github.com/derKlinke/miedinger/commit/0728cfcfe9f12345b06ee8a95ece2a57956b2408))
+
 # [0.9.0](https://github.com/derKlinke/miedinger/compare/v0.8.0...v0.9.0) (2026-01-26)
 
 

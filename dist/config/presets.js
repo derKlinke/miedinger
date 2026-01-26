@@ -8,7 +8,7 @@ exports.presetFiles = {
     swift: [".swiftformat", ".swiftlint.yml"],
     web: [".prettierrc.json", ".prettierignore"],
     markdown: [".markdownlint.json", ".markdownlintignore"],
-    clang: [".clang-format"],
+    clang: [".clang-format", ".clang-format-ignore"],
     sql: [".sqlfluff"],
 };
 function expandToken(token) {
@@ -28,7 +28,7 @@ function derivePresets(files) {
     if (files.has(".markdownlint.json") || files.has(".markdownlintignore")) {
         presets.add("markdown");
     }
-    if (files.has(".clang-format")) {
+    if (files.has(".clang-format") || files.has(".clang-format-ignore")) {
         presets.add("clang");
     }
     if (files.has(".sqlfluff")) {
@@ -44,16 +44,13 @@ function detectPresets(files) {
     let hasSql = false;
     for (const file of files) {
         const rel = file.toLowerCase();
-        if (
-            rel.endsWith(".swift") ||
+        if (rel.endsWith(".swift") ||
             rel.endsWith("/package.swift") ||
             rel.includes(".xcodeproj/") ||
-            rel.includes(".xcworkspace/")
-        ) {
+            rel.includes(".xcworkspace/")) {
             hasSwift = true;
         }
-        if (
-            rel.endsWith(".js") ||
+        if (rel.endsWith(".js") ||
             rel.endsWith(".ts") ||
             rel.endsWith(".jsx") ||
             rel.endsWith(".tsx") ||
@@ -68,15 +65,13 @@ function detectPresets(files) {
             rel.endsWith("/yarn.lock") ||
             rel.endsWith("/bun.lockb") ||
             rel.endsWith("/deno.json") ||
-            rel.endsWith("/deno.jsonc")
-        ) {
+            rel.endsWith("/deno.jsonc")) {
             hasWeb = true;
         }
         if (rel.endsWith(".md") || rel.endsWith(".mdx")) {
             hasMarkdown = true;
         }
-        if (
-            rel.endsWith(".c") ||
+        if (rel.endsWith(".c") ||
             rel.endsWith(".h") ||
             rel.endsWith(".cpp") ||
             rel.endsWith(".hpp") ||
@@ -84,8 +79,7 @@ function detectPresets(files) {
             rel.endsWith(".mm") ||
             rel.endsWith(".cc") ||
             rel.endsWith(".cxx") ||
-            rel.endsWith(".hxx")
-        ) {
+            rel.endsWith(".hxx")) {
             hasClang = true;
         }
         if (rel.endsWith(".sql")) {
@@ -93,10 +87,15 @@ function detectPresets(files) {
         }
     }
     const presets = [];
-    if (hasSwift) presets.push("swift");
-    if (hasWeb) presets.push("web");
-    if (hasMarkdown) presets.push("markdown");
-    if (hasClang) presets.push("clang");
-    if (hasSql) presets.push("sql");
+    if (hasSwift)
+        presets.push("swift");
+    if (hasWeb)
+        presets.push("web");
+    if (hasMarkdown)
+        presets.push("markdown");
+    if (hasClang)
+        presets.push("clang");
+    if (hasSql)
+        presets.push("sql");
     return presets;
 }

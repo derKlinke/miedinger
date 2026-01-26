@@ -29,13 +29,11 @@ function resolveConfigDir(options) {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `${repoSlug}-`));
     const archivePath = path.join(tmpDir, `${repoSlug}.tgz`);
     const url = `${options.repoUrl}/archive/${options.repoRef}.tar.gz`;
-    (0, child_process_1.execFileSync)("curl", ["-fsSL", url, "-o", archivePath], {
-        stdio: "inherit",
-    });
-    (0, child_process_1.execFileSync)("tar", ["-xzf", archivePath, "-C", tmpDir], {
-        stdio: "inherit",
-    });
-    const entries = fs.readdirSync(tmpDir).filter((entry) => entry.startsWith(`${repoSlug}-`));
+    (0, child_process_1.execFileSync)("curl", ["-fsSL", url, "-o", archivePath], { stdio: "inherit" });
+    (0, child_process_1.execFileSync)("tar", ["-xzf", archivePath, "-C", tmpDir], { stdio: "inherit" });
+    const entries = fs
+        .readdirSync(tmpDir)
+        .filter((entry) => entry.startsWith(`${repoSlug}-`));
     if (entries.length === 0) {
         console.error(`error: failed to extract ${repoSlug}`);
         process.exit(1);
@@ -49,7 +47,8 @@ function resolveConfigDir(options) {
     const cleanup = () => {
         try {
             fs.rmSync(tmpDir, { recursive: true, force: true });
-        } catch {
+        }
+        catch {
             // ignore cleanup errors
         }
     };
@@ -63,21 +62,19 @@ function hasCommand(command) {
             stdio: "ignore",
         });
         return true;
-    } catch {
+    }
+    catch {
         return false;
     }
 }
 function isGitRepo(dir) {
     try {
-        const result = (0, child_process_1.execFileSync)(
-            "git",
-            ["-C", dir, "rev-parse", "--is-inside-work-tree"],
-            {
-                stdio: ["ignore", "pipe", "ignore"],
-            }
-        );
+        const result = (0, child_process_1.execFileSync)("git", ["-C", dir, "rev-parse", "--is-inside-work-tree"], {
+            stdio: ["ignore", "pipe", "ignore"],
+        });
         return String(result).trim() === "true";
-    } catch {
+    }
+    catch {
         return false;
     }
 }
@@ -92,13 +89,9 @@ function listGitFiles(dir) {
         .map((file) => path.join(dir, file));
 }
 function listGitUntrackedFiles(dir) {
-    const output = (0, child_process_1.execFileSync)(
-        "git",
-        ["-C", dir, "ls-files", "--others", "--exclude-standard"],
-        {
-            stdio: ["ignore", "pipe", "ignore"],
-        }
-    );
+    const output = (0, child_process_1.execFileSync)("git", ["-C", dir, "ls-files", "--others", "--exclude-standard"], {
+        stdio: ["ignore", "pipe", "ignore"],
+    });
     return String(output)
         .split("\n")
         .map((line) => line.trim())
@@ -117,7 +110,8 @@ function listFilesRecursive(dir) {
             const fullPath = path.join(current, entry.name);
             if (entry.isDirectory()) {
                 walk(fullPath);
-            } else if (entry.isFile()) {
+            }
+            else if (entry.isFile()) {
                 results.push(fullPath);
             }
         }

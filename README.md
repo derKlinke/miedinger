@@ -13,7 +13,7 @@ The project is named after Max Miedinger, creator of Helvetica. A timeless and b
 ## What’s inside
 
 - Swift: `.swiftlint.yml`, `.swiftformat`
-- C/C++/Obj-C: `.clang-format`
+- C/C++/Obj-C: `.clang-format`, `.clang-format-ignore`
 - Markdown: `.markdownlint.json`, `.markdownlintignore`
 - Web: `.prettierrc.json`, `.prettierignore`
 - SQL: `.sqlfluff`

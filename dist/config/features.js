@@ -14,7 +14,8 @@ function hasAstroDependency(targetPath) {
         const deps = pkg.dependencies ?? {};
         const devDeps = pkg.devDependencies ?? {};
         return Boolean(deps.astro || devDeps.astro);
-    } catch {
+    }
+    catch {
         return false;
     }
 }
@@ -31,12 +32,10 @@ function detectAstro(targetPath, files) {
             hasAstroFiles = true;
             continue;
         }
-        if (
-            rel.endsWith("/astro.config.mjs") ||
+        if (rel.endsWith("/astro.config.mjs") ||
             rel.endsWith("/astro.config.cjs") ||
             rel.endsWith("/astro.config.js") ||
-            rel.endsWith("/astro.config.ts")
-        ) {
+            rel.endsWith("/astro.config.ts")) {
             hasAstroConfig = true;
         }
     }

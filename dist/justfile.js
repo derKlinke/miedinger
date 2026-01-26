@@ -23,21 +23,16 @@ function formatRecipeLines(presets) {
     lines.push("    just --fmt --unstable");
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
-        lines.push(
-            "    if command -v swiftlint >/dev/null; then swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging; fi"
-        );
+        lines.push("    if command -v swiftlint >/dev/null; then swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging; fi");
     }
     if (presets.has("web")) {
         lines.push("    npx --yes prettier --write .");
     }
     if (presets.has("markdown")) {
-        lines.push(
-            '    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
-        );
+        lines.push('    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"');
     }
     if (presets.has("clang")) {
-        const clangLine =
-            "    if command -v clang-format >/dev/null; then if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git ls-files -z '*.c' '*.cc' '*.cpp' '*.cxx' '*.h' '*.hh' '*.hpp' '*.hxx' '*.m' '*.mm' | xargs -0 clang-format -i; else find . -type f \\(" +
+        const clangLine = "    if command -v clang-format >/dev/null; then if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git ls-files -z '*.c' '*.cc' '*.cpp' '*.cxx' '*.h' '*.hh' '*.hpp' '*.hxx' '*.m' '*.mm' | xargs -0 clang-format -i; else find . -type f \\(" +
             " -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.h' -o -name '*.hh' -o -name '*.hpp' -o -name '*.hxx' -o -name '*.m' -o -name '*.mm' \\) -print0 | xargs -0 clang-format -i; fi; fi";
         lines.push(clangLine);
     }
@@ -137,16 +132,15 @@ function updateJustfileContent(content, block) {
     const existingBlock = findFormatBlockRange(withoutAlias);
     const baseLines = existingBlock
         ? [
-              ...withoutAlias.slice(0, existingBlock.start),
-              ...withoutAlias.slice(existingBlock.end + 1),
-          ]
+            ...withoutAlias.slice(0, existingBlock.start),
+            ...withoutAlias.slice(existingBlock.end + 1),
+        ]
         : withoutAlias;
     const withoutFormats = trimTrailingBlankLines(removeFormatTargets(baseLines));
     if (withoutFormats.length === 0) {
         return block.join("\n") + "\n";
     }
-    const needsSpacer =
-        withoutFormats.length > 0 && withoutFormats[withoutFormats.length - 1].trim() !== "";
+    const needsSpacer = withoutFormats.length > 0 && withoutFormats[withoutFormats.length - 1].trim() !== "";
     const merged = needsSpacer ? [...withoutFormats, "", ...block] : [...withoutFormats, ...block];
     return merged.join("\n").trimEnd() + "\n";
 }

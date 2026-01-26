@@ -32,15 +32,15 @@ async function runApp(options) {
     const repoFiles = (0, repo_1.isGitRepo)(targetPath)
         ? (0, repo_1.listGitFiles)(targetPath)
         : (0, repo_1.listFilesRecursive)(targetPath);
-    const preExistingChanges =
-        options.autoCommit && (0, repo_1.isGitRepo)(targetPath)
-            ? (0, git_1.listStatusPaths)(targetPath)
-            : new Set();
+    const preExistingChanges = options.autoCommit && (0, repo_1.isGitRepo)(targetPath)
+        ? (0, git_1.listStatusPaths)(targetPath)
+        : new Set();
     const hasAstro = (0, features_1.detectAstro)(targetPath, repoFiles);
     let tokens = [];
     if (options.mode === "detect") {
         tokens = (0, presets_1.detectPresets)(repoFiles);
-    } else if (options.mode === "interactive") {
+    }
+    else if (options.mode === "interactive") {
         const selection = await (0, prompt_1.promptInteractive)([
             "swift",
             "web",
@@ -52,12 +52,15 @@ async function runApp(options) {
         ]);
         if (selection.includes("all")) {
             tokens = ["swift", "web", "markdown", "clang", "sql"];
-        } else if (selection.includes("none")) {
+        }
+        else if (selection.includes("none")) {
             tokens = [];
-        } else {
+        }
+        else {
             tokens = selection;
         }
-    } else if (options.mode === "only") {
+    }
+    else if (options.mode === "only") {
         tokens = options.onlyTokens;
     }
     if (tokens.length === 0) {
@@ -65,14 +68,10 @@ async function runApp(options) {
         return;
     }
     const fileSet = new Set();
-    tokens.forEach((token) =>
-        (0, presets_1.expandToken)(token).forEach((file) => fileSet.add(file))
-    );
+    tokens.forEach((token) => (0, presets_1.expandToken)(token).forEach((file) => fileSet.add(file)));
     const selectedPresets = (0, presets_1.derivePresets)(fileSet);
     const removed = (0, cleanup_1.removeLegacyConfigs)(targetPath, selectedPresets, fileSet);
-    const pluginResult = (0, deps_1.ensurePrettierPlugins)(targetPath, selectedPresets, {
-        astro: hasAstro,
-    });
+    const pluginResult = (0, deps_1.ensurePrettierPlugins)(targetPath, selectedPresets, { astro: hasAstro });
     for (const file of fileSet) {
         const src = path.join(configDir, file);
         const dst = path.join(targetPath, file);
@@ -92,11 +91,7 @@ async function runApp(options) {
         pluginsAvailable: pluginResult.pluginsAvailable,
     });
     const sqlfluffFiles = (0, sqlfluff_1.ensureSqlfluffExclude)(targetPath, selectedPresets);
-    const justfilePath = (0, justfile_1.maybeUpdateJustfile)(
-        targetPath,
-        selectedPresets,
-        options.justMode
-    );
+    const justfilePath = (0, justfile_1.maybeUpdateJustfile)(targetPath, selectedPresets, options.justMode);
     const prekPath = (0, prek_1.maybeUpdatePrekConfig)(targetPath, selectedPresets);
     const workflowPath = (0, sync_1.maybeUpdateSyncWorkflow)(targetPath, {
         force: options.force,
@@ -109,9 +104,12 @@ async function runApp(options) {
     pluginResult.touchedFiles.forEach((file) => managedPaths.add(file));
     prettierFiles.forEach((file) => managedPaths.add(file));
     sqlfluffFiles.forEach((file) => managedPaths.add(file));
-    if (justfilePath) managedPaths.add(justfilePath);
-    if (prekPath) managedPaths.add(prekPath);
-    if (workflowPath) managedPaths.add(workflowPath);
+    if (justfilePath)
+        managedPaths.add(justfilePath);
+    if (prekPath)
+        managedPaths.add(prekPath);
+    if (workflowPath)
+        managedPaths.add(workflowPath);
     if (options.autoCommit) {
         (0, git_1.maybeAutoCommit)(targetPath, managedPaths, preExistingChanges);
     }

@@ -40,7 +40,7 @@ const cleanupFilesByPreset: Record<string, string[]> = {
         "markdownlint-cli2.mjs",
         ".markdownlintignore",
     ],
-    clang: [".clang-format", "_clang-format"],
+    clang: [".clang-format", "_clang-format", ".clang-format-ignore"],
     sql: [".sqlfluff"],
 };
 

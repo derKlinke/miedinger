@@ -25,11 +25,12 @@ export function listPresets(): void {
   swift     -> .swiftformat, .swiftlint.yml
   web       -> .prettierrc.json, .prettierignore
   markdown  -> .markdownlint.json, .markdownlintignore
-  clang     -> .clang-format
+  clang     -> .clang-format, .clang-format-ignore
   sql       -> .sqlfluff
 
 Files:
   .clang-format
+  .clang-format-ignore
   .markdownlint.json
   .markdownlintignore
   .prettierrc.json

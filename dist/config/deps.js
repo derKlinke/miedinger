@@ -7,7 +7,8 @@ const child_process_1 = require("child_process");
 const repo_1 = require("../fs/repo");
 const prettierPluginsBase = ["prettier-plugin-tailwindcss"];
 function parsePackageManagerField(value) {
-    if (!value) return null;
+    if (!value)
+        return null;
     const name = value.split("@")[0];
     if (name === "bun" || name === "pnpm" || name === "yarn" || name === "npm") {
         return name;
@@ -15,21 +16,20 @@ function parsePackageManagerField(value) {
     return null;
 }
 function detectPackageManager(targetPath, packageJson) {
-    const fromField = parsePackageManagerField(
-        typeof packageJson.packageManager === "string" ? packageJson.packageManager : undefined
-    );
+    const fromField = parsePackageManagerField(typeof packageJson.packageManager === "string" ? packageJson.packageManager : undefined);
     if (fromField) {
         return fromField;
     }
-    if (fs.existsSync(path.join(targetPath, "pnpm-lock.yaml"))) return "pnpm";
-    if (fs.existsSync(path.join(targetPath, "yarn.lock"))) return "yarn";
-    if (
-        fs.existsSync(path.join(targetPath, "bun.lockb")) ||
-        fs.existsSync(path.join(targetPath, "bun.lock"))
-    ) {
+    if (fs.existsSync(path.join(targetPath, "pnpm-lock.yaml")))
+        return "pnpm";
+    if (fs.existsSync(path.join(targetPath, "yarn.lock")))
+        return "yarn";
+    if (fs.existsSync(path.join(targetPath, "bun.lockb")) ||
+        fs.existsSync(path.join(targetPath, "bun.lock"))) {
         return "bun";
     }
-    if (fs.existsSync(path.join(targetPath, "package-lock.json"))) return "npm";
+    if (fs.existsSync(path.join(targetPath, "package-lock.json")))
+        return "npm";
     return "bun";
 }
 function installDevDependencies(targetPath, manager, deps) {
@@ -43,10 +43,7 @@ function installDevDependencies(targetPath, manager, deps) {
         yarn: ["add", "-D", ...deps],
         npm: ["install", "-D", ...deps],
     };
-    (0, child_process_1.execFileSync)(manager, argsByManager[manager], {
-        cwd: targetPath,
-        stdio: "inherit",
-    });
+    (0, child_process_1.execFileSync)(manager, argsByManager[manager], { cwd: targetPath, stdio: "inherit" });
 }
 function ensurePrettierPlugins(targetPath, presets, options) {
     if (!presets.has("web")) {

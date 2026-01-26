@@ -10,7 +10,8 @@ function uniquePlugins(plugins) {
     const seen = new Set();
     const result = [];
     for (const plugin of plugins) {
-        if (seen.has(plugin)) continue;
+        if (seen.has(plugin))
+            continue;
         seen.add(plugin);
         result.push(plugin);
     }
@@ -25,10 +26,8 @@ function formatJson(value, indent = 0) {
         }
         const inline = value.map((item) => JSON.stringify(item)).join(", ");
         const inlineValue = `[${inline}]`;
-        if (
-            value.every((item) => typeof item === "string") &&
-            padding.length + inlineValue.length <= printWidth
-        ) {
+        if (value.every((item) => typeof item === "string") &&
+            padding.length + inlineValue.length <= printWidth) {
             return inlineValue;
         }
         const items = value
@@ -42,10 +41,7 @@ function formatJson(value, indent = 0) {
             return "{}";
         }
         const items = entries
-            .map(
-                ([key, item]) =>
-                    `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(item, nextIndent)}`
-            )
+            .map(([key, item]) => `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(item, nextIndent)}`)
             .join(",\n");
         return `{\n${items}\n${padding}}`;
     }
@@ -67,7 +63,8 @@ function updatePrettierConfigPlugins(targetPath, options) {
     let config;
     try {
         config = JSON.parse(raw);
-    } catch {
+    }
+    catch {
         console.error(`warning: failed to parse ${configPath}; skipping plugin update`);
         return [];
     }
@@ -85,17 +82,18 @@ function updatePrettierConfigPlugins(targetPath, options) {
             desired.push(astroPlugin);
         }
         next = uniquePlugins(desired);
-    } else {
+    }
+    else {
         next = existing.filter((plugin) => plugin !== tailwindPlugin && plugin !== astroPlugin);
     }
-    const same =
-        existing.length === next.length && existing.every((value, index) => value === next[index]);
+    const same = existing.length === next.length && existing.every((value, index) => value === next[index]);
     if (same) {
         return [];
     }
     if (next.length === 0) {
         delete config.plugins;
-    } else {
+    }
+    else {
         config.plugins = next;
     }
     writeJsonFile(configPath, config);

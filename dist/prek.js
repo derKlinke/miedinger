@@ -84,17 +84,16 @@ function maybeUpdatePrekConfig(targetPath, presets) {
     fs.writeFileSync(configPath, config, "utf8");
     if ((0, repo_1.hasCommand)("prek")) {
         try {
-            (0, child_process_1.execFileSync)("prek", ["install"], {
-                cwd: targetPath,
-                stdio: "inherit",
-            });
-        } catch (err) {
+            (0, child_process_1.execFileSync)("prek", ["install"], { cwd: targetPath, stdio: "inherit" });
+        }
+        catch (err) {
             console.error("warning: failed to run prek install");
             if (err instanceof Error) {
                 console.error(err.message);
             }
         }
-    } else {
+    }
+    else {
         console.error("skip: prek not installed (install via brew or cargo)");
     }
     return configPath;

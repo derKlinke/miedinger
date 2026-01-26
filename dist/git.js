@@ -17,15 +17,9 @@ function listStatusPaths(targetPath) {
     if (!(0, repo_1.isGitRepo)(targetPath)) {
         return new Set();
     }
-    const output = String(
-        (0, child_process_1.execFileSync)(
-            "git",
-            ["-C", targetPath, "status", "--porcelain=v1", "-z"],
-            {
-                stdio: ["ignore", "pipe", "ignore"],
-            }
-        )
-    );
+    const output = String((0, child_process_1.execFileSync)("git", ["-C", targetPath, "status", "--porcelain=v1", "-z"], {
+        stdio: ["ignore", "pipe", "ignore"],
+    }));
     if (!output) {
         return new Set();
     }
@@ -33,29 +27,28 @@ function listStatusPaths(targetPath) {
     const entries = output.split("\0").filter(Boolean);
     for (let idx = 0; idx < entries.length; idx += 1) {
         const entry = entries[idx];
-        if (entry.length < 3) continue;
+        if (entry.length < 3)
+            continue;
         const status = entry.slice(0, 2);
         let rel = entry.slice(3);
         if ((status.includes("R") || status.includes("C")) && idx + 1 < entries.length) {
             rel = entries[idx + 1];
             idx += 1;
         }
-        if (!rel) continue;
+        if (!rel)
+            continue;
         paths.add(path.join(targetPath, rel));
     }
     return paths;
 }
 function hasStagedChanges(targetPath) {
     try {
-        (0, child_process_1.execFileSync)(
-            "git",
-            ["-C", targetPath, "diff", "--cached", "--quiet"],
-            {
-                stdio: "ignore",
-            }
-        );
+        (0, child_process_1.execFileSync)("git", ["-C", targetPath, "diff", "--cached", "--quiet"], {
+            stdio: "ignore",
+        });
         return false;
-    } catch {
+    }
+    catch {
         return true;
     }
 }
@@ -65,22 +58,20 @@ function isDetachedHead(targetPath) {
             stdio: "ignore",
         });
         return false;
-    } catch {
+    }
+    catch {
         return true;
     }
 }
 function isTracked(targetPath, filePath) {
     const relPath = toGitPath(targetPath, filePath);
     try {
-        (0, child_process_1.execFileSync)(
-            "git",
-            ["-C", targetPath, "ls-files", "--error-unmatch", relPath],
-            {
-                stdio: "ignore",
-            }
-        );
+        (0, child_process_1.execFileSync)("git", ["-C", targetPath, "ls-files", "--error-unmatch", relPath], {
+            stdio: "ignore",
+        });
         return true;
-    } catch {
+    }
+    catch {
         return false;
     }
 }
@@ -97,9 +88,7 @@ function maybeAutoCommit(targetPath, managedPaths, preExistingChanges) {
     }
     for (const path of managedPaths) {
         if (preExistingChanges.has(path)) {
-            console.error(
-                "skip: managed files already modified before install (auto-commit disabled)"
-            );
+            console.error("skip: managed files already modified before install (auto-commit disabled)");
             return;
         }
     }
@@ -122,11 +111,7 @@ function maybeAutoCommit(targetPath, managedPaths, preExistingChanges) {
     if (!hasStagedChanges(targetPath)) {
         return;
     }
-    (0, child_process_1.execFileSync)(
-        "git",
-        ["-C", targetPath, "commit", "-m", "chore: sync format configs [skip ci]"],
-        {
-            stdio: "inherit",
-        }
-    );
+    (0, child_process_1.execFileSync)("git", ["-C", targetPath, "commit", "-m", "chore: sync format configs [skip ci]"], {
+        stdio: "inherit",
+    });
 }

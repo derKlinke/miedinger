@@ -83,7 +83,8 @@ function parseArgs(args, defaults) {
                 if (!targetDir) {
                     targetDir = arg;
                     idx += 1;
-                } else {
+                }
+                else {
                     console.error(`error: unexpected argument: ${arg}`);
                     (0, usage_1.usage)();
                     process.exit(1);

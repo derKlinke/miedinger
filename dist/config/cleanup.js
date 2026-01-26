@@ -42,14 +42,15 @@ const cleanupFilesByPreset = {
         "markdownlint-cli2.mjs",
         ".markdownlintignore",
     ],
-    clang: [".clang-format", "_clang-format"],
+    clang: [".clang-format", "_clang-format", ".clang-format-ignore"],
     sql: [".sqlfluff"],
 };
 function buildCleanupSet(presets) {
     const names = new Set();
     for (const preset of presets) {
         const files = cleanupFilesByPreset[preset];
-        if (!files) continue;
+        if (!files)
+            continue;
         files.forEach((file) => names.add(file));
     }
     return names;
@@ -61,10 +62,7 @@ function removeLegacyConfigs(targetPath, presets, keepFiles) {
     }
     const removed = [];
     const files = (0, repo_1.isGitRepo)(targetPath)
-        ? [
-              ...(0, repo_1.listGitFiles)(targetPath),
-              ...(0, repo_1.listGitUntrackedFiles)(targetPath),
-          ]
+        ? [...(0, repo_1.listGitFiles)(targetPath), ...(0, repo_1.listGitUntrackedFiles)(targetPath)]
         : (0, repo_1.listFilesRecursive)(targetPath);
     for (const file of files) {
         const rel = path.relative(targetPath, file);
@@ -83,7 +81,8 @@ function removeLegacyConfigs(targetPath, presets, keepFiles) {
             fs.unlinkSync(file);
             removed.push(file);
             console.log(`remove: ${file}`);
-        } catch (err) {
+        }
+        catch (err) {
             console.error(`warning: failed to remove ${file}`);
             if (err instanceof Error) {
                 console.error(err.message);

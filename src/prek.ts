@@ -11,6 +11,7 @@ type PrekHook = {
     language: "system";
     files?: string;
     exclude?: string;
+    pass_filenames?: boolean;
 };
 
 function buildPrekConfig(presets: Set<string>): string | null {
@@ -51,6 +52,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
             entry: "swiftformat",
             language: "system",
             files: "\\.(swift)$",
+            pass_filenames: true,
         });
         addHook({
             id: "swiftlint",
@@ -58,6 +60,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
             entry: "swiftlint lint --config .swiftlint.yml --force-exclude --reporter github-actions-logging",
             language: "system",
             files: "\\.(swift)$",
+            pass_filenames: true,
         });
     }
 

@@ -3,7 +3,13 @@ import * as path from "path";
 import { isGitRepo, listGitFiles, listGitUntrackedFiles, listFilesRecursive } from "../fs/repo";
 
 const cleanupFilesByPreset: Record<string, string[]> = {
-    swift: [".swiftformat", ".swiftlint.yml", ".swiftlint.yaml"],
+    swift: [
+        ".swiftformat",
+        ".swiftlint.yml",
+        ".swiftlint.yaml",
+        ".prek-swiftformat.sh",
+        ".prek-swiftlint.sh",
+    ],
     web: [
         ".prettierrc",
         ".prettierrc.json",

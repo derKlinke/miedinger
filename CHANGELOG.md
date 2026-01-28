@@ -1,3 +1,10 @@
+## [0.9.3](https://github.com/derKlinke/miedinger/compare/v0.9.2...v0.9.3) (2026-01-28)
+
+
+### Bug Fixes
+
+* pass swift files to prek hooks ([75429d9](https://github.com/derKlinke/miedinger/commit/75429d97d45edb7938981bb1c89f6c26054d43ac))
+
 ## [0.9.2](https://github.com/derKlinke/miedinger/compare/v0.9.1...v0.9.2) (2026-01-28)
 
 

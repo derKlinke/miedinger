@@ -1,3 +1,10 @@
+## [0.9.2](https://github.com/derKlinke/miedinger/compare/v0.9.1...v0.9.2) (2026-01-28)
+
+
+### Bug Fixes
+
+* sync swiftformat config ([89bb6a7](https://github.com/derKlinke/miedinger/commit/89bb6a7906ed5a5fcabbd028f70c92d31311fdb4))
+
 ## [0.9.1](https://github.com/derKlinke/miedinger/compare/v0.9.0...v0.9.1) (2026-01-26)
 
 

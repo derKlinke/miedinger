@@ -53,10 +53,13 @@ function buildFormatBlock(presets: Set<string>): string[] {
     }
     return [
         "# format-configs",
+        "",
         "alias fmt := format",
         "alias f := format",
+        "",
         "[group('formatting')]",
         ...recipe,
+        "",
         "# /format-configs",
     ];
 }

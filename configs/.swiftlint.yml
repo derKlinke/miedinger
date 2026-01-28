@@ -66,6 +66,8 @@ excluded:
     - "**/target"
     - DerivedData
     - "**/DerivedData"
+    - SourcePackages
+    - "**/SourcePackages"
     - CMakeFiles
     - "**/CMakeFiles"
     - cmake-build-*

@@ -47,7 +47,7 @@ const cleanupFilesByPreset: Record<string, string[]> = {
         ".markdownlintignore",
     ],
     clang: [".clang-format", "_clang-format", ".clang-format-ignore"],
-    sql: [".sqlfluff"],
+    sql: [".sqlfluff", ".sqlfluffignore"],
 };
 
 function buildCleanupSet(presets: Set<string>): Set<string> {

@@ -3,7 +3,7 @@ export const presetFiles: Record<string, string[]> = {
     web: [".prettierrc.json", ".prettierignore"],
     markdown: [".markdownlint.json", ".markdownlintignore"],
     clang: [".clang-format", ".clang-format-ignore"],
-    sql: [".sqlfluff"],
+    sql: [".sqlfluff", ".sqlfluffignore"],
 };
 
 export function expandToken(token: string): string[] {
@@ -27,7 +27,7 @@ export function derivePresets(files: Set<string>): Set<string> {
     if (files.has(".clang-format") || files.has(".clang-format-ignore")) {
         presets.add("clang");
     }
-    if (files.has(".sqlfluff")) {
+    if (files.has(".sqlfluff") || files.has(".sqlfluffignore")) {
         presets.add("sql");
     }
     return presets;

@@ -1,3 +1,10 @@
+## [0.9.4](https://github.com/derKlinke/miedinger/compare/v0.9.3...v0.9.4) (2026-01-28)
+
+
+### Bug Fixes
+
+* align swiftlint excludes and justfile spacing ([ac4f7ac](https://github.com/derKlinke/miedinger/commit/ac4f7acd26ab4526a7da929b2d1cac06ea0d787f))
+
 ## [0.9.3](https://github.com/derKlinke/miedinger/compare/v0.9.2...v0.9.3) (2026-01-28)
 
 

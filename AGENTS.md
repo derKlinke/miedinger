@@ -41,6 +41,7 @@ node dist/format-configs.js --help
 ## Commit & Pull Request Guidelines
 
 - Commit messages follow Conventional Commits (e.g., `feat: add sqlfluff preset`, `fix: handle empty config`).
+- Commits that change config files must use `fix:` or `feat:` prefixes.
 - PRs: include a short summary, linked issue(s) if applicable, and validation notes (commands run and results).
 - If you modify `src/`, rebuild and include updated `dist/` artifacts in the PR.
 

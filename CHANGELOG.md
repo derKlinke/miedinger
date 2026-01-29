@@ -1,3 +1,10 @@
+## [0.9.5](https://github.com/derKlinke/miedinger/compare/v0.9.4...v0.9.5) (2026-01-29)
+
+
+### Bug Fixes
+
+* stop auto-running swiftlint ([db50965](https://github.com/derKlinke/miedinger/commit/db50965ed9a02649d82f408ef8d8e71015570e9b))
+
 ## [0.9.4](https://github.com/derKlinke/miedinger/compare/v0.9.3...v0.9.4) (2026-01-28)
 
 

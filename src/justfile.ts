@@ -22,9 +22,6 @@ function formatRecipeLines(presets: Set<string>): string[] {
     lines.push("    just --fmt --unstable");
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
-        lines.push(
-            "    if command -v swiftlint >/dev/null; then swiftlint --config .swiftlint.yml --force-exclude --reporter github-actions-logging; fi"
-        );
     }
     if (presets.has("web")) {
         lines.push("    npx --yes prettier --write .");

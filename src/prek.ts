@@ -54,14 +54,6 @@ function buildPrekConfig(presets: Set<string>): string | null {
             files: "\\.(swift)$",
             pass_filenames: true,
         });
-        addHook({
-            id: "swiftlint",
-            name: "swiftlint",
-            entry: "swiftlint lint --config .swiftlint.yml --force-exclude --reporter github-actions-logging",
-            language: "system",
-            files: "\\.(swift)$",
-            pass_filenames: true,
-        });
     }
 
     if (presets.has("clang")) {

@@ -2,7 +2,6 @@
 dialect = postgres
 templater = jinja
 max_line_length = 120
-exclude_paths = **/migrations/**
 
 [sqlfluff:rules:layout.indent]
 indent_unit = space

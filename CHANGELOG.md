@@ -1,3 +1,10 @@
+## [0.9.6](https://github.com/derKlinke/miedinger/compare/v0.9.5...v0.9.6) (2026-02-02)
+
+
+### Bug Fixes
+
+* limit sqlfluff excludes to migrations ([5ef9d25](https://github.com/derKlinke/miedinger/commit/5ef9d25bc4b075b4f4fcee7a61e75c6266b2d9b6))
+
 ## [0.9.5](https://github.com/derKlinke/miedinger/compare/v0.9.4...v0.9.5) (2026-01-29)
 
 

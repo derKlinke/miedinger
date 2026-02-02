@@ -1,3 +1,10 @@
+## [0.9.7](https://github.com/derKlinke/miedinger/compare/v0.9.6...v0.9.7) (2026-02-02)
+
+
+### Bug Fixes
+
+* remove exclude_paths from sqlfluff config ([e8d173c](https://github.com/derKlinke/miedinger/commit/e8d173c066f1d463c45c631209c7d7084d7815be))
+
 ## [0.9.6](https://github.com/derKlinke/miedinger/compare/v0.9.5...v0.9.6) (2026-02-02)
 
 

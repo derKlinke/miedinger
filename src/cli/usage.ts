@@ -23,18 +23,15 @@ Presets: swift, web, markdown, clang, sql`);
 export function listPresets(): void {
     console.log(`Presets:
   swift     -> .swiftformat, .swiftlint.yml
-  web       -> .prettierrc.json, .prettierignore
-  markdown  -> .markdownlint.json, .markdownlintignore
-  clang     -> .clang-format, .clang-format-ignore
+  web       -> .prettierrc.json
+  markdown  -> .markdownlint.json
+  clang     -> .clang-format
   sql       -> .sqlfluff
 
 Files:
   .clang-format
-  .clang-format-ignore
   .markdownlint.json
-  .markdownlintignore
   .prettierrc.json
-  .prettierignore
   .sqlfluff
   .swiftformat
   .swiftlint.yml`);

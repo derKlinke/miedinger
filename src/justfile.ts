@@ -28,7 +28,7 @@ function formatRecipeLines(presets: Set<string>): string[] {
     }
     if (presets.has("markdown")) {
         lines.push(
-            '    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
+            '    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json "**/*.md"'
         );
     }
     if (presets.has("clang")) {

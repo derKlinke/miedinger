@@ -31,6 +31,7 @@ node dist/format-configs.js --help
 
 - Formatting: Prettier config at `configs/.prettierrc.json` (4-space indent, semicolons, double quotes, print width 100, LF). Markdown override uses 2-space indent.
 - Linting: Markdownlint config at `configs/.markdownlint.json`.
+- Ignore files are repo-owned: do not sync or delete `*.ignore` files (`.prettierignore`, `.markdownlintignore`, `.clang-format-ignore`, `.sqlfluffignore`) in target repos.
 - Naming: `camelCase` for variables/functions, `PascalCase` for types/classes, `kebab-case` for filenames (e.g., `format-configs.ts`).
 
 ## Testing Guidelines

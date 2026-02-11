@@ -23,7 +23,6 @@ const cleanupFilesByPreset: Record<string, string[]> = {
         "prettier.config.cjs",
         "prettier.config.mjs",
         "prettier.config.ts",
-        ".prettierignore",
     ],
     markdown: [
         ".markdownlint",
@@ -44,10 +43,9 @@ const cleanupFilesByPreset: Record<string, string[]> = {
         "markdownlint-cli2.js",
         "markdownlint-cli2.cjs",
         "markdownlint-cli2.mjs",
-        ".markdownlintignore",
     ],
-    clang: [".clang-format", "_clang-format", ".clang-format-ignore"],
-    sql: [".sqlfluff", ".sqlfluffignore"],
+    clang: [".clang-format", "_clang-format"],
+    sql: [".sqlfluff"],
 };
 
 function buildCleanupSet(presets: Set<string>): Set<string> {

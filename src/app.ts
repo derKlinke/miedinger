@@ -14,6 +14,13 @@ import { maybeUpdatePrekConfig } from "./prek";
 import { listStatusPaths, maybeAutoCommit } from "./git";
 import { maybeUpdateSyncWorkflow } from "./github/sync";
 
+const unmanagedIgnoreFiles = new Set<string>([
+    ".prettierignore",
+    ".markdownlintignore",
+    ".clang-format-ignore",
+    ".sqlfluffignore",
+]);
+
 export async function runApp(options: CliOptions): Promise<void> {
     const targetPath = path.resolve(options.targetDir);
     if (!fs.existsSync(targetPath)) {
@@ -70,6 +77,15 @@ export async function runApp(options: CliOptions): Promise<void> {
 
     const fileSet = new Set<string>();
     tokens.forEach((token) => expandToken(token).forEach((file) => fileSet.add(file)));
+    for (const file of unmanagedIgnoreFiles) {
+        if (fileSet.delete(file)) {
+            console.log(`skip: ignore file is repo-owned ${file}`);
+        }
+    }
+    if (fileSet.size === 0) {
+        console.log("no configs selected");
+        return;
+    }
     const selectedPresets = derivePresets(fileSet);
 
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);

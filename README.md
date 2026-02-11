@@ -13,9 +13,9 @@ Named after Max Miedinger, the designer behind Helvetica. Just like that typefac
 ## What’s inside
 
 - **Swift**: `.swiftlint.yml`, `.swiftformat`
-- **C/C++/Obj-C**: `.clang-format`, `.clang-format-ignore`
-- **Markdown**: `.markdownlint.json`, `.markdownlintignore`
-- **Web**: `.prettierrc.json`, `.prettierignore`
+- **C/C++/Obj-C**: `.clang-format`
+- **Markdown**: `.markdownlint.json`
+- **Web**: `.prettierrc.json`
 - **SQL**: `.sqlfluff`
 
 ## Getting started
@@ -57,6 +57,7 @@ Behind the scenes, the installer tidies things up:
 
 - Removes old or alternate config filenames, including duplicates hiding in subfolders
 - Keeps one canonical config per tool at your repo root
+- Leaves ignore files (`*.ignore`) repo-owned; miedinger does not install or overwrite them
 - If you've got a `package.json`, it'll install the Tailwind Prettier plugin (and the Astro plugin if it detects Astro files)
 - Auto-commits config changes only if you pass `--commit`
 - Sets up SQLFluff to ignore `**/migrations/**` by default (your migrations stay untouched)

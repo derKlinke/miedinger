@@ -28,7 +28,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "prettier",
             name: "prettier",
-            entry: "npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
+            entry: "npx --yes prettier --config .prettierrc.json --write",
             language: "system",
             files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
             exclude: "^\\.pre-commit-config\\.ya?ml$",
@@ -39,7 +39,7 @@ function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "markdownlint",
             name: "markdownlint",
-            entry: "npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json --ignore-path .markdownlintignore",
+            entry: "npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json",
             language: "system",
             files: "\\.(md|mdx)$",
         });

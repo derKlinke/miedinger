@@ -1,3 +1,10 @@
+## [0.9.8](https://github.com/derKlinke/miedinger/compare/v0.9.7...v0.9.8) (2026-02-11)
+
+
+### Bug Fixes
+
+* keep formatter ignore files repo-owned ([3cd4ade](https://github.com/derKlinke/miedinger/commit/3cd4aded601dc13f9c444322cdaf6a937dbec369))
+
 ## [0.9.7](https://github.com/derKlinke/miedinger/compare/v0.9.6...v0.9.7) (2026-02-02)
 
 

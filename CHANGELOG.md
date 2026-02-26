@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/derKlinke/miedinger/compare/v0.9.8...v0.10.0) (2026-02-26)
+
+
+### Features
+
+* add gitleaks to generated pre-commit hooks ([92d4758](https://github.com/derKlinke/miedinger/commit/92d47580fe262666c379cd1f70f1e0f4ea3945cb))
+
 ## [0.9.8](https://github.com/derKlinke/miedinger/compare/v0.9.7...v0.9.8) (2026-02-11)
 
 

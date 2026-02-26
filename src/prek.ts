@@ -14,7 +14,7 @@ type PrekHook = {
     pass_filenames?: boolean;
 };
 
-function buildPrekConfig(presets: Set<string>): string | null {
+export function buildPrekConfig(presets: Set<string>): string | null {
     if (presets.size === 0) {
         return null;
     }
@@ -23,6 +23,14 @@ function buildPrekConfig(presets: Set<string>): string | null {
     const addHook = (hook: PrekHook): void => {
         hooks.push(hook);
     };
+
+    addHook({
+        id: "gitleaks",
+        name: "gitleaks",
+        entry: "gitleaks git --staged --no-banner --redact",
+        language: "system",
+        pass_filenames: false,
+    });
 
     if (presets.has("web")) {
         addHook({

@@ -134,6 +134,8 @@ prek install
 
 The installer will create a `.pre-commit-config.yaml` based on whichever presets you picked. The hooks are smart — they only run on files you've staged and only use the formatters that make sense for those files. If you've already got `prek` installed, the installer will run `prek install` for you automatically.
 
+By default, generated pre-commit config also includes a `gitleaks` staged scan hook (`gitleaks git --staged`), so make sure `gitleaks` is installed (for example via Homebrew).
+
 ## Project structure
 
 - `configs/` — the actual config files that get copied to your repos

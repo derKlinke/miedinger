@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/derKlinke/miedinger/compare/v0.10.0...v0.10.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* stabilize prek formatter hooks ([dd4044a](https://github.com/derKlinke/miedinger/commit/dd4044a01c4f464ab80d71f8c9f7fe804da2e957))
+
 # [0.10.0](https://github.com/derKlinke/miedinger/compare/v0.9.8...v0.10.0) (2026-02-26)
 
 

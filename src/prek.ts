@@ -12,6 +12,7 @@ type PrekHook = {
     files?: string;
     exclude?: string;
     pass_filenames?: boolean;
+    priority?: number;
 };
 
 export function buildPrekConfig(presets: Set<string>): string | null {
@@ -30,16 +31,18 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         entry: "gitleaks git --staged --no-banner --redact",
         language: "system",
         pass_filenames: false,
+        priority: 10,
     });
 
     if (presets.has("web")) {
         addHook({
             id: "prettier",
             name: "prettier",
-            entry: "npx --yes prettier --config .prettierrc.json --write",
+            entry: "npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
             language: "system",
             files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
             exclude: "^\\.pre-commit-config\\.ya?ml$",
+            priority: 0,
         });
     }
 
@@ -47,9 +50,10 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "markdownlint",
             name: "markdownlint",
-            entry: "npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json",
+            entry: "npx --yes -p markdownlint-cli markdownlint --fix --config .markdownlint.json --ignore-path .markdownlintignore",
             language: "system",
             files: "\\.(md|mdx)$",
+            priority: 0,
         });
     }
 
@@ -61,6 +65,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
             language: "system",
             files: "\\.(swift)$",
             pass_filenames: true,
+            priority: 0,
         });
     }
 
@@ -71,6 +76,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
             entry: "clang-format -i",
             language: "system",
             files: "\\.(c|cc|cpp|cxx|h|hh|hpp|hxx|m|mm)$",
+            priority: 0,
         });
     }
 
@@ -82,6 +88,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
             language: "system",
             files: "\\.(sql)$",
             exclude: "(^|/)migrations/",
+            priority: 0,
         });
     }
 

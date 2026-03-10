@@ -134,6 +134,8 @@ prek install
 
 The installer will create a `.pre-commit-config.yaml` based on whichever presets you picked. The hooks are smart — they only run on files you've staged and only use the formatters that make sense for those files. If you've already got `prek` installed, the installer will run `prek install` for you automatically.
 
+Generated formatter hooks are ordered explicitly so file-mutating formatters run before the staged `gitleaks` scan. Markdown hooks also run `markdownlint --fix`, which cuts down the common "commit failed, now fix and retry" loop to the cases where a rule is not auto-fixable.
+
 By default, generated pre-commit config also includes a `gitleaks` staged scan hook (`gitleaks git --staged`), so make sure `gitleaks` is installed (for example via Homebrew).
 
 ## Project structure

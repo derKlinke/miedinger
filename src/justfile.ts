@@ -24,11 +24,13 @@ function formatRecipeLines(presets: Set<string>): string[] {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
     }
     if (presets.has("web")) {
-        lines.push("    npx --yes prettier --write .");
+        lines.push(
+            "    npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write ."
+        );
     }
     if (presets.has("markdown")) {
         lines.push(
-            '    npx --yes -p markdownlint-cli markdownlint --config .markdownlint.json "**/*.md"'
+            '    npx --yes -p markdownlint-cli markdownlint --fix --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
         );
     }
     if (presets.has("clang")) {

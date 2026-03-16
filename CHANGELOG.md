@@ -1,3 +1,10 @@
+## [0.10.2](https://github.com/derKlinke/miedinger/compare/v0.10.1...v0.10.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* quiet formatter commands in shared workflows ([d603c59](https://github.com/derKlinke/miedinger/commit/d603c593dcaa85b99bf5c7665e687c55e6523584))
+
 ## [0.10.1](https://github.com/derKlinke/miedinger/compare/v0.10.0...v0.10.1) (2026-03-10)
 
 

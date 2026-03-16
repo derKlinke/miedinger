@@ -18,11 +18,11 @@ test("buildPrekConfig includes deterministic formatter hooks", () => {
     assert.ok(config);
     assert.match(
         config,
-        /entry: npx --yes prettier --config \.prettierrc\.json --ignore-path \.prettierignore --write/
+        /entry: npx --yes prettier --log-level error --config \.prettierrc\.json --ignore-path \.prettierignore --write/
     );
     assert.match(
         config,
-        /entry: npx --yes -p markdownlint-cli markdownlint --fix --config \.markdownlint\.json --ignore-path \.markdownlintignore/
+        /entry: npx --yes -p markdownlint-cli markdownlint --quiet --fix --config \.markdownlint\.json --ignore-path \.markdownlintignore/
     );
     assert.match(config, /id: prettier[\s\S]*priority: 0/);
     assert.match(config, /id: markdownlint[\s\S]*priority: 0/);

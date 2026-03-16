@@ -38,7 +38,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "prettier",
             name: "prettier",
-            entry: "npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write",
+            entry: "npx --yes prettier --log-level error --config .prettierrc.json --ignore-path .prettierignore --write",
             language: "system",
             files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
             exclude: "^\\.pre-commit-config\\.ya?ml$",
@@ -50,7 +50,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "markdownlint",
             name: "markdownlint",
-            entry: "npx --yes -p markdownlint-cli markdownlint --fix --config .markdownlint.json --ignore-path .markdownlintignore",
+            entry: "npx --yes -p markdownlint-cli markdownlint --quiet --fix --config .markdownlint.json --ignore-path .markdownlintignore",
             language: "system",
             files: "\\.(md|mdx)$",
             priority: 0,
@@ -61,7 +61,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "swiftformat",
             name: "swiftformat",
-            entry: "swiftformat",
+            entry: "swiftformat --quiet",
             language: "system",
             files: "\\.(swift)$",
             pass_filenames: true,
@@ -84,7 +84,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "sqlfluff",
             name: "sqlfluff",
-            entry: "sqlfluff format",
+            entry: "sqlfluff format -q",
             language: "system",
             files: "\\.(sql)$",
             exclude: "(^|/)migrations/",

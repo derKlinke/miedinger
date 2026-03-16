@@ -21,16 +21,16 @@ function formatRecipeLines(presets: Set<string>): string[] {
     lines.push("format:");
     lines.push("    just --fmt --unstable");
     if (presets.has("swift")) {
-        lines.push("    if command -v swiftformat >/dev/null; then swiftformat .; fi");
+        lines.push("    if command -v swiftformat >/dev/null; then swiftformat . --quiet; fi");
     }
     if (presets.has("web")) {
         lines.push(
-            "    npx --yes prettier --config .prettierrc.json --ignore-path .prettierignore --write ."
+            "    npx --yes prettier --log-level error --config .prettierrc.json --ignore-path .prettierignore --write ."
         );
     }
     if (presets.has("markdown")) {
         lines.push(
-            '    npx --yes -p markdownlint-cli markdownlint --fix --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
+            '    npx --yes -p markdownlint-cli markdownlint --quiet --fix --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
         );
     }
     if (presets.has("clang")) {
@@ -40,7 +40,7 @@ function formatRecipeLines(presets: Set<string>): string[] {
         lines.push(clangLine);
     }
     if (presets.has("sql")) {
-        lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format .; fi");
+        lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format -q .; fi");
     }
     return lines;
 }

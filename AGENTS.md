@@ -25,16 +25,10 @@
 - Repo-owned ignore sets are part of the contract: keep `.prettierignore`, `.markdownlintignore`, `.clang-format-ignore`, `.sqlfluffignore` as shipped.
 - Naming: `camelCase` identifiers, `PascalCase` types/classes, `kebab-case` filenames.
 
-## Validation policy
-
-- No dedicated test suite in this repo today.
-- If adding business logic, add tests and a script entry (e.g., `npm run test`).
-- Minimum validation: `npm run build` + `npm run format:check`.
-
 ## Workflow
 
 - Commit format is Conventional Commits.
 - Keep config-touching changes in `fix:`/`feat:`.
 - If `src/` changes, include regenerated `dist/`.
-- PRs should include summary + validation notes.
+- PRs should include summary notes.
 - Release process is automated by semantic-release; do not manually bump `package.json` version or `CHANGELOG.md`.

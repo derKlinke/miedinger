@@ -18,11 +18,7 @@ if (!appId || !privateKeyRaw) {
 const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
 
 function base64url(input) {
-    return Buffer.from(input)
-        .toString("base64")
-        .replace(/=/g, "")
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_");
+    return Buffer.from(input).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 }
 
 function signJwt() {
@@ -76,17 +72,14 @@ async function listInstallations(jwt) {
 }
 
 async function createInstallationToken(jwt, installationId) {
-    const res = await request(
-        `https://api.github.com/app/installations/${installationId}/access_tokens`,
-        {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-                Accept: "application/vnd.github+json",
-                "User-Agent": "miedinger-dispatch",
-            },
-        }
-    );
+    const res = await request(`https://api.github.com/app/installations/${installationId}/access_tokens`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${jwt}`,
+            Accept: "application/vnd.github+json",
+            "User-Agent": "miedinger-dispatch",
+        },
+    });
     const data = await res.json();
     return data.token;
 }

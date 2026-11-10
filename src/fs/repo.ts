@@ -29,9 +29,7 @@ export function resolveConfigDir(options: { repoUrl: string; repoRef: string }):
     execFileSync("curl", ["-fsSL", url, "-o", archivePath], { stdio: "inherit" });
     execFileSync("tar", ["-xzf", archivePath, "-C", tmpDir], { stdio: "inherit" });
 
-    const entries = fs
-        .readdirSync(tmpDir)
-        .filter((entry: string) => entry.startsWith(`${repoSlug}-`));
+    const entries = fs.readdirSync(tmpDir).filter((entry: string) => entry.startsWith(`${repoSlug}-`));
     if (entries.length === 0) {
         console.error(`error: failed to extract ${repoSlug}`);
         process.exit(1);

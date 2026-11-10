@@ -31,10 +31,7 @@ function buildWorkflow(): string {
     ].join("\n");
 }
 
-export function maybeUpdateSyncWorkflow(
-    targetPath: string,
-    options: { force: boolean }
-): string | null {
+export function maybeUpdateSyncWorkflow(targetPath: string, options: { force: boolean }): string | null {
     if (!isGitRepo(targetPath)) {
         return null;
     }

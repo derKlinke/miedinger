@@ -15,10 +15,7 @@ export function promptInteractive(choices: string[]): Promise<string[]> {
                 .split(/[ ,]+/)
                 .filter(Boolean)
                 .map((value: string) => Number(value))
-                .filter(
-                    (value: number) =>
-                        Number.isFinite(value) && value >= 1 && value <= choices.length
-                )
+                .filter((value: number) => Number.isFinite(value) && value >= 1 && value <= choices.length)
                 .map((value: number) => choices[value - 1]);
 
             resolve(tokens);

@@ -5,10 +5,7 @@ function parseOnly(value: string): string[] {
     return value.split(/[ ,]+/).filter(Boolean);
 }
 
-export function parseArgs(
-    args: string[],
-    defaults: { repoUrl: string; repoRef: string; cwd: string }
-): CliOptions {
+export function parseArgs(args: string[], defaults: { repoUrl: string; repoRef: string; cwd: string }): CliOptions {
     let targetDir = "";
     let force = false;
     let mode: Mode = "detect";

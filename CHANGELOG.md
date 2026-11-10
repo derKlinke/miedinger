@@ -7,220 +7,228 @@
 
 ## [0.10.1](https://github.com/derKlinke/miedinger/compare/v0.10.0...v0.10.1) (2026-03-10)
 
-
 ### Bug Fixes
 
-* stabilize prek formatter hooks ([dd4044a](https://github.com/derKlinke/miedinger/commit/dd4044a01c4f464ab80d71f8c9f7fe804da2e957))
+- stabilize prek formatter hooks
+  ([dd4044a](https://github.com/derKlinke/miedinger/commit/dd4044a01c4f464ab80d71f8c9f7fe804da2e957))
 
 # [0.10.0](https://github.com/derKlinke/miedinger/compare/v0.9.8...v0.10.0) (2026-02-26)
 
-
 ### Features
 
-* add gitleaks to generated pre-commit hooks ([92d4758](https://github.com/derKlinke/miedinger/commit/92d47580fe262666c379cd1f70f1e0f4ea3945cb))
+- add gitleaks to generated pre-commit hooks
+  ([92d4758](https://github.com/derKlinke/miedinger/commit/92d47580fe262666c379cd1f70f1e0f4ea3945cb))
 
 ## [0.9.8](https://github.com/derKlinke/miedinger/compare/v0.9.7...v0.9.8) (2026-02-11)
 
-
 ### Bug Fixes
 
-* keep formatter ignore files repo-owned ([3cd4ade](https://github.com/derKlinke/miedinger/commit/3cd4aded601dc13f9c444322cdaf6a937dbec369))
+- keep formatter ignore files repo-owned
+  ([3cd4ade](https://github.com/derKlinke/miedinger/commit/3cd4aded601dc13f9c444322cdaf6a937dbec369))
 
 ## [0.9.7](https://github.com/derKlinke/miedinger/compare/v0.9.6...v0.9.7) (2026-02-02)
 
-
 ### Bug Fixes
 
-* remove exclude_paths from sqlfluff config ([e8d173c](https://github.com/derKlinke/miedinger/commit/e8d173c066f1d463c45c631209c7d7084d7815be))
+- remove exclude_paths from sqlfluff config
+  ([e8d173c](https://github.com/derKlinke/miedinger/commit/e8d173c066f1d463c45c631209c7d7084d7815be))
 
 ## [0.9.6](https://github.com/derKlinke/miedinger/compare/v0.9.5...v0.9.6) (2026-02-02)
 
-
 ### Bug Fixes
 
-* limit sqlfluff excludes to migrations ([5ef9d25](https://github.com/derKlinke/miedinger/commit/5ef9d25bc4b075b4f4fcee7a61e75c6266b2d9b6))
+- limit sqlfluff excludes to migrations
+  ([5ef9d25](https://github.com/derKlinke/miedinger/commit/5ef9d25bc4b075b4f4fcee7a61e75c6266b2d9b6))
 
 ## [0.9.5](https://github.com/derKlinke/miedinger/compare/v0.9.4...v0.9.5) (2026-01-29)
 
-
 ### Bug Fixes
 
-* stop auto-running swiftlint ([db50965](https://github.com/derKlinke/miedinger/commit/db50965ed9a02649d82f408ef8d8e71015570e9b))
+- stop auto-running swiftlint
+  ([db50965](https://github.com/derKlinke/miedinger/commit/db50965ed9a02649d82f408ef8d8e71015570e9b))
 
 ## [0.9.4](https://github.com/derKlinke/miedinger/compare/v0.9.3...v0.9.4) (2026-01-28)
 
-
 ### Bug Fixes
 
-* align swiftlint excludes and justfile spacing ([ac4f7ac](https://github.com/derKlinke/miedinger/commit/ac4f7acd26ab4526a7da929b2d1cac06ea0d787f))
+- align swiftlint excludes and justfile spacing
+  ([ac4f7ac](https://github.com/derKlinke/miedinger/commit/ac4f7acd26ab4526a7da929b2d1cac06ea0d787f))
 
 ## [0.9.3](https://github.com/derKlinke/miedinger/compare/v0.9.2...v0.9.3) (2026-01-28)
 
-
 ### Bug Fixes
 
-* pass swift files to prek hooks ([75429d9](https://github.com/derKlinke/miedinger/commit/75429d97d45edb7938981bb1c89f6c26054d43ac))
+- pass swift files to prek hooks
+  ([75429d9](https://github.com/derKlinke/miedinger/commit/75429d97d45edb7938981bb1c89f6c26054d43ac))
 
 ## [0.9.2](https://github.com/derKlinke/miedinger/compare/v0.9.1...v0.9.2) (2026-01-28)
 
-
 ### Bug Fixes
 
-* sync swiftformat config ([89bb6a7](https://github.com/derKlinke/miedinger/commit/89bb6a7906ed5a5fcabbd028f70c92d31311fdb4))
+- sync swiftformat config
+  ([89bb6a7](https://github.com/derKlinke/miedinger/commit/89bb6a7906ed5a5fcabbd028f70c92d31311fdb4))
 
 ## [0.9.1](https://github.com/derKlinke/miedinger/compare/v0.9.0...v0.9.1) (2026-01-26)
 
-
 ### Bug Fixes
 
-* dispatch sync after release ([0728cfc](https://github.com/derKlinke/miedinger/commit/0728cfcfe9f12345b06ee8a95ece2a57956b2408))
+- dispatch sync after release
+  ([0728cfc](https://github.com/derKlinke/miedinger/commit/0728cfcfe9f12345b06ee8a95ece2a57956b2408))
 
 # [0.9.0](https://github.com/derKlinke/miedinger/compare/v0.8.0...v0.9.0) (2026-01-26)
 
-
 ### Bug Fixes
 
-* allow same-version release prepare ([0cf88b1](https://github.com/derKlinke/miedinger/commit/0cf88b152826599f6f05f5c25b8ddba2035f0ac5))
-* checkout before dispatch ([580472f](https://github.com/derKlinke/miedinger/commit/580472f4ac3bc7c8ab84e3e4281db66d9343b1aa))
-* require version bump during release ([64578d8](https://github.com/derKlinke/miedinger/commit/64578d89e585a36c9cda8b5ddfc54654d1cf2e40))
-
+- allow same-version release prepare
+  ([0cf88b1](https://github.com/derKlinke/miedinger/commit/0cf88b152826599f6f05f5c25b8ddba2035f0ac5))
+- checkout before dispatch
+  ([580472f](https://github.com/derKlinke/miedinger/commit/580472f4ac3bc7c8ab84e3e4281db66d9343b1aa))
+- require version bump during release
+  ([64578d8](https://github.com/derKlinke/miedinger/commit/64578d89e585a36c9cda8b5ddfc54654d1cf2e40))
 
 ### Features
 
-* enforce opinionated installer defaults ([e88d665](https://github.com/derKlinke/miedinger/commit/e88d6655c43e41c350459fb5c53c9805431e188b))
+- enforce opinionated installer defaults
+  ([e88d665](https://github.com/derKlinke/miedinger/commit/e88d6655c43e41c350459fb5c53c9805431e188b))
 
 # [0.8.0](https://github.com/derKlinke/miedinger/compare/v0.7.3...v0.8.0) (2026-01-26)
 
-
 ### Bug Fixes
 
-* allow same-version release prepare ([0cf88b1](https://github.com/derKlinke/miedinger/commit/0cf88b152826599f6f05f5c25b8ddba2035f0ac5))
-* checkout before dispatch ([580472f](https://github.com/derKlinke/miedinger/commit/580472f4ac3bc7c8ab84e3e4281db66d9343b1aa))
-
+- allow same-version release prepare
+  ([0cf88b1](https://github.com/derKlinke/miedinger/commit/0cf88b152826599f6f05f5c25b8ddba2035f0ac5))
+- checkout before dispatch
+  ([580472f](https://github.com/derKlinke/miedinger/commit/580472f4ac3bc7c8ab84e3e4281db66d9343b1aa))
 
 ### Features
 
-* dispatch sync via github app ([d66f0b5](https://github.com/derKlinke/miedinger/commit/d66f0b562a4317f2cfa15b04eb6db67a1d1f6d66))
-* enforce opinionated installer defaults ([e88d665](https://github.com/derKlinke/miedinger/commit/e88d6655c43e41c350459fb5c53c9805431e188b))
+- dispatch sync via github app
+  ([d66f0b5](https://github.com/derKlinke/miedinger/commit/d66f0b562a4317f2cfa15b04eb6db67a1d1f6d66))
+- enforce opinionated installer defaults
+  ([e88d665](https://github.com/derKlinke/miedinger/commit/e88d6655c43e41c350459fb5c53c9805431e188b))
 
 # [0.8.0](https://github.com/derKlinke/miedinger/compare/v0.7.3...v0.8.0) (2026-01-25)
 
-
 ### Features
 
-* dispatch sync via github app ([d66f0b5](https://github.com/derKlinke/miedinger/commit/d66f0b562a4317f2cfa15b04eb6db67a1d1f6d66))
+- dispatch sync via github app
+  ([d66f0b5](https://github.com/derKlinke/miedinger/commit/d66f0b562a4317f2cfa15b04eb6db67a1d1f6d66))
 
 ## [0.7.3](https://github.com/derKlinke/miedinger/compare/v0.7.2...v0.7.3) (2026-01-25)
 
-
 ### Bug Fixes
 
-* include sync artifacts in action commit ([d98af36](https://github.com/derKlinke/miedinger/commit/d98af36b459da2a7e814af881e3bad5e38786699))
+- include sync artifacts in action commit
+  ([d98af36](https://github.com/derKlinke/miedinger/commit/d98af36b459da2a7e814af881e3bad5e38786699))
 
 ## [0.7.2](https://github.com/derKlinke/miedinger/compare/v0.7.1...v0.7.2) (2026-01-25)
 
-
 ### Bug Fixes
 
-* stabilize prettier outputs ([ed962b3](https://github.com/derKlinke/miedinger/commit/ed962b3a3310d2003e048c5083f17c219115183f))
+- stabilize prettier outputs
+  ([ed962b3](https://github.com/derKlinke/miedinger/commit/ed962b3a3310d2003e048c5083f17c219115183f))
 
 ## [0.7.1](https://github.com/derKlinke/miedinger/compare/v0.7.0...v0.7.1) (2026-01-25)
 
-
 ### Bug Fixes
 
-* align sync workflow with prettier ([1dbf624](https://github.com/derKlinke/miedinger/commit/1dbf624cc09fe82dcba4176b990d666687db3fbf))
-* ignore github workflows in prettier ([2906196](https://github.com/derKlinke/miedinger/commit/290619677b15d71e573c3e7456ca8db53f100df5))
-* manage prettier plugins per repo ([7dc106b](https://github.com/derKlinke/miedinger/commit/7dc106b9fc3cf2e74e4602bf2e626a3ec8c80f14))
+- align sync workflow with prettier
+  ([1dbf624](https://github.com/derKlinke/miedinger/commit/1dbf624cc09fe82dcba4176b990d666687db3fbf))
+- ignore github workflows in prettier
+  ([2906196](https://github.com/derKlinke/miedinger/commit/290619677b15d71e573c3e7456ca8db53f100df5))
+- manage prettier plugins per repo
+  ([7dc106b](https://github.com/derKlinke/miedinger/commit/7dc106b9fc3cf2e74e4602bf2e626a3ec8c80f14))
 
 # [0.7.0](https://github.com/derKlinke/miedinger/compare/v0.6.0...v0.7.0) (2026-01-25)
 
-
 ### Features
 
-* add nightly sync workflow ([dd3d7bd](https://github.com/derKlinke/miedinger/commit/dd3d7bd23f1232b60be4089692a8928cd72146bb))
+- add nightly sync workflow
+  ([dd3d7bd](https://github.com/derKlinke/miedinger/commit/dd3d7bd23f1232b60be4089692a8928cd72146bb))
 
 # [0.6.0](https://github.com/derKlinke/miedinger/compare/v0.5.2...v0.6.0) (2026-01-25)
 
-
 ### Features
 
-* add astro-aware prettier plugins ([5727276](https://github.com/derKlinke/miedinger/commit/5727276790798603063e4ac69964c8d09301ad30))
+- add astro-aware prettier plugins
+  ([5727276](https://github.com/derKlinke/miedinger/commit/5727276790798603063e4ac69964c8d09301ad30))
 
 ## [0.5.2](https://github.com/derKlinke/miedinger/compare/v0.5.1...v0.5.2) (2026-01-25)
 
-
 ### Bug Fixes
 
-* drop astro prettier plugin ([4506059](https://github.com/derKlinke/miedinger/commit/45060597c46ad47c41b1f2d51a210901fc3e8d9e))
+- drop astro prettier plugin
+  ([4506059](https://github.com/derKlinke/miedinger/commit/45060597c46ad47c41b1f2d51a210901fc3e8d9e))
 
 ## [0.5.1](https://github.com/derKlinke/miedinger/compare/v0.5.0...v0.5.1) (2026-01-25)
 
-
 ### Bug Fixes
 
-* keep sqlfluff off migrations ([25b5c1b](https://github.com/derKlinke/miedinger/commit/25b5c1b7b706db40ebc128317272b34b9c26dc92))
+- keep sqlfluff off migrations
+  ([25b5c1b](https://github.com/derKlinke/miedinger/commit/25b5c1b7b706db40ebc128317272b34b9c26dc92))
 
 # [0.5.0](https://github.com/derKlinke/miedinger/compare/v0.4.1...v0.5.0) (2026-01-25)
 
-
 ### Bug Fixes
 
-* remove untracked legacy configs ([7c2f323](https://github.com/derKlinke/miedinger/commit/7c2f3238cd81ed7f8d2a4393558fb7167c651735))
-
+- remove untracked legacy configs
+  ([7c2f323](https://github.com/derKlinke/miedinger/commit/7c2f3238cd81ed7f8d2a4393558fb7167c651735))
 
 ### Features
 
-* auto-commit managed config changes ([5f1dd7b](https://github.com/derKlinke/miedinger/commit/5f1dd7be68e1cfb75695ad5cab8c0620f627ea2b))
+- auto-commit managed config changes
+  ([5f1dd7b](https://github.com/derKlinke/miedinger/commit/5f1dd7be68e1cfb75695ad5cab8c0620f627ea2b))
 
 ## [0.4.1](https://github.com/derKlinke/miedinger/compare/v0.4.0...v0.4.1) (2026-01-25)
 
-
 ### Bug Fixes
 
-* stabilize justfile spacing ([d0049ee](https://github.com/derKlinke/miedinger/commit/d0049ee0df12aecbe160284a797c9aa6c4f543fd))
+- stabilize justfile spacing
+  ([d0049ee](https://github.com/derKlinke/miedinger/commit/d0049ee0df12aecbe160284a797c9aa6c4f543fd))
 
 # [0.4.0](https://github.com/derKlinke/miedinger/compare/v0.3.0...v0.4.0) (2026-01-25)
 
-
 ### Features
 
-* clean legacy configs and install prettier plugins ([898726f](https://github.com/derKlinke/miedinger/commit/898726fc43d93a99fce0707b076c4195f9fe66bc))
+- clean legacy configs and install prettier plugins
+  ([898726f](https://github.com/derKlinke/miedinger/commit/898726fc43d93a99fce0707b076c4195f9fe66bc))
 
 # [0.3.0](https://github.com/derKlinke/miedinger/compare/v0.2.4...v0.3.0) (2026-01-25)
 
-
 ### Bug Fixes
 
-* skip pre-commit config in prettier ([a3c1143](https://github.com/derKlinke/miedinger/commit/a3c1143744db3ea5fc40246ec745843ee9ad5a4d))
-
+- skip pre-commit config in prettier
+  ([a3c1143](https://github.com/derKlinke/miedinger/commit/a3c1143744db3ea5fc40246ec745843ee9ad5a4d))
 
 ### Features
 
-* add prettier tailwind and astro plugins ([499b054](https://github.com/derKlinke/miedinger/commit/499b05419f2722b002b0c5395bfe2645956364e8))
+- add prettier tailwind and astro plugins
+  ([499b054](https://github.com/derKlinke/miedinger/commit/499b05419f2722b002b0c5395bfe2645956364e8))
 
 ## [0.2.4](https://github.com/derKlinke/miedinger/compare/v0.2.3...v0.2.4) (2026-01-25)
 
-
 ### Bug Fixes
 
-* generate prek yaml via serializer ([90d5a47](https://github.com/derKlinke/miedinger/commit/90d5a47eefaad2c7452eaf30c2cc26054eb4a8fe))
+- generate prek yaml via serializer
+  ([90d5a47](https://github.com/derKlinke/miedinger/commit/90d5a47eefaad2c7452eaf30c2cc26054eb4a8fe))
 
 ## [0.2.3](https://github.com/derKlinke/miedinger/compare/v0.2.2...v0.2.3) (2026-01-25)
 
-
 ### Bug Fixes
 
-* align repo references with miedinger ([9baf3d4](https://github.com/derKlinke/miedinger/commit/9baf3d463e9f57e068b937292fc07bb4abb824d1))
-* correct release commit message newlines ([d3b8f63](https://github.com/derKlinke/miedinger/commit/d3b8f6316dfd53bf4a1e4a2b4d674089a47e49e0))
-* swiftlint hook without --path ([707bec0](https://github.com/derKlinke/miedinger/commit/707bec0c84b2603c71956fc3b411afecc1ca219c))
+- align repo references with miedinger
+  ([9baf3d4](https://github.com/derKlinke/miedinger/commit/9baf3d463e9f57e068b937292fc07bb4abb824d1))
+- correct release commit message newlines
+  ([d3b8f63](https://github.com/derKlinke/miedinger/commit/d3b8f6316dfd53bf4a1e4a2b4d674089a47e49e0))
+- swiftlint hook without --path
+  ([707bec0](https://github.com/derKlinke/miedinger/commit/707bec0c84b2603c71956fc3b411afecc1ca219c))
 
 ## [0.2.2](https://github.com/derKlinke/format-configs/compare/v0.2.1...v0.2.2) (2026-01-25)
 
-
 ### Bug Fixes
 
-* correct prek yaml output ([2b78de4](https://github.com/derKlinke/format-configs/commit/2b78de4e2e1371fc4f3d06e783c1f667b6ee9335))
+- correct prek yaml output
+  ([2b78de4](https://github.com/derKlinke/format-configs/commit/2b78de4e2e1371fc4f3d06e783c1f667b6ee9335))
 
 # Changelog
 
@@ -228,51 +236,62 @@
 
 ### Features
 
-* add dynamic prek hooks ([6248bcb](https://github.com/derKlinke/format-configs/commit/6248bcbba02667f8c1cc818fbb2a6185890c278e))
+- add dynamic prek hooks
+  ([6248bcb](https://github.com/derKlinke/format-configs/commit/6248bcbba02667f8c1cc818fbb2a6185890c278e))
 
 ## [0.1.8](https://github.com/derKlinke/format-configs/compare/v0.1.7...v0.1.8) (2026-01-25)
 
-
 ### Bug Fixes
 
-* relax markdownlint blank lines ([e452059](https://github.com/derKlinke/format-configs/commit/e4520593f3b0be65acfccd7c21efff9e0492822b))
+- relax markdownlint blank lines
+  ([e452059](https://github.com/derKlinke/format-configs/commit/e4520593f3b0be65acfccd7c21efff9e0492822b))
 
 ## [0.1.7](https://github.com/derKlinke/format-configs/compare/v0.1.6...v0.1.7) (2026-01-25)
 
-
 ### Bug Fixes
 
-* align justfile swiftlint with b90hq ([cb78ea8](https://github.com/derKlinke/format-configs/commit/cb78ea8c15a581dbd883d977b51c2d64858f44da))
-* satisfy changelog lint ([2144230](https://github.com/derKlinke/format-configs/commit/2144230afd761fb2d145165ba8373bbb178a4d2d))
+- align justfile swiftlint with b90hq
+  ([cb78ea8](https://github.com/derKlinke/format-configs/commit/cb78ea8c15a581dbd883d977b51c2d64858f44da))
+- satisfy changelog lint
+  ([2144230](https://github.com/derKlinke/format-configs/commit/2144230afd761fb2d145165ba8373bbb178a4d2d))
 
 ## [0.1.6](https://github.com/derKlinke/format-configs/compare/v0.1.5...v0.1.6) (2026-01-25)
 
 ### Bug Fixes
 
-* harden swiftlint and fmt alias ([80731dc](https://github.com/derKlinke/format-configs/commit/80731dcea8c5759664a76f393f9bd2a87939729d))
+- harden swiftlint and fmt alias
+  ([80731dc](https://github.com/derKlinke/format-configs/commit/80731dcea8c5759664a76f393f9bd2a87939729d))
 
 ## [0.1.5](https://github.com/derKlinke/format-configs/compare/v0.1.4...v0.1.5) (2026-01-25)
 
 ### Bug Fixes
 
-* rewrite justfile format blocks ([39de06e](https://github.com/derKlinke/format-configs/commit/39de06e41ff00c17bcf3307905ec394b2f354de7))
+- rewrite justfile format blocks
+  ([39de06e](https://github.com/derKlinke/format-configs/commit/39de06e41ff00c17bcf3307905ec394b2f354de7))
 
 ## [0.1.4](https://github.com/derKlinke/format-configs/compare/v0.1.3...v0.1.4) (2026-01-25)
 
 ### Features
 
-* update justfile format recipe ([a223774](https://github.com/derKlinke/format-configs/commit/a22377466cdcad40e7c965847bc78154d30536ca))
+- update justfile format recipe
+  ([a223774](https://github.com/derKlinke/format-configs/commit/a22377466cdcad40e7c965847bc78154d30536ca))
 
 ## [0.1.3](https://github.com/derKlinke/format-configs/compare/format-configs-v0.1.2...format-configs-v0.1.3) (2026-01-25)
 
 ### Features
 
-* add copy-based installer ([c0e1027](https://github.com/derKlinke/format-configs/commit/c0e1027d9bd283adc6d69e0cec9021283c6f5aaa))
-* add justfile integration ([f7a93fe](https://github.com/derKlinke/format-configs/commit/f7a93fed913d8530c043df308cb5b000bcbc3b43))
-* add npx cli and sync action ([e5420dd](https://github.com/derKlinke/format-configs/commit/e5420ddb259a0a78b1d046f7e12227ab0aaa9f2f))
-* initial commit ([07e2614](https://github.com/derKlinke/format-configs/commit/07e2614d74f5841ae48317f76eca12424f24182a))
+- add copy-based installer
+  ([c0e1027](https://github.com/derKlinke/format-configs/commit/c0e1027d9bd283adc6d69e0cec9021283c6f5aaa))
+- add justfile integration
+  ([f7a93fe](https://github.com/derKlinke/format-configs/commit/f7a93fed913d8530c043df308cb5b000bcbc3b43))
+- add npx cli and sync action
+  ([e5420dd](https://github.com/derKlinke/format-configs/commit/e5420ddb259a0a78b1d046f7e12227ab0aaa9f2f))
+- initial commit
+  ([07e2614](https://github.com/derKlinke/format-configs/commit/07e2614d74f5841ae48317f76eca12424f24182a))
 
 ### Bug Fixes
 
-* avoid set -u array error ([ef57859](https://github.com/derKlinke/format-configs/commit/ef5785949692df54e5c31404f27c46d7c344fda3))
-* make installer bash 3.2 compatible ([1593023](https://github.com/derKlinke/format-configs/commit/159302315fc97259a051259f716fe5d908174acf))
+- avoid set -u array error
+  ([ef57859](https://github.com/derKlinke/format-configs/commit/ef5785949692df54e5c31404f27c46d7c344fda3))
+- make installer bash 3.2 compatible
+  ([1593023](https://github.com/derKlinke/format-configs/commit/159302315fc97259a051259f716fe5d908174acf))

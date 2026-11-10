@@ -74,11 +74,7 @@ function isTracked(targetPath: string, filePath: string): boolean {
     }
 }
 
-export function maybeAutoCommit(
-    targetPath: string,
-    managedPaths: Set<string>,
-    preExistingChanges: Set<string>
-): void {
+export function maybeAutoCommit(targetPath: string, managedPaths: Set<string>, preExistingChanges: Set<string>): void {
     if (!isGitRepo(targetPath)) {
         return;
     }
@@ -91,9 +87,7 @@ export function maybeAutoCommit(
     }
     for (const path of managedPaths) {
         if (preExistingChanges.has(path)) {
-            console.error(
-                "skip: managed files already modified before install (auto-commit disabled)"
-            );
+            console.error("skip: managed files already modified before install (auto-commit disabled)");
             return;
         }
     }
@@ -120,11 +114,7 @@ export function maybeAutoCommit(
         return;
     }
 
-    execFileSync(
-        "git",
-        ["-C", targetPath, "commit", "-m", "chore: sync format configs [skip ci]"],
-        {
-            stdio: "inherit",
-        }
-    );
+    execFileSync("git", ["-C", targetPath, "commit", "-m", "chore: sync format configs [skip ci]"], {
+        stdio: "inherit",
+    });
 }

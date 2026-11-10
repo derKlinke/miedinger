@@ -3,7 +3,7 @@ import * as path from "path";
 
 const tailwindPlugin = "prettier-plugin-tailwindcss";
 const astroPlugin = "prettier-plugin-astro";
-const printWidth = 100;
+const printWidth = 120;
 
 function uniquePlugins(plugins: string[]): string[] {
     const seen = new Set<string>();
@@ -26,15 +26,10 @@ function formatJson(value: unknown, indent = 0): string {
         }
         const inline = value.map((item) => JSON.stringify(item)).join(", ");
         const inlineValue = `[${inline}]`;
-        if (
-            value.every((item) => typeof item === "string") &&
-            padding.length + inlineValue.length <= printWidth
-        ) {
+        if (value.every((item) => typeof item === "string") && padding.length + inlineValue.length <= printWidth) {
             return inlineValue;
         }
-        const items = value
-            .map((item) => `${" ".repeat(nextIndent)}${formatJson(item, nextIndent)}`)
-            .join(",\n");
+        const items = value.map((item) => `${" ".repeat(nextIndent)}${formatJson(item, nextIndent)}`).join(",\n");
         return `[\n${items}\n${padding}]`;
     }
 
@@ -44,13 +39,7 @@ function formatJson(value: unknown, indent = 0): string {
             return "{}";
         }
         const items = entries
-            .map(
-                ([key, item]) =>
-                    `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(
-                        item,
-                        nextIndent
-                    )}`
-            )
+            .map(([key, item]) => `${" ".repeat(nextIndent)}${JSON.stringify(key)}: ${formatJson(item, nextIndent)}`)
             .join(",\n");
         return `{\n${items}\n${padding}}`;
     }
@@ -91,10 +80,7 @@ export function updatePrettierConfigPlugins(
     let next: string[] = [];
     if (hasPackageJson) {
         const withoutAstro = existing.filter((plugin) => plugin !== astroPlugin);
-        const desired = [
-            tailwindPlugin,
-            ...withoutAstro.filter((plugin) => plugin !== tailwindPlugin),
-        ];
+        const desired = [tailwindPlugin, ...withoutAstro.filter((plugin) => plugin !== tailwindPlugin)];
         if (options.astro) {
             desired.push(astroPlugin);
         }
@@ -103,8 +89,7 @@ export function updatePrettierConfigPlugins(
         next = existing.filter((plugin) => plugin !== tailwindPlugin && plugin !== astroPlugin);
     }
 
-    const same =
-        existing.length === next.length && existing.every((value, index) => value === next[index]);
+    const same = existing.length === next.length && existing.every((value, index) => value === next[index]);
     if (same) {
         return [];
     }

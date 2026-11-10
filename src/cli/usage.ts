@@ -24,13 +24,12 @@ export function listPresets(): void {
     console.log(`Presets:
   swift     -> .swiftformat, .swiftlint.yml
   web       -> .prettierrc.json
-  markdown  -> .markdownlint.json
+  markdown  -> .prettierrc.json
   clang     -> .clang-format
   sql       -> .sqlfluff
 
 Files:
   .clang-format
-  .markdownlint.json
   .prettierrc.json
   .sqlfluff
   .swiftformat

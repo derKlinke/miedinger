@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { CliOptions } from "./types";
 import { promptInteractive } from "./cli/prompt";
-import { ensurePrettierPlugins } from "./config/deps";
+import { ensurePrettierPlugins, removeMarkdownlintDependencies } from "./config/deps";
 import { removeLegacyConfigs } from "./config/cleanup";
 import { updatePrettierConfigPlugins } from "./config/prettier";
 import { ensureSqlfluffExclude } from "./config/sqlfluff";
@@ -14,12 +14,7 @@ import { maybeUpdatePrekConfig } from "./prek";
 import { listStatusPaths, maybeAutoCommit } from "./git";
 import { maybeUpdateSyncWorkflow } from "./github/sync";
 
-const unmanagedIgnoreFiles = new Set<string>([
-    ".prettierignore",
-    ".markdownlintignore",
-    ".clang-format-ignore",
-    ".sqlfluffignore",
-]);
+const unmanagedIgnoreFiles = new Set<string>([".prettierignore", ".clang-format-ignore", ".sqlfluffignore"]);
 
 export async function runApp(options: CliOptions): Promise<void> {
     const targetPath = path.resolve(options.targetDir);
@@ -37,28 +32,16 @@ export async function runApp(options: CliOptions): Promise<void> {
         process.exit(1);
     }
 
-    const repoFiles = isGitRepo(targetPath)
-        ? listGitFiles(targetPath)
-        : listFilesRecursive(targetPath);
+    const repoFiles = isGitRepo(targetPath) ? listGitFiles(targetPath) : listFilesRecursive(targetPath);
     const preExistingChanges =
-        options.autoCommit && isGitRepo(targetPath)
-            ? listStatusPaths(targetPath)
-            : new Set<string>();
+        options.autoCommit && isGitRepo(targetPath) ? listStatusPaths(targetPath) : new Set<string>();
     const hasAstro = detectAstro(targetPath, repoFiles);
     let tokens: string[] = [];
 
     if (options.mode === "detect") {
         tokens = detectPresets(repoFiles);
     } else if (options.mode === "interactive") {
-        const selection = await promptInteractive([
-            "swift",
-            "web",
-            "markdown",
-            "clang",
-            "sql",
-            "all",
-            "none",
-        ]);
+        const selection = await promptInteractive(["swift", "web", "markdown", "clang", "sql", "all", "none"]);
         if (selection.includes("all")) {
             tokens = ["swift", "web", "markdown", "clang", "sql"];
         } else if (selection.includes("none")) {
@@ -88,6 +71,28 @@ export async function runApp(options: CliOptions): Promise<void> {
     }
     const selectedPresets = derivePresets(fileSet);
 
+    const dependencyFiles = selectedPresets.has("markdown") ? removeMarkdownlintDependencies(targetPath) : [];
+    const ignorePath = path.join(targetPath, ".prettierignore");
+    const legacyIgnorePath = path.join(targetPath, ".markdownlintignore");
+    const ignoreFiles: string[] = [];
+    if (selectedPresets.has("markdown")) {
+        const original = fs.existsSync(ignorePath) ? fs.readFileSync(ignorePath, "utf8") : "";
+        const base = fs.existsSync(ignorePath)
+            ? original
+            : fs.readFileSync(path.join(configDir, ".prettierignore"), "utf8");
+        const legacy = fs.existsSync(legacyIgnorePath) ? fs.readFileSync(legacyIgnorePath, "utf8") : "";
+        const lines = base
+            .split(/\r?\n/)
+            .filter((line) => !["**/*.md", "**/*.mdx", "*.md", "*.mdx"].includes(line.trim()));
+        for (const line of legacy.split(/\r?\n/)) {
+            if (line.trim() && !lines.includes(line)) lines.push(line);
+        }
+        const updated = lines.join("\n").trimEnd() + "\n";
+        if (updated !== original) {
+            fs.writeFileSync(ignorePath, updated);
+            ignoreFiles.push(ignorePath);
+        }
+    }
     const removed = removeLegacyConfigs(targetPath, selectedPresets, fileSet);
     const pluginResult = ensurePrettierPlugins(targetPath, selectedPresets, { astro: hasAstro });
 
@@ -125,7 +130,9 @@ export async function runApp(options: CliOptions): Promise<void> {
     for (const file of fileSet) {
         managedPaths.add(path.join(targetPath, file));
     }
+    ignoreFiles.forEach((file) => managedPaths.add(file));
     removed.forEach((file) => managedPaths.add(file));
+    dependencyFiles.forEach((file) => managedPaths.add(file));
     pluginResult.touchedFiles.forEach((file) => managedPaths.add(file));
     prettierFiles.forEach((file) => managedPaths.add(file));
     sqlfluffFiles.forEach((file) => managedPaths.add(file));

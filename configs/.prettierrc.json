@@ -6,14 +6,15 @@
     "trailingComma": "es5",
     "bracketSpacing": true,
     "arrowParens": "always",
-    "printWidth": 100,
+    "printWidth": 120,
     "endOfLine": "lf",
     "overrides": [
         {
-            "files": ["*.md"],
+            "files": ["*.md", "*.mdx"],
             "options": {
                 "tabWidth": 2
             }
         }
-    ]
+    ],
+    "proseWrap": "always"
 }

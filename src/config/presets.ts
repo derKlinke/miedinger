@@ -1,7 +1,7 @@
 export const presetFiles: Record<string, string[]> = {
     swift: [".swiftformat", ".swiftlint.yml"],
     web: [".prettierrc.json"],
-    markdown: [".markdownlint.json"],
+    markdown: [".prettierrc.json"],
     clang: [".clang-format"],
     sql: [".sqlfluff"],
 };
@@ -20,8 +20,6 @@ export function derivePresets(files: Set<string>): Set<string> {
     }
     if (files.has(".prettierrc.json")) {
         presets.add("web");
-    }
-    if (files.has(".markdownlint.json")) {
         presets.add("markdown");
     }
     if (files.has(".clang-format")) {

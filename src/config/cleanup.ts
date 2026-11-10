@@ -3,13 +3,7 @@ import * as path from "path";
 import { isGitRepo, listGitFiles, listGitUntrackedFiles, listFilesRecursive } from "../fs/repo";
 
 const cleanupFilesByPreset: Record<string, string[]> = {
-    swift: [
-        ".swiftformat",
-        ".swiftlint.yml",
-        ".swiftlint.yaml",
-        ".prek-swiftformat.sh",
-        ".prek-swiftlint.sh",
-    ],
+    swift: [".swiftformat", ".swiftlint.yml", ".swiftlint.yaml", ".prek-swiftformat.sh", ".prek-swiftlint.sh"],
     web: [
         ".prettierrc",
         ".prettierrc.json",
@@ -25,6 +19,7 @@ const cleanupFilesByPreset: Record<string, string[]> = {
         "prettier.config.ts",
     ],
     markdown: [
+        ".markdownlintignore",
         ".markdownlint",
         ".markdownlint.json",
         ".markdownlint.jsonc",
@@ -58,11 +53,7 @@ function buildCleanupSet(presets: Set<string>): Set<string> {
     return names;
 }
 
-export function removeLegacyConfigs(
-    targetPath: string,
-    presets: Set<string>,
-    keepFiles: Set<string>
-): string[] {
+export function removeLegacyConfigs(targetPath: string, presets: Set<string>, keepFiles: Set<string>): string[] {
     const cleanupNames = buildCleanupSet(presets);
     if (cleanupNames.size === 0) {
         return [];

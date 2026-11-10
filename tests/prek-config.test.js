@@ -20,16 +20,23 @@ test("buildPrekConfig includes deterministic formatter hooks", () => {
         config,
         /entry: npx --yes prettier --log-level error --config \.prettierrc\.json --ignore-path \.prettierignore --write/
     );
-    assert.match(
-        config,
-        /entry: npx --yes -p markdownlint-cli markdownlint --quiet --fix --config \.markdownlint\.json --ignore-path \.markdownlintignore/
-    );
     assert.match(config, /id: prettier[\s\S]*priority: 0/);
-    assert.match(config, /id: markdownlint[\s\S]*priority: 0/);
+    assert.doesNotMatch(config, /markdownlint/);
+    assert.equal((config.match(/id: prettier/g) || []).length, 1);
     assert.match(config, /id: sqlfluff[\s\S]*priority: 0/);
 });
 
 test("buildPrekConfig returns null for empty presets", () => {
     const config = buildPrekConfig(new Set());
     assert.equal(config, null);
+});
+
+test("Markdown-only repositories receive a Prettier hook", () => {
+    const { parse } = require("yaml");
+    const hooks = parse(buildPrekConfig(new Set(["markdown"]))).repos[0].hooks;
+    const hook = hooks.find((hook) => hook.id === "prettier");
+    assert.ok(hook);
+    assert.ok(new RegExp(hook.files).test("docs/guide.md"));
+    assert.ok(new RegExp(hook.files).test("docs/guide.mdx"));
+    assert.equal(hooks.length, 2);
 });

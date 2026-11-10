@@ -23,14 +23,9 @@ function formatRecipeLines(presets: Set<string>): string[] {
     if (presets.has("swift")) {
         lines.push("    if command -v swiftformat >/dev/null; then swiftformat . --quiet; fi");
     }
-    if (presets.has("web")) {
+    if (presets.has("web") || presets.has("markdown")) {
         lines.push(
             "    npx --yes prettier --log-level error --config .prettierrc.json --ignore-path .prettierignore --write ."
-        );
-    }
-    if (presets.has("markdown")) {
-        lines.push(
-            '    npx --yes -p markdownlint-cli markdownlint --quiet --fix --config .markdownlint.json --ignore-path .markdownlintignore "**/*.md"'
         );
     }
     if (presets.has("clang")) {
@@ -84,8 +79,7 @@ function findFormatBlockRange(lines: string[]): { start: number; end: number } |
 
 function findFormatTargetRange(lines: string[]): { start: number; end: number } | null {
     const isAttribute = (line: string): boolean => /^\s*\[.*\]\s*$/.test(line);
-    const isRecipe = (line: string): boolean =>
-        /^\s*[^#\s].*:$/.test(line.trimEnd()) && !isAttribute(line);
+    const isRecipe = (line: string): boolean => /^\s*[^#\s].*:$/.test(line.trimEnd()) && !isAttribute(line);
     let start = -1;
     for (let idx = 0; idx < lines.length; idx += 1) {
         const line = lines[idx];
@@ -145,27 +139,19 @@ function updateJustfileContent(content: string, block: string[]): string | null 
     const withoutAlias = lines.filter((line) => !/^\s*alias\s+(fmt|f)\s*:=/.test(line));
     const existingBlock = findFormatBlockRange(withoutAlias);
     const baseLines = existingBlock
-        ? [
-              ...withoutAlias.slice(0, existingBlock.start),
-              ...withoutAlias.slice(existingBlock.end + 1),
-          ]
+        ? [...withoutAlias.slice(0, existingBlock.start), ...withoutAlias.slice(existingBlock.end + 1)]
         : withoutAlias;
     const withoutFormats = trimTrailingBlankLines(removeFormatTargets(baseLines));
 
     if (withoutFormats.length === 0) {
         return block.join("\n") + "\n";
     }
-    const needsSpacer =
-        withoutFormats.length > 0 && withoutFormats[withoutFormats.length - 1].trim() !== "";
+    const needsSpacer = withoutFormats.length > 0 && withoutFormats[withoutFormats.length - 1].trim() !== "";
     const merged = needsSpacer ? [...withoutFormats, "", ...block] : [...withoutFormats, ...block];
     return merged.join("\n").trimEnd() + "\n";
 }
 
-export function maybeUpdateJustfile(
-    targetPath: string,
-    presets: Set<string>,
-    justMode: JustMode
-): string | null {
+export function maybeUpdateJustfile(targetPath: string, presets: Set<string>, justMode: JustMode): string | null {
     if (justMode === "skip") {
         return null;
     }

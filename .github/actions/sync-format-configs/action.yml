@@ -78,18 +78,29 @@ runs:
               git config user.email "${{ inputs.git-user-email }}"
               files=(
                 .clang-format
+                # Stage legacy config deletions during the Prettier migration.
                 .markdownlint.json
                 .markdownlintignore
                 .pre-commit-config.yaml
                 .pre-commit-config.yml
                 .prettierrc.json
                 .prettierignore
+                package.json
+                package-lock.json
+                bun.lock
+                bun.lockb
+                pnpm-lock.yaml
+                yarn.lock
+                Justfile
+                justfile
                 .sqlfluff
                 .swiftformat
                 .swiftlint.yml
                 .github/workflows/sync-format-configs.yml
               )
-              git add -A -- "${files[@]}" 2>/dev/null || true
+              for file in "${files[@]}"; do
+                git add -A -- "$file" 2>/dev/null || true
+              done
               if git diff --cached --quiet; then
                 echo "No format config changes to commit."
                 exit 0

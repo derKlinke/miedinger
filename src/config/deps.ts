@@ -21,10 +21,7 @@ function parsePackageManagerField(value: string | undefined): PackageManager | n
     return null;
 }
 
-function detectPackageManager(
-    targetPath: string,
-    packageJson: Record<string, unknown>
-): PackageManager {
+function detectPackageManager(targetPath: string, packageJson: Record<string, unknown>): PackageManager {
     const fromField = parsePackageManagerField(
         typeof packageJson.packageManager === "string" ? packageJson.packageManager : undefined
     );
@@ -33,10 +30,7 @@ function detectPackageManager(
     }
     if (fs.existsSync(path.join(targetPath, "pnpm-lock.yaml"))) return "pnpm";
     if (fs.existsSync(path.join(targetPath, "yarn.lock"))) return "yarn";
-    if (
-        fs.existsSync(path.join(targetPath, "bun.lockb")) ||
-        fs.existsSync(path.join(targetPath, "bun.lock"))
-    ) {
+    if (fs.existsSync(path.join(targetPath, "bun.lockb")) || fs.existsSync(path.join(targetPath, "bun.lock"))) {
         return "bun";
     }
     if (fs.existsSync(path.join(targetPath, "package-lock.json"))) return "npm";
@@ -68,9 +62,7 @@ export function ensurePrettierPlugins(
         return { touchedFiles: [], pluginsAvailable: false };
     }
 
-    const prettierPlugins = options.astro
-        ? [...prettierPluginsBase, "prettier-plugin-astro"]
-        : prettierPluginsBase;
+    const prettierPlugins = options.astro ? [...prettierPluginsBase, "prettier-plugin-astro"] : prettierPluginsBase;
 
     const pkgPath = path.join(targetPath, "package.json");
     if (!fs.existsSync(pkgPath)) {
@@ -97,13 +89,7 @@ export function ensurePrettierPlugins(
     installDevDependencies(targetPath, manager, missing);
 
     const touched = ["package.json"];
-    const lockCandidates = [
-        "package-lock.json",
-        "pnpm-lock.yaml",
-        "yarn.lock",
-        "bun.lockb",
-        "bun.lock",
-    ];
+    const lockCandidates = ["package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "bun.lock"];
     for (const lockfile of lockCandidates) {
         const full = path.join(targetPath, lockfile);
         if (fs.existsSync(full)) {
@@ -114,4 +100,23 @@ export function ensurePrettierPlugins(
         touchedFiles: touched.map((file) => path.join(targetPath, file)),
         pluginsAvailable: true,
     };
+}
+
+export function removeMarkdownlintDependencies(targetPath: string): string[] {
+    const pkgPath = path.join(targetPath, "package.json");
+    if (!fs.existsSync(pkgPath)) return [];
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+    const obsolete = ["markdownlint", "markdownlint-cli", "markdownlint-cli2"].filter(
+        (name) => pkg.dependencies?.[name] || pkg.devDependencies?.[name]
+    );
+    if (!obsolete.length) return [];
+    const manager = detectPackageManager(targetPath, pkg);
+    if (!hasCommand(manager)) throw new Error(`${manager} is required to remove Markdownlint dependencies`);
+    execFileSync(manager, [manager === "npm" ? "uninstall" : "remove", ...obsolete, "--ignore-scripts"], {
+        cwd: targetPath,
+        stdio: "inherit",
+    });
+    return ["package.json", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "bun.lock"]
+        .map((file) => path.join(targetPath, file))
+        .filter((file) => fs.existsSync(file));
 }

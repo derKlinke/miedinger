@@ -34,25 +34,14 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         priority: 10,
     });
 
-    if (presets.has("web")) {
+    if (presets.has("web") || presets.has("markdown")) {
         addHook({
             id: "prettier",
             name: "prettier",
             entry: "npx --yes prettier --log-level error --config .prettierrc.json --ignore-path .prettierignore --write",
             language: "system",
-            files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro)$",
+            files: "\\.(js|jsx|ts|tsx|json|jsonc|yaml|yml|css|scss|html|vue|svelte|astro|md|mdx)$",
             exclude: "^\\.pre-commit-config\\.ya?ml$",
-            priority: 0,
-        });
-    }
-
-    if (presets.has("markdown")) {
-        addHook({
-            id: "markdownlint",
-            name: "markdownlint",
-            entry: "npx --yes -p markdownlint-cli markdownlint --quiet --fix --config .markdownlint.json --ignore-path .markdownlintignore",
-            language: "system",
-            files: "\\.(md|mdx)$",
             priority: 0,
         });
     }

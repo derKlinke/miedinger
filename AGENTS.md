@@ -13,16 +13,17 @@
 - Package manager: `npm`.
 - `npm install`
 - `npm run build` (compile TS, ensure CLI executable bits)
-- `npm run format` (Prettier + markdownlint)
+- `npm run format` (Prettier)
 - `npm run format:check` (CI-style format gate)
 - Local smoke check: `node dist/format-configs.js --help`
 
 ## Coding contracts
 
 - Prettier settings: `configs/.prettierrc.json`  
-  (`4-space` indent, semicolons, double quotes, width `100`, `LF`).
-- Markdown style: `configs/.markdownlint.json`.
-- Repo-owned ignore sets are part of the contract: keep `.prettierignore`, `.markdownlintignore`, `.clang-format-ignore`, `.sqlfluffignore` as shipped.
+  (`4-space` indent, semicolons, double quotes, width `120`, `LF`).
+- Markdown style: Prettier with two-space indentation and wrapped prose.
+- Repo-owned ignore sets are part of the contract: keep `.prettierignore`, `.clang-format-ignore`, `.sqlfluffignore` as
+  shipped.
 - Naming: `camelCase` identifiers, `PascalCase` types/classes, `kebab-case` filenames.
 
 ## Workflow

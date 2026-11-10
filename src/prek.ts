@@ -73,7 +73,7 @@ export function buildPrekConfig(presets: Set<string>): string | null {
         addHook({
             id: "sqlfluff",
             name: "sqlfluff",
-            entry: "sqlfluff format -q",
+            entry: "sqlfluff format --disable-progress-bar",
             language: "system",
             files: "\\.(sql)$",
             exclude: "(^|/)migrations/",

@@ -35,7 +35,7 @@ function formatRecipeLines(presets: Set<string>): string[] {
         lines.push(clangLine);
     }
     if (presets.has("sql")) {
-        lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format -q .; fi");
+        lines.push("    if command -v sqlfluff >/dev/null; then sqlfluff format --disable-progress-bar .; fi");
     }
     return lines;
 }

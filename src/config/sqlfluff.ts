@@ -1,48 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const migrationsExclude = "**/migrations/**";
-
-function hasExclude(content: string): boolean {
-    return /^\s*exclude_paths\s*=.*migrations/im.test(content);
-}
-
 export function ensureSqlfluffExclude(targetPath: string, presets: Set<string>): string[] {
-    if (!presets.has("sql")) {
-        return [];
-    }
-
-    const filePath = path.join(targetPath, ".sqlfluff");
-    if (!fs.existsSync(filePath)) {
-        return [];
-    }
-
-    const content = fs.readFileSync(filePath, "utf8");
-    if (hasExclude(content)) {
-        return [];
-    }
-
-    const lines = content.split(/\r?\n/);
-    const sectionHeader = "[sqlfluff]";
-    const start = lines.findIndex((line) => line.trim().toLowerCase() === sectionHeader);
-    if (start === -1) {
-        const trimmed = content.trimEnd();
-        const suffix = trimmed.length ? "\n\n" : "";
-        const updated = `${trimmed}${suffix}${sectionHeader}\nexclude_paths = ${migrationsExclude}\n`;
-        fs.writeFileSync(filePath, updated, "utf8");
-        return [filePath];
-    }
-
-    let end = lines.length;
-    for (let idx = start + 1; idx < lines.length; idx += 1) {
-        const line = lines[idx].trim();
-        if (line.startsWith("[") && line.endsWith("]")) {
-            end = idx;
-            break;
-        }
-    }
-
-    lines.splice(end, 0, `exclude_paths = ${migrationsExclude}`);
-    fs.writeFileSync(filePath, lines.join("\n"), "utf8");
+    if (!presets.has("sql")) return [];
+    const filePath = path.join(targetPath, ".sqlfluffignore");
+    const content = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
+    if (content.split(/\r?\n/).some((line) => line.trim() === "**/migrations/**")) return [];
+    fs.writeFileSync(filePath, `${content.trimEnd()}${content.trim() ? "\n" : ""}**/migrations/**\n`);
     return [filePath];
 }

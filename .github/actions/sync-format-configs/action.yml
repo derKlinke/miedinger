@@ -94,6 +94,7 @@ runs:
                 Justfile
                 justfile
                 .sqlfluff
+                .sqlfluffignore
                 .swiftformat
                 .swiftlint.yml
                 .github/workflows/sync-format-configs.yml

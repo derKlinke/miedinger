@@ -4,6 +4,7 @@ import { isGitRepo } from "../fs/repo";
 
 const workflowFile = "sync-format-configs.yml";
 const managedHeader = "# format-configs";
+const syncActionRef = "derKlinke/miedinger/.github/actions/sync-format-configs@";
 
 function buildWorkflow(): string {
     return [
@@ -19,7 +20,7 @@ function buildWorkflow(): string {
         "    sync:",
         "        runs-on: ubuntu-latest",
         "        steps:",
-        "            - uses: actions/checkout@v4",
+        "            - uses: actions/checkout@v5",
         "            - uses: derKlinke/miedinger/.github/actions/sync-format-configs@main",
         "              with:",
         "                  mode: detect",
@@ -39,6 +40,12 @@ export function maybeUpdateSyncWorkflow(targetPath: string, options: { force: bo
     const workflowsDir = path.join(targetPath, ".github", "workflows");
     const workflowPath = path.join(workflowsDir, workflowFile);
     const content = buildWorkflow();
+
+    // A repository may pin its own runner or checkout action. The workflow token cannot push workflow changes,
+    // so a working sync workflow is left as it is.
+    if (fs.existsSync(workflowPath) && fs.readFileSync(workflowPath, "utf8").includes(syncActionRef)) {
+        return null;
+    }
 
     if (fs.existsSync(workflowPath) && !options.force) {
         const existing = fs.readFileSync(workflowPath, "utf8");

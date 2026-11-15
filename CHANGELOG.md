@@ -1,3 +1,12 @@
+## [0.10.3](https://github.com/derKlinke/miedinger/compare/v0.10.2...v0.10.3) (2026-11-15)
+
+
+### Bug Fixes
+
+* exclude Terraform providers and support SQLFluff format ([bdab44d](https://github.com/derKlinke/miedinger/commit/bdab44dc00f18c26c18ac370384db76be5f644b0))
+* preserve SQL migrations during formatting ([7e58b36](https://github.com/derKlinke/miedinger/commit/7e58b3681dbe66d50d14b79a01e47eceb028c41d))
+* use Prettier for Markdown formatting ([484350d](https://github.com/derKlinke/miedinger/commit/484350dbe80547e934444254595a7d4775744fb4))
+
 ## [0.10.2](https://github.com/derKlinke/miedinger/compare/v0.10.1...v0.10.2) (2026-03-16)
 
 

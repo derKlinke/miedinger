@@ -1,3 +1,11 @@
+## [0.10.4](https://github.com/derKlinke/miedinger/compare/v0.10.3...v0.10.4) (2026-11-15)
+
+
+### Bug Fixes
+
+* keep an existing sync workflow that already calls the shared action ([9517ba0](https://github.com/derKlinke/miedinger/commit/9517ba04a21af16c52be3d676426d3eb4687f69a))
+* run the sync with the release that matches the action checkout ([01d6896](https://github.com/derKlinke/miedinger/commit/01d689662864048e3282ec37acad07ae2d3fb25a))
+
 ## [0.10.3](https://github.com/derKlinke/miedinger/compare/v0.10.2...v0.10.3) (2026-11-15)
 
 

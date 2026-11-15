@@ -63,7 +63,20 @@ runs:
               if [ "${{ inputs.force }}" = "true" ]; then
                 args+=(--force)
               fi
-              npx --yes @derklinke/miedinger "${args[@]}" "${{ inputs.target-dir }}"
+              # Run the release that matches this action checkout. A dispatch can arrive before the npm registry
+              # serves the new version, and an unpinned npx would then install the previous release.
+              version="$(node -p "require('${{ github.action_path }}/../../../package.json').version")"
+              for attempt in $(seq 1 30); do
+                if npm view "@derklinke/miedinger@${version}" version >/dev/null 2>&1; then
+                  break
+                fi
+                if [ "$attempt" = "30" ]; then
+                  echo "error: @derklinke/miedinger@${version} is not available from npm"
+                  exit 1
+                fi
+                sleep 10
+              done
+              npx --yes "@derklinke/miedinger@${version}" "${args[@]}" "${{ inputs.target-dir }}"
 
         - name: Commit format config changes
           if: inputs.commit == 'true'
